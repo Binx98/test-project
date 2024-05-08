@@ -45,8 +45,8 @@ public class UserController {
      */
     @PostMapping("/save")
     public R saveUser(User user) {
-        if (ObjectUtils.isEmpty(user.getAccountId()) || user.getAccountId().length() < 2) {
-            return R.out(ResponseEnum.FAIL, "账号长度不能 < 2 位");
+        if (ObjectUtils.isEmpty(user.getAccountId()) || user.getAccountId().length() < 6) {
+            return R.out(ResponseEnum.FAIL, "账号长度不能 < 6 位");
         }
         if (ObjectUtils.isEmpty(user.getPassword()) || user.getPassword().length() < 6) {
             return R.out(ResponseEnum.FAIL, "密码长度不能 < 6 位");

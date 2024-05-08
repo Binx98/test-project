@@ -8,8 +8,8 @@ import org.springframework.cache.annotation.EnableCaching;
 @MapperScan("com.pet.mapper")
 @EnableCaching // 激活SpringCache缓存
 @SpringBootApplication
-public class PetApplication {
+public class Application {
     public static void main(String[] args) {
-        SpringApplication.run(PetApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 }
