@@ -3,14 +3,12 @@ package com.pet.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.pet.pojo.User;
 import com.pet.service.UserService;
 import com.pet.utils.EmailUtil;
 import com.pet.utils.R;
-import com.pet.utils.RandomUtil;
 import com.pet.utils.ResponseEnum;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,19 +49,22 @@ public class UserController {
         if (ObjectUtils.isEmpty(user.getPassword()) || user.getPassword().length() < 6) {
             return R.out(ResponseEnum.FAIL, "密码长度不能 < 6 位");
         }
-        if (ObjectUtils.isEmpty(user.getEmail())) {
-            return R.out(ResponseEnum.FAIL, "邮件信息不能为空");
+        if (ObjectUtils.isEmpty(user.getPhone())) {
+            return R.out(ResponseEnum.FAIL, "联系方式不能为空");
+        }
+        if (ObjectUtils.isEmpty(user.getAddress())) {
+            return R.out(ResponseEnum.FAIL, "地址不能为空");
         }
 
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("account_id", user.getAccountId());
+        wrapper.eq("role", user.getRole());
         User userPO = userService.getOne(wrapper);
         if (ObjectUtils.isNotEmpty(userPO)) {
             return R.out(ResponseEnum.FAIL, "账户已存在，不可重复注册");
         }
 
         user.setStatus("N");
-        user.setMoney(0);
         user.setRole(1);
         user.setCreateTime(LocalDateTime.now());
         userService.saveOrUpdate(user);
@@ -74,7 +75,7 @@ public class UserController {
      * 登录
      */
     @PostMapping("/login")
-    public R login(String accountId, String password) {
+    public R login(String accountId, String password, Integer role) {
         if (ObjectUtils.isEmpty(accountId) || accountId.length() < 2) {
             return R.out(ResponseEnum.FAIL, "账号长度不能 < 2 位");
         }
@@ -85,6 +86,7 @@ public class UserController {
         // 查询账户信息
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("account_id", accountId);
+        wrapper.eq("role", role);
         User userPO = userService.getOne(wrapper);
         if (ObjectUtils.isEmpty(userPO) || !password.equals(userPO.getPassword())) {
             return R.out(ResponseEnum.FAIL, "密码输入错误");
@@ -114,43 +116,6 @@ public class UserController {
         }
         userService.updateBatchById(userList);
         return R.out(ResponseEnum.SUCCESS, "退出登录成功");
-    }
-
-    /**
-     * 找回密码
-     */
-    @PostMapping("/findBack")
-    public R findBack(String accountId, String password, String code) {
-        if (StringUtils.isBlank(code) || code.length() < 4) {
-            return R.out(ResponseEnum.FAIL, "验证码长度不能 < 4 位");
-        }
-
-        if (StringUtils.isBlank(accountId) || accountId.length() < 2) {
-            return R.out(ResponseEnum.FAIL, "账号长度不能小于 2 位");
-        }
-
-        if (StringUtils.isBlank(password) || password.length() < 6) {
-            return R.out(ResponseEnum.FAIL, "密码长度不能 < 6 位");
-        }
-
-        // 查询用户信息
-        QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.eq("account_id", accountId);
-        User userPO = userService.getOne(wrapper);
-        if (ObjectUtils.isEmpty(userPO)) {
-            return R.out(ResponseEnum.FAIL, "账号还未注册，请重新输入账号");
-        }
-
-        // 判断验证码是否正确
-        String cacheCode = (String) cache.getIfPresent(userPO.getEmail());
-        if (StringUtils.isBlank(cacheCode) || !code.equals(cacheCode)) {
-            return R.out(ResponseEnum.FAIL, "验证码输入错误，请重试");
-        }
-
-        // 修改密码
-        userPO.setPassword(password);
-        userService.updateById(userPO);
-        return R.out(ResponseEnum.SUCCESS);
     }
 
     /**
@@ -189,17 +154,6 @@ public class UserController {
     }
 
     /**
-     * 账户充值
-     */
-    @PostMapping("/recharge")
-    public R recharge(Long id, Integer money) {
-        User userPO = userService.getById(id);
-        userPO.setMoney(userPO.getMoney() + money);
-        userService.updateById(userPO);
-        return R.out(ResponseEnum.SUCCESS);
-    }
-
-    /**
      * 查询登陆中的用户
      */
     @GetMapping("/getLoginUser")
@@ -215,31 +169,6 @@ public class UserController {
     }
 
     /**
-     * 发送邮件功能
-     */
-    @GetMapping("/sendEmail")
-    public R sendEmail(String accountId) {
-        // 查询用户信息
-        QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.eq("account_id", accountId);
-        User userPO = userService.getOne(wrapper);
-        if (ObjectUtils.isEmpty(userPO)) {
-            return R.out(ResponseEnum.FAIL, "账号信息不存在");
-        }
-
-        // 发送邮件
-        String code = RandomUtil.generate(4, 1);
-        String email = userPO.getEmail();
-        emailUtil.sendSimpleMail(email, "账号安全验证:", "您的验证码为：" + code);
-
-        // 验证码缓存到 Caffeine
-        cache.put(email, code);
-        return R.out(ResponseEnum.SUCCESS);
-    }
-
-    /*-----------------------------------管理员权限------------------------------------*/
-
-    /**
      * 删除用户信息（管理员权限）
      */
     @DeleteMapping("/delete/{id}")
@@ -249,12 +178,12 @@ public class UserController {
     }
 
     /**
-     * 查询用户列表（管理员权限）
+     * 查询用户列表
      */
     @GetMapping("/list")
     public R getList() {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.ne("role", 3);
+        wrapper.ne("role", 1);
         List<User> userList = userService.list(wrapper);
         return R.out(ResponseEnum.SUCCESS, userList);
     }

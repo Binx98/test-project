@@ -40,22 +40,16 @@ public class User implements Serializable {
     private String accountId;
 
     /**
-     * 邮箱
-     */
-    @TableField("email")
-    private String email;
-
-    /**
      * 密码
      */
     @TableField("password")
     private String password;
 
     /**
-     * 金额
+     * 地址
      */
-    @TableField("money")
-    private Integer money;
+    @TableField("phone")
+    private Integer phone;
 
     /**
      * 地址
@@ -64,7 +58,7 @@ public class User implements Serializable {
     private String address;
 
     /**
-     * 角色（1：客户，2：员工，3：管理员）
+     * 角色（1：经理，2：销售，3：库存、4：采购员）
      */
     @TableField("role")
     private Integer role;
