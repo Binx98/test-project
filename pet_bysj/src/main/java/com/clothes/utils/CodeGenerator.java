@@ -23,7 +23,7 @@ public class CodeGenerator {
         dataSource.setDriverName("com.mysql.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3306/pet_bysj?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&useSSL=false");
         dataSource.setUsername("root");
-        dataSource.setPassword("root");
+        dataSource.setPassword("123456");
         autoGenerator.setDataSource(dataSource);
         /**
          * 第二步：设置全局配置
@@ -50,7 +50,7 @@ public class CodeGenerator {
          * 第四步：   策略设置
          */
         StrategyConfig strategyConfig = new StrategyConfig();
-        strategyConfig.setInclude("vip");
+        strategyConfig.setInclude("supplier");
         strategyConfig.setNaming(NamingStrategy.underline_to_camel);
         strategyConfig.setColumnNaming(NamingStrategy.underline_to_camel);
         strategyConfig.setEntityLombokModel(true);

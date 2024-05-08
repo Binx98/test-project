@@ -3,11 +3,8 @@ package com.clothes.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.github.benmanes.caffeine.cache.Cache;
-import com.github.benmanes.caffeine.cache.Caffeine;
 import com.clothes.pojo.User;
 import com.clothes.service.UserService;
-import com.clothes.utils.EmailUtil;
 import com.clothes.utils.R;
 import com.clothes.utils.ResponseEnum;
 import org.apache.commons.lang3.ObjectUtils;
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -31,12 +27,6 @@ import java.util.concurrent.TimeUnit;
 public class UserController {
     @Autowired
     private UserService userService;
-    @Autowired
-    private EmailUtil emailUtil;
-    private static final Cache cache = Caffeine.newBuilder()
-            .maximumSize(100)
-            .expireAfterWrite(3, TimeUnit.MINUTES)
-            .build();
 
     /**
      * 注册、保存
@@ -76,8 +66,8 @@ public class UserController {
      */
     @PostMapping("/login")
     public R login(String accountId, String password, Integer role) {
-        if (ObjectUtils.isEmpty(accountId) || accountId.length() < 2) {
-            return R.out(ResponseEnum.FAIL, "账号长度不能 < 2 位");
+        if (ObjectUtils.isEmpty(accountId) || accountId.length() < 6) {
+            return R.out(ResponseEnum.FAIL, "账号长度不能 < 6 位");
         }
         if (ObjectUtils.isEmpty(password) || password.length() < 6) {
             return R.out(ResponseEnum.FAIL, "密码长度不能 < 6 位");
