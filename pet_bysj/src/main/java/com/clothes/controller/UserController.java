@@ -11,7 +11,6 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -29,37 +28,16 @@ public class UserController {
     private UserService userService;
 
     /**
-     * 注册、保存
+     * 查询用户列表
      */
-    @PostMapping("/save")
-    public R saveUser(User user) {
-        if (ObjectUtils.isEmpty(user.getAccountId()) || user.getAccountId().length() < 6) {
-            return R.out(ResponseEnum.FAIL, "账号长度不能 < 6 位");
-        }
-        if (ObjectUtils.isEmpty(user.getPassword()) || user.getPassword().length() < 6) {
-            return R.out(ResponseEnum.FAIL, "密码长度不能 < 6 位");
-        }
-        if (ObjectUtils.isEmpty(user.getPhone())) {
-            return R.out(ResponseEnum.FAIL, "联系方式不能为空");
-        }
-        if (ObjectUtils.isEmpty(user.getAddress())) {
-            return R.out(ResponseEnum.FAIL, "地址不能为空");
-        }
-
+    @PostMapping("/list")
+    public R getList() {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.eq("account_id", user.getAccountId());
-        wrapper.eq("role", user.getRole());
-        User userPO = userService.getOne(wrapper);
-        if (ObjectUtils.isNotEmpty(userPO)) {
-            return R.out(ResponseEnum.FAIL, "账户已存在，不可重复注册");
-        }
-
-        user.setStatus("N");
-        user.setRole(1);
-        user.setCreateTime(LocalDateTime.now());
-        userService.saveOrUpdate(user);
-        return R.out(ResponseEnum.SUCCESS);
+        wrapper.ne("role", 1);
+        List<User> userList = userService.list(wrapper);
+        return R.out(ResponseEnum.SUCCESS, userList);
     }
+
 
     /**
      * 登录
@@ -111,14 +89,14 @@ public class UserController {
     /**
      * 查询用户信息
      */
-    @GetMapping("/detail/{id}")
+    @PostMapping("/detail/{id}")
     public R detail(@PathVariable Long id) {
         User userPO = userService.getById(id);
         return R.out(ResponseEnum.SUCCESS, userPO);
     }
 
     /**
-     * 修改用户信息（用户、管理员通用）
+     * 修改用户信息
      */
     @PostMapping("/update")
     public R updateUser(@RequestBody User user) {
@@ -134,10 +112,12 @@ public class UserController {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("account_id", user.getAccountId());
         User userPO = userService.getOne(wrapper);
-        if (userPO.getRole().equals(1)) {
+        if (userPO.getRole().equals(2)) {
+            userPO.setRole(3);
+        } else if (userPO.getRole().equals(3)) {
+            userPO.setRole(4);
+        } else if (userPO.getRole().equals(4)) {
             userPO.setRole(2);
-        } else if (userPO.getRole().equals(2)) {
-            userPO.setRole(1);
         }
         userService.updateById(userPO);
         return R.out(ResponseEnum.SUCCESS);
@@ -146,7 +126,7 @@ public class UserController {
     /**
      * 查询登陆中的用户
      */
-    @GetMapping("/getLoginUser")
+    @PostMapping("/getLoginUser")
     public R getLoginUser() {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("status", "Y");
@@ -159,23 +139,45 @@ public class UserController {
     }
 
     /**
-     * 删除用户信息（管理员权限）
+     * 删除账号
      */
-    @DeleteMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     public R deleteUser(@PathVariable Long id) {
         userService.removeById(id);
         return R.out(ResponseEnum.SUCCESS);
     }
 
-    /**
-     * 查询用户列表
-     */
-    @GetMapping("/list")
-    public R getList() {
-        QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.ne("role", 1);
-        List<User> userList = userService.list(wrapper);
-        return R.out(ResponseEnum.SUCCESS, userList);
-    }
+    //    /**
+//     * 注册
+//     */
+//    @PostMapping("/save")
+//    public R saveUser(User user) {
+//        if (ObjectUtils.isEmpty(user.getAccountId()) || user.getAccountId().length() < 6) {
+//            return R.out(ResponseEnum.FAIL, "账号长度不能 < 6 位");
+//        }
+//        if (ObjectUtils.isEmpty(user.getPassword()) || user.getPassword().length() < 6) {
+//            return R.out(ResponseEnum.FAIL, "密码长度不能 < 6 位");
+//        }
+//        if (ObjectUtils.isEmpty(user.getPhone())) {
+//            return R.out(ResponseEnum.FAIL, "联系方式不能为空");
+//        }
+//        if (ObjectUtils.isEmpty(user.getAddress())) {
+//            return R.out(ResponseEnum.FAIL, "地址不能为空");
+//        }
+//
+//        QueryWrapper<User> wrapper = new QueryWrapper<>();
+//        wrapper.eq("account_id", user.getAccountId());
+//        wrapper.eq("role", user.getRole());
+//        User userPO = userService.getOne(wrapper);
+//        if (ObjectUtils.isNotEmpty(userPO)) {
+//            return R.out(ResponseEnum.FAIL, "账户已存在，不可重复注册");
+//        }
+//
+//        user.setStatus("N");
+//        user.setRole(1);
+//        user.setCreateTime(LocalDateTime.now());
+//        userService.saveOrUpdate(user);
+//        return R.out(ResponseEnum.SUCCESS);
+//    }
 }
 

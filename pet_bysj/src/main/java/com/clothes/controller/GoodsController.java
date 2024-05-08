@@ -4,14 +4,17 @@ package com.clothes.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.clothes.pojo.*;
-import com.clothes.service.*;
+import com.clothes.pojo.Goods;
+import com.clothes.pojo.ShopCar;
+import com.clothes.service.GoodsService;
+import com.clothes.service.OrderService;
+import com.clothes.service.ShopCarService;
+import com.clothes.service.UserService;
 import com.clothes.utils.R;
 import com.clothes.utils.ResponseEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -33,36 +36,7 @@ public class GoodsController {
     @Autowired
     private OrderService orderService;
     @Autowired
-    private OrdersDetailService detailService;
-    @Autowired
-    private PayService payService;
-    @Autowired
     private UserService userService;
-
-
-    /**
-     * 修改库存
-     */
-    @PostMapping("/changeCount")
-    public R save(Long goodId, Integer changeCount, Integer type) {
-        if (changeCount < 0) {
-            return R.out(ResponseEnum.FAIL, "不能输入负数");
-        }
-
-        Goods good = goodsService.getById(goodId);
-        if (type == 1) {
-            good.setCount(good.getCount() + changeCount);
-            goodsService.updateById(good);
-        } else {
-            if (good.getCount() < changeCount) {
-                return R.out(ResponseEnum.FAIL, "库存数量不足");
-            } else {
-                good.setCount(good.getCount() - changeCount);
-                goodsService.updateById(good);
-            }
-        }
-        return R.out(ResponseEnum.SUCCESS);
-    }
 
     /**
      * 发布商品
@@ -187,5 +161,30 @@ public class GoodsController {
 //        goodsService.updateById(good);
         return R.out(ResponseEnum.SUCCESS, "下单成功");
     }
+
+
+//    /**
+//     * 修改库存
+//     */
+//    @PostMapping("/changeCount")
+//    public R save(Long goodId, Integer changeCount, Integer type) {
+//        if (changeCount < 0) {
+//            return R.out(ResponseEnum.FAIL, "不能输入负数");
+//        }
+//
+//        Goods good = goodsService.getById(goodId);
+//        if (type == 1) {
+//            good.setCount(good.getCount() + changeCount);
+//            goodsService.updateById(good);
+//        } else {
+//            if (good.getCount() < changeCount) {
+//                return R.out(ResponseEnum.FAIL, "库存数量不足");
+//            } else {
+//                good.setCount(good.getCount() - changeCount);
+//                goodsService.updateById(good);
+//            }
+//        }
+//        return R.out(ResponseEnum.SUCCESS);
+//    }
 }
 

@@ -40,22 +40,22 @@ public class Goods implements Serializable {
     private String name;
 
     /**
-     * 商品价格
+     * 销售价格
      */
     @TableField("price")
     private Integer price;
 
     /**
-     * 分类：1：食品、2：用品、3：药品
+     * 进货价格
+     */
+    @TableField("origin_price")
+    private Integer originPrice;
+
+    /**
+     * 分类（1：衣服、2：裤子、3：鞋子，4：其他）
      */
     @TableField("type")
     private Integer type;
-
-    /**
-     * 商品数量
-     */
-    @TableField("count")
-    private Integer count;
 
     /**
      * 商品图片
@@ -64,16 +64,22 @@ public class Goods implements Serializable {
     private String url;
 
     /**
-     * 商品描述
-     */
-    @TableField("description")
-    private String description;
-
-    /**
-     * 商品配料表
+     * 材质
      */
     @TableField("material")
     private String material;
+
+    /**
+     * 店铺库存
+     */
+    @TableField("stock")
+    private Integer stock;
+
+    /**
+     * 仓库库存
+     */
+    @TableField("total_stock")
+    private Integer totalStock;
 
     /**
      * 创建时间

@@ -46,7 +46,7 @@ public class User implements Serializable {
     private String password;
 
     /**
-     * 地址
+     * 手机号
      */
     @TableField("phone")
     private Integer phone;

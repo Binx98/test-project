@@ -32,10 +32,22 @@ public class Vip implements Serializable {
     private Long id;
 
     /**
-     * 账号
+     * 会员名
      */
-    @TableField("account_id")
-    private String accountId;
+    @TableField("name")
+    private String name;
+
+    /**
+     * 手机号
+     */
+    @TableField("phone")
+    private Integer phone;
+
+    /**
+     * 地址
+     */
+    @TableField("address")
+    private String address;
 
     /**
      * 消费金额
@@ -54,6 +66,5 @@ public class Vip implements Serializable {
      */
     @TableField(value = "create_time", fill = FieldFill.INSERT)
     private LocalDateTime createTime;
-
 
 }
