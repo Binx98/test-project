@@ -41,15 +41,15 @@ export var constantRoutes = [
     }]
   },
 
-  {
-    path: '/order',
-    component: Layout,
-    children: [{
-      path: 'order',
-      component: () => import('@/views/order'),
-      meta: { title: '订单管理', icon: 'el-icon-s-order' }
-    }]
-  },
+  // {
+  //   path: '/order',
+  //   component: Layout,
+  //   children: [{
+  //     path: 'order',
+  //     component: () => import('@/views/order'),
+  //     meta: { title: '订单管理', icon: 'el-icon-s-order' }
+  //   }]
+  // },
 
   {
     path: '/caigou',
