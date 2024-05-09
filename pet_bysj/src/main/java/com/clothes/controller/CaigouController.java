@@ -4,9 +4,11 @@ package com.clothes.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.clothes.pojo.Caigou;
 import com.clothes.pojo.Goods;
+import com.clothes.pojo.Ruchu;
 import com.clothes.pojo.SupplierGood;
 import com.clothes.service.CaigouService;
 import com.clothes.service.GoodsService;
+import com.clothes.service.RuchuService;
 import com.clothes.service.SupplierGoodService;
 import com.clothes.utils.R;
 import com.clothes.utils.ResponseEnum;
@@ -38,6 +40,8 @@ public class CaigouController {
     private GoodsService goodsService;
     @Autowired
     private SupplierGoodService supplierGoodService;
+    @Autowired
+    private RuchuService ruchuService;
 
     /**
      * 查询列表
@@ -84,35 +88,50 @@ public class CaigouController {
         caigou.setStatus(status);
         caigouService.updateById(caigou);
 
-        // 1.1 同意采购，判断采购商品是否存在goods表：存在改变总库存即可，不存在保存商品
-        Goods good = goodsService.getById(caigou.getSupplierGoodId());
 
-        // 不存在：保存商品
-        if (ObjectUtils.isEmpty(good)) {
-            SupplierGood supplierGood = supplierGoodService.getById(caigou.getSupplierGoodId());
-            Caigou caigouPO = caigouService.getById(caigouId);
-            Goods goods = new Goods();
-            goods.setId(supplierGood.getId());
-            goods.setName(supplierGood.getGoodName());
-            goods.setStock(0);
-            goods.setTotalStock(caigouPO.getCount());
-            goods.setUrl(supplierGood.getUrl());
-            goods.setOriginMoney(supplierGood.getMoney());
-            goods.setMoney(supplierGood.getMoney() * 2);
-            goods.setCreateTime(LocalDateTime.now());
-            goods.setType(supplierGood.getType());
-            goods.setMaterial(supplierGood.getMaterial());
-            goodsService.save(goods);
+        // 拒绝
+        if (status == 3) {
+            return R.out(ResponseEnum.SUCCESS);
         }
 
-        // 存在：改变总库存
+        // 同意
         else {
-            Caigou caigouPO = caigouService.getById(caigouId);
-            good.setTotalStock(good.getTotalStock() + caigouPO.getCount());
-            goodsService.updateById(good);
-        }
+            // 判断采购商品是否存在goods表：存在改变总库存即可，不存在保存商品
+            Goods good = goodsService.getById(caigou.getSupplierGoodId());
 
-        return R.out(ResponseEnum.SUCCESS);
+            // 不存在：保存商品
+            if (ObjectUtils.isEmpty(good)) {
+                SupplierGood supplierGood = supplierGoodService.getById(caigou.getSupplierGoodId());
+                Caigou caigouPO = caigouService.getById(caigouId);
+                Goods goods = new Goods();
+                goods.setId(supplierGood.getId());
+                goods.setName(supplierGood.getGoodName());
+                goods.setStock(0);
+                goods.setTotalStock(caigouPO.getCount());
+                goods.setUrl(supplierGood.getUrl());
+                goods.setOriginMoney(supplierGood.getMoney());
+                goods.setMoney(supplierGood.getMoney() * 2);
+                goods.setCreateTime(LocalDateTime.now());
+                goods.setType(supplierGood.getType());
+                goods.setMaterial(supplierGood.getMaterial());
+                goodsService.save(goods);
+            }
+
+            // 存在：改变总库存
+            else {
+                Caigou caigouPO = caigouService.getById(caigouId);
+                good.setTotalStock(good.getTotalStock() + caigouPO.getCount());
+                goodsService.updateById(good);
+            }
+
+            // 保存出入库记录
+            Ruchu ruchu = new Ruchu();
+            ruchu.setGoodId(caigou.getSupplierGoodId());
+            ruchu.setType(1);
+            ruchu.setCount(caigou.getCount());
+            ruchuService.save(ruchu);
+            return R.out(ResponseEnum.SUCCESS);
+        }
     }
 }
 

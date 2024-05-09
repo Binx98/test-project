@@ -43,7 +43,7 @@ public class ShopCarController {
     /**
      * 查询购物车商品列表
      */
-    @GetMapping("/list")
+    @PostMapping("/list")
     public R list(String accountId) {
         // 查询购物车列表
         QueryWrapper<ShopCar> wrapper = new QueryWrapper<>();
@@ -110,7 +110,7 @@ public class ShopCarController {
     /**
      * 删除购物车商品
      */
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public R remove(String accountId, String goodId) {
 //        // 查询购物车商品信息
 //        QueryWrapper<ShopCar> wrapper = new QueryWrapper<>();

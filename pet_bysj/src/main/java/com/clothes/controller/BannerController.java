@@ -29,7 +29,7 @@ public class BannerController {
     /**
      * 查询公告
      */
-    @GetMapping("/list")
+    @PostMapping("/list")
     public R list() {
         List<Banner> list = bannerService.list();
         return R.out(ResponseEnum.SUCCESS, list);
@@ -64,7 +64,7 @@ public class BannerController {
     /**
      * 删除公告
      */
-    @DeleteMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     public R delete(@PathVariable Long id) {
         bannerService.removeById(id);
         return R.out(ResponseEnum.SUCCESS);

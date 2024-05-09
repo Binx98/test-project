@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * ✔
@@ -39,19 +40,10 @@ public class GoodsController {
     private UserService userService;
 
     /**
-     * 发布商品
-     */
-    @PostMapping("/save")
-    public R save(@RequestBody Goods goods) {
-        goodsService.save(goods);
-        return R.out(ResponseEnum.SUCCESS);
-    }
-
-    /**
      * 查询商品列表（根据商品名关键字查询）
      */
-    @GetMapping("/list")
-    public R getList(String goodName, Integer type) {
+    @PostMapping("/list")
+    public R getList(String goodName, Integer type, Integer queCount) {
         QueryWrapper wrapper = new QueryWrapper();
         if (StringUtils.isNotBlank(goodName)) {
             wrapper.like("name", goodName);
@@ -61,16 +53,12 @@ public class GoodsController {
         }
         wrapper.orderByDesc("create_time");
         List<Goods> goods = goodsService.list(wrapper);
+        if (ObjectUtils.isNotEmpty(queCount)) {
+            goods = goods.stream()
+                    .filter(item -> item.getStock() + item.getTotalStock() > queCount)
+                    .collect(Collectors.toList());
+        }
         return R.out(ResponseEnum.SUCCESS, goods);
-    }
-
-    /**
-     * 查询商品详情
-     */
-    @GetMapping("/detail/{id}")
-    public R detail(@PathVariable Long id) {
-        Goods good = goodsService.getById(id);
-        return R.out(ResponseEnum.SUCCESS, good);
     }
 
     /**
@@ -83,9 +71,9 @@ public class GoodsController {
     }
 
     /**
-     * 删除商品（下架商品）
+     * 删除商品
      */
-    @DeleteMapping("/delete/{goodId}")
+    @PostMapping("/delete/{goodId}")
     public R deleteMenu(@PathVariable Long goodId) {
         // 删除商品
         goodsService.removeById(goodId);
@@ -99,92 +87,11 @@ public class GoodsController {
     }
 
     /**
-     * 下单用品
+     * 销售商品（生成销售单order）
      */
-    @PostMapping("/buy/{goodId}/{accountId}")
-    public R save(@PathVariable Long goodId, @PathVariable String accountId) {
-//        // 校验商品数量是否充足
-//        Goods goodPO = goodsService.getById(goodId);
-//        if (goodPO.getCount() <= 0) {
-//            return R.out(ResponseEnum.FAIL, "商品库存不足，不可购买");
-//        }
-//
-//        // 查询用户余额
-//        QueryWrapper<User> wrapper = new QueryWrapper<>();
-//        wrapper.eq("account_id", accountId);
-//        User user = userService.getOne(wrapper);
-//
-//        // 查询商品价格
-//        Goods good = goodsService.getById(goodId);
-//        Integer price = good.getPrice();
-//
-//        // 判断账户余额是否充足
-//        if (money < price) {
-//            return R.out(ResponseEnum.FAIL, "余额不足，请充值！");
-//        }
-//
-//        // 余额减去商品价格 差价
-//        int moneys = money - price;
-//        user.setMoney(moneys);
-//        userService.updateById(user);
-//
-//        // 下单 (保存)
-//        Orders order = new Orders();
-//        order.setStatus(1);
-//        order.setMoney(goodPO.getPrice());
-//        order.setAccountId(accountId);
-//        order.setCreateTime(LocalDateTime.now());
-//        orderService.save(order);
-//
-//        // 保存订单明细
-//        OrdersDetail detail = new OrdersDetail();
-//        detail.setAccountId(accountId);
-//        detail.setOrderId(order.getId());
-//        detail.setGoodName(good.getName());
-//        detail.setGoodUrl(good.getUrl());
-//        detail.setGoodId(goodId);
-//        detail.setCount(1);
-//        detail.setMoney(good.getPrice());
-//        detail.setCreateTime(LocalDateTime.now());
-//        detailService.save(detail);
-//
-//        // 保存扣费明细
-//        Pay pay = new Pay();
-//        pay.setAccountId(order.getAccountId());
-//        pay.setOrderId(order.getId());
-//        pay.setCreateTime(LocalDateTime.now());
-//        pay.setMoney(goodPO.getPrice());
-//        payService.save(pay);
-//
-//        // 库存数量 - 1
-//        good.setCount(good.getCount() - 1);
-//        goodsService.updateById(good);
+    @PostMapping("/buy")
+    public R save(Long goodId, String accountId) {
         return R.out(ResponseEnum.SUCCESS, "下单成功");
     }
-
-
-//    /**
-//     * 修改库存
-//     */
-//    @PostMapping("/changeCount")
-//    public R save(Long goodId, Integer changeCount, Integer type) {
-//        if (changeCount < 0) {
-//            return R.out(ResponseEnum.FAIL, "不能输入负数");
-//        }
-//
-//        Goods good = goodsService.getById(goodId);
-//        if (type == 1) {
-//            good.setCount(good.getCount() + changeCount);
-//            goodsService.updateById(good);
-//        } else {
-//            if (good.getCount() < changeCount) {
-//                return R.out(ResponseEnum.FAIL, "库存数量不足");
-//            } else {
-//                good.setCount(good.getCount() - changeCount);
-//                goodsService.updateById(good);
-//            }
-//        }
-//        return R.out(ResponseEnum.SUCCESS);
-//    }
 }
 

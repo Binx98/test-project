@@ -5,16 +5,18 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.clothes.pojo.Goods;
 import com.clothes.pojo.Orders;
 import com.clothes.pojo.OrdersDetail;
-import com.clothes.pojo.User;
 import com.clothes.service.GoodsService;
 import com.clothes.service.OrderService;
 import com.clothes.service.OrdersDetailService;
 import com.clothes.service.UserService;
 import com.clothes.utils.R;
 import com.clothes.utils.ResponseEnum;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
@@ -44,7 +46,7 @@ public class OrderController {
     /**
      * 订单明细
      */
-    @GetMapping("/detail")
+    @PostMapping("/detail")
     public R detailList(Long orderId) {
         QueryWrapper<OrdersDetail> wrapper = new QueryWrapper<>();
         wrapper.eq("order_id", orderId);
@@ -54,14 +56,16 @@ public class OrderController {
     }
 
     /**
-     * 用户查询订单
+     * 查询销售单列表
      */
-    @GetMapping("/list")
-    public R getList(String accountId) {
-        // 查询订单列表
+    @PostMapping("/list")
+    public R getList(Long id, String userName) {
         QueryWrapper<Orders> wrapper = new QueryWrapper<>();
-        if (StringUtils.isNotEmpty(accountId)) {
-            wrapper.eq("account_id", accountId);
+        if (ObjectUtils.isEmpty(id)) {
+            wrapper.eq("id", id);
+        }
+        if (ObjectUtils.isEmpty(userName)) {
+            wrapper.eq("user_name", userName);
         }
         wrapper.orderByDesc("create_time");
         List<Orders> goodOrderList = orderService.list(wrapper);
@@ -89,58 +93,40 @@ public class OrderController {
      */
     @PostMapping("/cancel")
     public R cancelOrder(Long orderId, String accountId) {
-//        // 已完成、已取消订单状态不可调整
-//        Orders orderPO = orderService.getById(orderId);
-//        if (orderPO.getStatus().equals(2) || orderPO.getStatus().equals(3)) {
-//            return R.out(ResponseEnum.FAIL, "订单已处理过，不可再进行操作");
-//        }
-//
-//        // 修改订单状态：订单状态（1：进行中，2：已取消，3：完成）
-//        orderPO.setStatus(2);
-//        orderService.updateById(orderPO);
-//
-//        // 查询用户余额
-//        QueryWrapper<User> wrapper = new QueryWrapper<>();
-//        wrapper.eq("account_id", accountId);
-//        User userPO = userService.getOne(wrapper);
-//
-//        // 退款
-//        userPO.setMoney(userPO.getMoney() + orderPO.getMoney());
-//        userService.updateById(userPO);
         return R.out(ResponseEnum.SUCCESS);
     }
 
 
-    /**
-     * 查询销售流水
-     * <p>
-     * 查询所有订单（已完成订单）
-     * 查询总营业额（已完成订单总价格）
-     * 查询所有商品售卖数量（倒排）
-     */
-    @GetMapping("/total")
-    public R total() {
-        // 查询所有订单（已完成订单）
-        List<Orders> orderList = (List<Orders>) this.getList(null).getData();
-        orderList = orderList.stream()
-                .filter(item -> item.getStatus().equals(3))
-                .collect(Collectors.toList());
-
-        // 查询总营业额
-        Integer totalPrice = 0;
-        for (Orders order : orderList) {
-            totalPrice += order.getMoney();
-        }
-
-        // 查询 热门上新 top3 商品
-        List<Goods> list = goodsService.list().stream().limit(3).collect(Collectors.toList());
-
-        // 封装结果集
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("list", orderList);
-        resultMap.put("money", totalPrice);
-        resultMap.put("top3", list);
-        return R.out(ResponseEnum.SUCCESS, resultMap);
-    }
+//    /**
+//     * 查询销售流水
+//     * <p>
+//     * 查询所有订单（已完成订单）
+//     * 查询总营业额（已完成订单总价格）
+//     * 查询所有商品售卖数量（倒排）
+//     */
+//    @PostMapping("/total")
+//    public R total() {
+//        // 查询所有订单（已完成订单）
+//        List<Orders> orderList = (List<Orders>) this.getList(null).getData();
+//        orderList = orderList.stream()
+//                .filter(item -> item.getStatus().equals(3))
+//                .collect(Collectors.toList());
+//
+//        // 查询总营业额
+//        Integer totalPrice = 0;
+//        for (Orders order : orderList) {
+//            totalPrice += order.getMoney();
+//        }
+//
+//        // 查询 热门上新 top3 商品
+//        List<Goods> list = goodsService.list().stream().limit(3).collect(Collectors.toList());
+//
+//        // 封装结果集
+//        Map<String, Object> resultMap = new HashMap<>();
+//        resultMap.put("list", orderList);
+//        resultMap.put("money", totalPrice);
+//        resultMap.put("top3", list);
+//        return R.out(ResponseEnum.SUCCESS, resultMap);
+//    }
 }
 

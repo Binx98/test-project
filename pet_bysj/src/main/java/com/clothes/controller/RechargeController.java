@@ -12,7 +12,7 @@ import com.clothes.service.WxRechargeService;
 import com.clothes.utils.R;
 import com.clothes.utils.ResponseEnum;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +35,7 @@ public class RechargeController {
     /**
      * 查询列表
      */
-    @GetMapping("/list")
+    @PostMapping("/list")
     public R list(String accountId) {
         QueryWrapper<Recharge> wrapper = new QueryWrapper<>();
         wrapper.eq("account_id", accountId);

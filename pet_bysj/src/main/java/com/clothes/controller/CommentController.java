@@ -37,7 +37,7 @@ public class CommentController {
     /**
      * 查询商品对应评论列表
      */
-    @GetMapping("/list")
+    @PostMapping("/list")
     public R list(Long goodId) {
         QueryWrapper<Comment> wrapper = new QueryWrapper<>();
         wrapper.eq("good_id", goodId);
@@ -49,7 +49,7 @@ public class CommentController {
     /**
      * 根据 accountId 查询评论列表
      */
-    @GetMapping("/getList")
+    @PostMapping("/getList")
     public R getList(String accountId) {
         QueryWrapper<Comment> wrapper = new QueryWrapper<>();
         wrapper.eq("account_id", accountId);
@@ -88,7 +88,7 @@ public class CommentController {
     /**
      * 删除评论
      */
-    @DeleteMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     public R delete(@PathVariable Long id) {
         commentService.removeById(id);
         return R.out(ResponseEnum.SUCCESS);

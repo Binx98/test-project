@@ -1,18 +1,15 @@
 package com.clothes.pojo;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author ${author}
@@ -68,6 +65,13 @@ public class Caigou implements Serializable {
     private Integer money;
 
     /**
+     * 商品类型
+     */
+    @TableField("type")
+    private Integer type;
+
+
+    /**
      * 审核状态（1：进行中，2：已完成，3：已拒绝）
      */
     @TableField("status")
@@ -78,6 +82,5 @@ public class Caigou implements Serializable {
      */
     @TableField(value = "create_time", fill = FieldFill.INSERT)
     private LocalDateTime createTime;
-
 
 }
