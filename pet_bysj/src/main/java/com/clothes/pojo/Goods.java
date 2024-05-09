@@ -42,14 +42,14 @@ public class Goods implements Serializable {
     /**
      * 销售价格
      */
-    @TableField("price")
-    private Integer price;
+    @TableField("money")
+    private Integer money;
 
     /**
      * 进货价格
      */
-    @TableField("origin_price")
-    private Integer originPrice;
+    @TableField("origin_money")
+    private Integer originMoney;
 
     /**
      * 分类（1：衣服、2：裤子、3：鞋子，4：其他）
