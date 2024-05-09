@@ -2,7 +2,7 @@
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" class="login-form" auto-complete="on" label-position="left">
       <div class="title-container">
-        <h5 class="title">宠物烘焙零食销售平台</h5>
+        <h5 class="title">慧美服装销售管理系统</h5>
       </div>
 
       <el-form-item prop="username">
@@ -40,16 +40,30 @@
         </span>
       </el-form-item>
 
+      <el-form-item>
+        <span class="svg-container">
+          <svg-icon icon-class="user"/>
+        </span>
+        <el-select style="margin-right: 10px;width: 80%;opacity: 0.6" v-model="value" placeholder="请选择角色">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click="login">登录
       </el-button>
-
-      <div style="font-size: 14px;margin-left: 35%;">
-        <span class="form-font">没有账号？</span>
-        <span class="go-login" style="color: dodgerblue;cursor:pointer;" @click="goRegister()">去注册></span>
-      </div>
-      <div style="font-size: 14px;margin-left: 40%;margin-top: 3%">
-        <span class="form-font" style="color: dodgerblue;cursor:pointer;" @click="goFindBack()">找回密码></span>
-      </div>
+      <!--      <div style="font-size: 14px;margin-left: 35%;">-->
+      <!--        <span class="form-font">没有账号？</span>-->
+      <!--        <span class="go-login" style="color: dodgerblue;cursor:pointer;" @click="goRegister()">去注册></span>-->
+      <!--      </div>-->
+      <!--      <div style="font-size: 14px;margin-left: 40%;margin-top: 3%">-->
+      <!--        <span class="form-font" style="color: dodgerblue;cursor:pointer;" @click="goFindBack()">找回密码></span>-->
+      <!--      </div>-->
     </el-form>
   </div>
 </template>
@@ -67,7 +81,23 @@ export default {
       },
       loading: false,
       passwordType: 'password',
-      redirect: undefined
+      redirect: undefined,
+
+      options: [
+        {
+          value: '1',
+          label: '经理'
+        }, {
+          value: '2',
+          label: '销售员'
+        }, {
+          value: '3',
+          label: '库存管理员'
+        }, {
+          value: '4',
+          label: '采购员'
+        }],
+      value: ''
     }
   },
   watch: {
@@ -169,7 +199,7 @@ $cursor: #fff;
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(0, 0, 0, 0.1);
     border-radius: 5px;
-    color: #454545;
+    //color: #454545;
   }
 }
 </style>
@@ -184,7 +214,7 @@ $light_gray: #eee;
   width: 100%;
   background-color: $bg;
   overflow: hidden;
-  background-image: url("../../assets/login.png");
+  background-image: url("../../assets/login.jpg");
   background-repeat: no-repeat;
   background-size: cover; /* 或者可以设置为contain */
 
@@ -192,7 +222,7 @@ $light_gray: #eee;
     position: relative;
     width: 520px;
     max-width: 100%;
-    padding: 130px 35px 0;
+    padding: 230px 35px 0;
     margin: 0 auto;
     overflow: hidden;
   }
@@ -211,7 +241,7 @@ $light_gray: #eee;
 
   .svg-container {
     padding: 6px 5px 6px 15px;
-    color: $dark_gray;
+    color: white;
     vertical-align: middle;
     width: 30px;
     display: inline-block;
@@ -234,9 +264,10 @@ $light_gray: #eee;
     right: 10px;
     top: 7px;
     font-size: 16px;
-    color: $dark_gray;
+    color: white;
     cursor: pointer;
     user-select: none;
   }
 }
+
 </style>

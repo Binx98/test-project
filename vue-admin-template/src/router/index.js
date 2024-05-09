@@ -11,17 +11,17 @@ export var constantRoutes = [
     hidden: true
   },
 
-  {
-    path: '/register',
-    component: () => import('@/views/login/register'),
-    hidden: true
-  },
+  // {
+  //   path: '/register',
+  //   component: () => import('@/views/login/register'),
+  //   hidden: true
+  // },
 
-  {
-    path: '/findback',
-    component: () => import('@/views/login/findback'),
-    hidden: true
-  },
+  // {
+  //   path: '/findback',
+  //   component: () => import('@/views/login/findback'),
+  //   hidden: true
+  // },
 
   {
     path: '/404',
@@ -39,19 +39,6 @@ export var constantRoutes = [
       component: () => import('@/views/good.vue'),
       meta: { title: '商品管理', icon: 'el-icon-goods' }
     }]
-    // 用户 + 员工 + 管理员
-  },
-
-  {
-    path: '/banner',
-    component: Layout,
-    children: [{
-      path: 'banner',
-      component: () => import('@/views/banner.vue'),
-      meta: { title: '公告管理', icon: 'el-icon-bell' }
-    }],
-    // 员工 + 管理员
-    hidden: localStorage.getItem('role') === '1'
   },
 
   {
@@ -60,33 +47,42 @@ export var constantRoutes = [
     children: [{
       path: 'order',
       component: () => import('@/views/order'),
-      meta: { title: '订单列表', icon: 'el-icon-s-order' }
+      meta: { title: '订单管理', icon: 'el-icon-s-order' }
     }]
-    // 用户 + 员工 + 管理员
   },
 
   {
-    path: '/recharge',
+    path: '/caigou',
     component: Layout,
     children: [{
-      path: 'recharge',
-      component: () => import('@/views/recharge'),
-      meta: { title: '充值管理', icon: 'el-icon-coin' }
-    }],
-    // 用户
-    hidden: localStorage.getItem('role') === '2' || localStorage.getItem('role') === '3'
+      path: 'caigou',
+      component: () => import('@/views/caigou'),
+      meta: { title: '采购管理', icon: 'el-icon-bell' }
+    }]
+    // hidden: localStorage.getItem('role') === '1'
   },
 
   {
-    path: '/comment',
+    path: '/tongji',
     component: Layout,
     children: [{
-      path: 'comment',
-      component: () => import('@/views/comment'),
-      meta: { title: '评价管理', icon: 'el-icon-s-comment' }
-    }],
+      path: 'tongji',
+      component: () => import('@/views/tongji'),
+      meta: { title: '统计管理', icon: 'el-icon-coin' }
+    }]
+    // hidden: localStorage.getItem('role') === '2' || localStorage.getItem('role') === '3'
+  },
+
+  {
+    path: '/vip',
+    component: Layout,
+    children: [{
+      path: 'vip',
+      component: () => import('@/views/vip'),
+      meta: { title: '会员管理', icon: 'el-icon-user-solid' }
+    }]
     // 用户
-    hidden: localStorage.getItem('role') === '2' || localStorage.getItem('role') === '3'
+    // hidden: localStorage.getItem('role') === '2' || localStorage.getItem('role') === '3'
   },
 
   {
@@ -95,10 +91,10 @@ export var constantRoutes = [
     children: [{
       path: 'user',
       component: () => import('@/views/user'),
-      meta: { title: '用户管理', icon: 'el-icon-user-solid' }
-    }],
+      meta: { title: '员工管理', icon: 'el-icon-user-solid' }
+    }]
     // 管理员
-    hidden: localStorage.getItem('role') === '1' || localStorage.getItem('role') === '2'
+    // hidden: localStorage.getItem('role') === '1' || localStorage.getItem('role') === '2'
   },
 
   {
@@ -108,9 +104,9 @@ export var constantRoutes = [
       path: 'total',
       component: () => import('@/views/total'),
       meta: { title: '销售统计', icon: 'el-icon-s-shop' }
-    }],
+    }]
     // 员工 + 管理员
-    hidden: localStorage.getItem('role') === '1'
+    // hidden: localStorage.getItem('role') === '1'
   },
 
   { path: '*', redirect: '/404', hidden: true }

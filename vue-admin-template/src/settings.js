@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '宠物烘焙零食销售平台',
+  title: '慧美服装销售管理系统',
 
   /**
    * @type {boolean} true | false

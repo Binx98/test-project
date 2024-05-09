@@ -39,7 +39,7 @@
       :visible.sync="dialogVisible"
       width="30%"
     >
-      <el-image :src=kefuImg></el-image>
+<!--      <el-image :src=kefuImg></el-image>-->
     </el-dialog>
 
     <el-dialog
@@ -130,7 +130,7 @@ export default {
       carList: [],
       carTotal: null,
       carMoneyTotal: 0,
-      kefuImg: require('@/assets/kefu.jpg'),
+      // kefuImg: require('@/assets/kefu.jpg'),
       dialogVisible: false,
       dialogTableVisible: false,
       dialogFormVisible: false,
