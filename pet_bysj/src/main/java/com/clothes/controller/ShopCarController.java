@@ -70,40 +70,40 @@ public class ShopCarController {
      */
     @PostMapping("/add")
     public R add(String accountId, Long goodId, Integer count) {
-        // 不能输入 <= 0
-        if (count <= 0) {
-            return R.out(ResponseEnum.FAIL, "数量不能 <= 0");
-        }
-
-        // 判断库存是否足够
-        Goods goodPO = goodsService.getById(goodId);
-        if (goodPO.getCount() <= count) {
-            return R.out(ResponseEnum.FAIL, "商品数量不足，不可加入到购物车");
-        }
-
-        // 添加成功，库存数量 - 1
-        goodPO.setCount(goodPO.getCount() - count);
-        goodsService.updateById(goodPO);
-
-        // 购物车新增记录（重复该数量，不重复新增）
-        QueryWrapper<ShopCar> wrapper = new QueryWrapper<>();
-        wrapper.eq("account_id", accountId);
-        wrapper.eq("good_id", goodId);
-        ShopCar carGood = carService.getOne(wrapper);
-        if (ObjectUtils.isEmpty(carGood)) {
-            ShopCar car = new ShopCar();
-            car.setAccountId(accountId);
-            car.setGoodId(goodId);
-            car.setCount(count);
-            car.setGoodUrl(goodPO.getUrl());
-            car.setGoodName(goodPO.getName());
-            car.setMoney(goodPO.getPrice() * count);
-            car.setCreateTime(LocalDateTime.now());
-            carService.save(car);
-        } else {
-            carGood.setCount(carGood.getCount() + count);
-            carService.updateById(carGood);
-        }
+//        // 不能输入 <= 0
+//        if (count <= 0) {
+//            return R.out(ResponseEnum.FAIL, "数量不能 <= 0");
+//        }
+//
+//        // 判断库存是否足够
+//        Goods goodPO = goodsService.getById(goodId);
+//        if (goodPO.getCount() <= count) {
+//            return R.out(ResponseEnum.FAIL, "商品数量不足，不可加入到购物车");
+//        }
+//
+//        // 添加成功，库存数量 - 1
+//        goodPO.setCount(goodPO.getCount() - count);
+//        goodsService.updateById(goodPO);
+//
+//        // 购物车新增记录（重复该数量，不重复新增）
+//        QueryWrapper<ShopCar> wrapper = new QueryWrapper<>();
+//        wrapper.eq("account_id", accountId);
+//        wrapper.eq("good_id", goodId);
+//        ShopCar carGood = carService.getOne(wrapper);
+//        if (ObjectUtils.isEmpty(carGood)) {
+//            ShopCar car = new ShopCar();
+//            car.setAccountId(accountId);
+//            car.setGoodId(goodId);
+//            car.setCount(count);
+//            car.setGoodUrl(goodPO.getUrl());
+//            car.setGoodName(goodPO.getName());
+//            car.setMoney(goodPO.getPrice() * count);
+//            car.setCreateTime(LocalDateTime.now());
+//            carService.save(car);
+//        } else {
+//            carGood.setCount(carGood.getCount() + count);
+//            carService.updateById(carGood);
+//        }
         return R.out(ResponseEnum.SUCCESS);
     }
 
@@ -112,19 +112,19 @@ public class ShopCarController {
      */
     @DeleteMapping("/delete")
     public R remove(String accountId, String goodId) {
-        // 查询购物车商品信息
-        QueryWrapper<ShopCar> wrapper = new QueryWrapper<>();
-        wrapper.eq("account_id", accountId);
-        wrapper.eq("good_id", goodId);
-        ShopCar car = carService.getOne(wrapper);
-
-        // 删除购物车商品
-        carService.remove(wrapper);
-
-        // 商品库存数恢复
-        Goods goodPO = goodsService.getById(goodId);
-        goodPO.setCount(goodPO.getCount() + car.getCount());
-        goodsService.updateById(goodPO);
+//        // 查询购物车商品信息
+//        QueryWrapper<ShopCar> wrapper = new QueryWrapper<>();
+//        wrapper.eq("account_id", accountId);
+//        wrapper.eq("good_id", goodId);
+//        ShopCar car = carService.getOne(wrapper);
+//
+//        // 删除购物车商品
+//        carService.remove(wrapper);
+//
+//        // 商品库存数恢复
+//        Goods goodPO = goodsService.getById(goodId);
+//        goodPO.setCount(goodPO.getCount() + car.getCount());
+//        goodsService.updateById(goodPO);
         return R.out(ResponseEnum.SUCCESS);
     }
 
@@ -196,43 +196,43 @@ public class ShopCarController {
      */
     @PostMapping("/changeCount")
     public R changeCount(String accountId, Long goodId, Integer type) {
-        // 查询购物车信息
-        QueryWrapper<ShopCar> wrapper = new QueryWrapper<>();
-        wrapper.eq("account_id", accountId);
-        wrapper.eq("good_id", goodId);
-        ShopCar car = carService.getOne(wrapper);
-
-        // 查询商品信息
-        Goods good = goodsService.getById(goodId);
-
-        // 加号
-        if (type == 1) {
-            // 判断库存数量是否充足
-            if (good.getCount() <= 0) {
-                return R.out(ResponseEnum.FAIL, "库存数量不足");
-            }
-
-            car.setCount(car.getCount() + 1);
-            carService.updateById(car);
-            good.setCount(good.getCount() - 1);
-            goodsService.updateById(good);
-        }
-
-        // 减号
-        else {
-            if (car.getCount() == 1) {
-                QueryWrapper<ShopCar> wrapper1 = new QueryWrapper<>();
-                wrapper1.eq("good_id", good.getId());
-                carService.remove(wrapper1);
-                good.setCount(good.getCount() + 1);
-                goodsService.updateById(good);
-            } else {
-                car.setCount(car.getCount() - 1);
-                carService.updateById(car);
-                good.setCount(good.getCount() + 1);
-                goodsService.updateById(good);
-            }
-        }
+//        // 查询购物车信息
+//        QueryWrapper<ShopCar> wrapper = new QueryWrapper<>();
+//        wrapper.eq("account_id", accountId);
+//        wrapper.eq("good_id", goodId);
+//        ShopCar car = carService.getOne(wrapper);
+//
+//        // 查询商品信息
+//        Goods good = goodsService.getById(goodId);
+//
+//        // 加号
+//        if (type == 1) {
+//            // 判断库存数量是否充足
+//            if (good.getCount() <= 0) {
+//                return R.out(ResponseEnum.FAIL, "库存数量不足");
+//            }
+//
+//            car.setCount(car.getCount() + 1);
+//            carService.updateById(car);
+//            good.setCount(good.getCount() - 1);
+//            goodsService.updateById(good);
+//        }
+//
+//        // 减号
+//        else {
+//            if (car.getCount() == 1) {
+//                QueryWrapper<ShopCar> wrapper1 = new QueryWrapper<>();
+//                wrapper1.eq("good_id", good.getId());
+//                carService.remove(wrapper1);
+//                good.setCount(good.getCount() + 1);
+//                goodsService.updateById(good);
+//            } else {
+//                car.setCount(car.getCount() - 1);
+//                carService.updateById(car);
+//                good.setCount(good.getCount() + 1);
+//                goodsService.updateById(good);
+//            }
+//        }
 
         return R.out(ResponseEnum.SUCCESS);
     }
