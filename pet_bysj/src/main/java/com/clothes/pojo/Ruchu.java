@@ -1,18 +1,15 @@
 package com.clothes.pojo;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author ${author}
@@ -48,6 +45,12 @@ public class Ruchu implements Serializable {
      */
     @TableField("type")
     private Integer type;
+
+    /**
+     * 说明
+     */
+    @TableField("note")
+    private String note;
 
     /**
      * 创建时间

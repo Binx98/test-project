@@ -37,8 +37,8 @@ public class Caigou implements Serializable {
     /**
      * 供应商商品id
      */
-    @TableField("supplier_good_id")
-    private Long supplierGoodId;
+    @TableField("good_id")
+    private Long goodId;
 
     /**
      * 供应商名
