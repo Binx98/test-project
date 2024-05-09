@@ -5,7 +5,7 @@ export default {
   getBannerList() {
     return request({
       url: '/banner/list',
-      method: 'get'
+      method: 'post'
     })
   },
 
@@ -23,7 +23,7 @@ export default {
   deleteBanner(id) {
     return request({
       url: `/banner/delete/${id}`,
-      method: 'delete'
+      method: 'post'
     })
   },
 
@@ -31,7 +31,7 @@ export default {
   getRechargeList(accountId) {
     return request({
       url: '/recharge/list',
-      method: 'get',
+      method: 'post',
       params: {
         accountId: accountId
       }
@@ -62,7 +62,7 @@ export default {
   getGoodList(goodName, type) {
     return request({
       url: '/good/list',
-      method: 'get',
+      method: 'post',
       params: {
         goodName: goodName,
         type: type
@@ -84,7 +84,7 @@ export default {
   deleteGood(id) {
     return request({
       url: `/good/delete/${id}`,
-      method: 'delete'
+      method: 'post'
     })
   },
 
@@ -99,7 +99,7 @@ export default {
   getDetail(id) {
     return request({
       url: `/good/detail/${id}`,
-      method: 'get'
+      method: 'post'
     })
   },
 
@@ -139,7 +139,7 @@ export default {
   deleteCar(accountId, goodId) {
     return request({
       url: '/car/delete',
-      method: 'delete',
+      method: 'post',
       params: {
         accountId: accountId,
         goodId: goodId
@@ -150,7 +150,7 @@ export default {
   getCarList(accountId) {
     return request({
       url: '/car/list',
-      method: 'get',
+      method: 'post',
       params: {
         accountId: accountId
       }
@@ -172,7 +172,7 @@ export default {
   getCommentList(goodId) {
     return request({
       url: '/comment/list',
-      method: 'get',
+      method: 'post',
       params: {
         goodId: goodId
       }
@@ -182,7 +182,7 @@ export default {
   getCommentListByAccountId(accountId) {
     return request({
       url: '/comment/getList',
-      method: 'get',
+      method: 'post',
       params: {
         accountId: accountId
       }
@@ -205,7 +205,7 @@ export default {
   deleteComment(id) {
     return request({
       url: `/comment/delete/${id}`,
-      method: 'delete'
+      method: 'post'
     })
   },
 
@@ -256,7 +256,7 @@ export default {
   getLoginUser() {
     return request({
       url: '/user/getLoginUser',
-      method: 'get'
+      method: 'post'
     })
   },
 
@@ -279,28 +279,28 @@ export default {
   getUserById(id) {
     return request({
       url: `/user/detail/${id}`,
-      method: 'get'
+      method: 'post'
     })
   },
 
   deleteUser(id) {
     return request({
       url: `/user/delete/${id}`,
-      method: 'delete'
+      method: 'post'
     })
   },
 
   getUserList() {
     return request({
       url: '/user/list',
-      method: 'get'
+      method: 'post'
     })
   },
 
   sendCode(accountId) {
     return request({
       url: '/user/sendEmail',
-      method: 'get',
+      method: 'post',
       params: {
         accountId: accountId
       }
@@ -312,7 +312,7 @@ export default {
   getOrderList(accountId) {
     return request({
       url: '/order/list',
-      method: 'get',
+      method: 'post',
       params: {
         accountId: accountId
       }
@@ -322,7 +322,7 @@ export default {
   getOrderDetail(orderId) {
     return request({
       url: '/order/detail',
-      method: 'get',
+      method: 'post',
       params: {
         orderId: orderId
       }
@@ -351,7 +351,7 @@ export default {
   total() {
     return request({
       url: `/order/total`,
-      method: 'get'
+      method: 'post'
     })
   }
 }
