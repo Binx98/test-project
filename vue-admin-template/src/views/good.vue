@@ -54,8 +54,14 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="price"
-        label="商品价格"
+        prop="money"
+        label="售价"
+        width="80"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="money"
+        label="进货价"
         width="80"
       >
       </el-table-column>
@@ -71,14 +77,20 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="count"
+        prop="stock"
+        label="库存（个）"
+        width="100"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="total_stock"
         label="库存（个）"
         width="100"
       >
       </el-table-column>
       <el-table-column
         prop="material"
-        label="配料表"
+        label="材质"
         width="100"
       >
       </el-table-column>
@@ -86,20 +98,12 @@
         label="操作"
       >
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="buyGood(scope.row.id)" v-if="loginUser.role == 1">购买
-          </el-button>
-          <el-button size="mini" type="warning" @click="openCar(scope.row.id)" v-if="loginUser.role == 1">加入购物车
-          </el-button>
-
-          <el-button size="mini" type="primary" @click="clickChangeCount(scope.row.id,scope.row.count)"
-                     v-if="loginUser.role == 2 || loginUser.role == 3"
-          >改库存
-          </el-button>
+          <el-button size="mini" type="primary" @click="">购买</el-button>
+          <el-button size="mini" type="warning" @click="">加入购物车</el-button>
+          <el-button size="mini" type="primary" @click="">改库存</el-button>
 
           <el-button size="mini" @click="getCommentList(scope.row.id)">评价</el-button>
-          <el-button size="mini" type="success" @click="getDetail(scope.row.id)"
-                     v-if="loginUser.role == 2 || loginUser.role == 3"
-          >修改
+          <el-button size="mini" type="success" @click="getDetail(scope.row.id)">修改
           </el-button>
           <el-button size="mini" type="danger" @click="deleteGood(scope.row.id)"
                      v-if="loginUser.role == 2 || loginUser.role == 3"
@@ -233,7 +237,7 @@
 
 <script>
 import urlApi from '@/api/url'
-import { mapGetters } from 'vuex'
+import {mapGetters} from 'vuex'
 
 export default {
   name: 'Dashboard',
@@ -300,7 +304,6 @@ export default {
   },
 
   created() {
-    this.getBannerList()
   },
 
   mounted() {
@@ -309,22 +312,11 @@ export default {
       window.location.reload()
     }
 
-    setInterval(this.getList, 2000)
   },
 
   methods: {
     getList() {
       urlApi.getGoodList(this.goodName, this.value).then(res => this.tableData = res.data)
-    },
-
-    getBannerList() {
-      urlApi.getBannerList().then(res => {
-        for (let i = 0; i < res.data.length; i++) {
-          this.bannerList[i] = res.data[i].url
-        }
-        this.getList()
-        this.getLoginUser()
-      })
     },
 
     clickChangeCount(id, count) {

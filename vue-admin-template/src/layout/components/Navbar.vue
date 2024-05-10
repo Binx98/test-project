@@ -114,7 +114,6 @@ export default {
   },
 
   mounted() {
-    setInterval(this.getCarList, 2000)
   },
 
   data() {
@@ -182,15 +181,6 @@ export default {
 
     changeCount(goodId, type) {
       url.changeCount(goodId, this.loginUser.accountId, type).then(res => {
-        this.getCarList()
-      })
-    },
-
-    getCarList() {
-      url.getCarList(this.loginUser.accountId).then(res => {
-        this.carList = res.data.list
-        this.carTotal = res.data.total
-        this.carMoneyTotal = res.data.money
       })
     },
 
