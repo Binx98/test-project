@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.clothes.pojo.Goods;
 import com.clothes.pojo.Orders;
-import com.clothes.pojo.ShopCar;
 import com.clothes.pojo.Vip;
 import com.clothes.service.*;
 import com.clothes.utils.R;
@@ -32,8 +31,6 @@ import java.util.stream.Collectors;
 public class GoodsController {
     @Autowired
     private GoodsService goodsService;
-    @Autowired
-    private ShopCarService carService;
     @Autowired
     private VipService vipService;
     @Autowired
@@ -77,14 +74,7 @@ public class GoodsController {
      */
     @PostMapping("/delete/{goodId}")
     public R deleteMenu(@PathVariable Long goodId) {
-        // 删除商品
         goodsService.removeById(goodId);
-
-        // 删除所有购物车记录
-        QueryWrapper<ShopCar> wrapper = new QueryWrapper<>();
-        wrapper.eq("good_id", goodId);
-        List<ShopCar> list = carService.list(wrapper);
-        carService.remove(wrapper);
         return R.out(ResponseEnum.SUCCESS);
     }
 

@@ -35,23 +35,16 @@ public class Caigou implements Serializable {
     private String accountId;
 
     /**
-     * 商品id
+     * 供应商名
      */
-    @TableField("supplier_id")
-    private Long supplierId;
+    @TableField("supplier_name")
+    private String supplierName;
 
     /**
      * 商品id
      */
     @TableField("good_id")
     private Long goodId;
-
-
-    /**
-     * 供应商名
-     */
-    @TableField("supplier_name")
-    private String supplierName;
 
     /**
      * 商品名
