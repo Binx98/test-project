@@ -34,22 +34,54 @@ public class Orders implements Serializable {
     private Long id;
 
     /**
-     * account_id
+     * vip编号
      */
-    @TableField("account_id")
-    private String accountId;
+    @TableField("vip_id")
+    private Long vipId;
 
     /**
-     * 商品价格
+     * 姓名
+     */
+    @TableField("user_name")
+    private String userName;
+
+    /**
+     * vip编号
+     */
+    @TableField("good_id")
+    private Long goodId;
+
+    /**
+     * 数量
+     */
+    @TableField("count")
+    private Integer count;
+
+
+    /**
+     * 总原价
      */
     @TableField("money")
     private Integer money;
 
+
     /**
-     * 订单状态（1：进行中，2：已取消，3：已完成）
+     * 实际成交价格
+     */
+    @TableField("buy_money")
+    private Integer buyMoney;
+
+    /**
+     * 订单状态（1：进行中，2：完成，3：退货）
      */
     @TableField("status")
     private Integer status;
+
+    /**
+     * 姓名
+     */
+    @TableField("address")
+    private String address;
 
     /**
      * 创建时间

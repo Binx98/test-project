@@ -1,18 +1,15 @@
 package com.clothes.pojo;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author ${author}
@@ -34,8 +31,8 @@ public class Vip implements Serializable {
     /**
      * 会员名
      */
-    @TableField("name")
-    private String name;
+    @TableField("user_name")
+    private String userName;
 
     /**
      * 手机号
@@ -59,7 +56,13 @@ public class Vip implements Serializable {
      * 会员等级（5个等级，1w元升1级，1级折扣0.1）
      */
     @TableField("level")
-    private Boolean level;
+    private Integer level;
+
+    /**
+     * 折扣
+     */
+    @TableField("discount")
+    private Double discount;
 
     /**
      * 充值时间
