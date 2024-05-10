@@ -7,7 +7,9 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.clothes.pojo.Goods;
 import com.clothes.pojo.Orders;
 import com.clothes.pojo.Vip;
-import com.clothes.service.*;
+import com.clothes.service.GoodsService;
+import com.clothes.service.OrderService;
+import com.clothes.service.VipService;
 import com.clothes.utils.R;
 import com.clothes.utils.ResponseEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +37,6 @@ public class GoodsController {
     private VipService vipService;
     @Autowired
     private OrderService orderService;
-    @Autowired
-    private UserService userService;
 
     /**
      * 查询商品列表（根据商品名关键字查询）

@@ -68,7 +68,6 @@
               详情
             </el-button>
             <el-button size="mini" type="warning" @click="clickComment(scope.row.goodId, scope.row.orderId)"
-                       v-if="loginUser.role === 1"
             >
               评价
             </el-button>

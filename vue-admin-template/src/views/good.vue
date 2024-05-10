@@ -21,9 +21,7 @@
         <el-button size="medium" type="success" @click="getList">
           查询
         </el-button>
-        <el-button size="medium" type="primary" @click="dialogFormVisible = true"
-                   v-if="loginUser.role == 2 || loginUser.role == 3"
-        >
+        <el-button size="medium" type="primary" @click="dialogFormVisible = true">
           添加商品
         </el-button>
       </div>
@@ -78,13 +76,13 @@
       </el-table-column>
       <el-table-column
         prop="stock"
-        label="库存（个）"
+        label="门店库存（个）"
         width="100"
       >
       </el-table-column>
       <el-table-column
-        prop="total_stock"
-        label="库存（个）"
+        prop="totalStock"
+        label="仓库库存（个）"
         width="100"
       >
       </el-table-column>
@@ -106,7 +104,6 @@
           <el-button size="mini" type="success" @click="getDetail(scope.row.id)">修改
           </el-button>
           <el-button size="mini" type="danger" @click="deleteGood(scope.row.id)"
-                     v-if="loginUser.role == 2 || loginUser.role == 3"
           >删除
           </el-button>
         </template>
@@ -161,9 +158,10 @@
           <el-input v-model="form.price" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="类型" :label-width="formLabelWidth">
-          <el-radio v-model="form.type" label="1">食品</el-radio>
-          <el-radio v-model="form.type" label="2">用品</el-radio>
-          <el-radio v-model="form.type" label="3">药品</el-radio>
+          <el-radio v-model="form.type" label="1">衣服</el-radio>
+          <el-radio v-model="form.type" label="2">裤子</el-radio>
+          <el-radio v-model="form.type" label="3">鞋子</el-radio>
+          <el-radio v-model="form.type" label="4">其他</el-radio>
         </el-form-item>
         <el-form-item label="数量" :label-width="formLabelWidth">
           <el-input v-model="form.count" autocomplete="off"></el-input>
@@ -304,6 +302,7 @@ export default {
   },
 
   created() {
+    this.getList()
   },
 
   mounted() {
@@ -311,7 +310,6 @@ export default {
       location.href = location.href + '#reloaded'
       window.location.reload()
     }
-
   },
 
   methods: {
