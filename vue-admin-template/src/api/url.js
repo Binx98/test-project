@@ -236,7 +236,9 @@ export default {
       params: {
         accountId: data.accountId,
         password: data.password,
-        email: data.email
+        phone: data.phone,
+        address: data.address,
+        role: data.role
       }
     })
   },

@@ -11,13 +11,13 @@
       >
       </el-table-column>
       <el-table-column
-        prop="email"
-        label="邮箱"
+        prop="phone"
+        label="电话"
       >
       </el-table-column>
       <el-table-column
-        prop="money"
-        label="余额"
+        prop="address"
+        label="地址"
       >
       </el-table-column>
       <el-table-column
@@ -25,9 +25,9 @@
         label="角色"
       >
         <template slot-scope="scope">
-          <el-tag type="success" v-if="scope.row.role == 1">用户</el-tag>
-          <el-tag type="primary" v-if="scope.row.role == 2">员工</el-tag>
-          <el-tag type="success" v-if="scope.row.role == 3">管理员</el-tag>
+          <el-tag type="primary" v-if="scope.row.role == 2">销售员</el-tag>
+          <el-tag type="success" v-if="scope.row.role == 3">库存管理员</el-tag>
+          <el-tag type="warning" v-if="scope.row.role == 4">采购员</el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -39,13 +39,13 @@
         label="操作"
       >
         <template slot-scope="scope">
-          <el-button size="small" type="success" @click="updateUser(scope.row.accountId)">切换</el-button>
+          <el-button size="small" type="success" @click="updateUser(scope.row)">修改</el-button>
           <el-button size="small" type="danger" @click="deleteUser(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <!--  弹框  -->
+    <!--  弹框：创建  -->
     <el-dialog title="添加账户" :visible.sync="dialogFormVisible">
       <el-form :model="form">
         <el-form-item label="账号" :label-width="formLabelWidth">
@@ -54,16 +54,58 @@
         <el-form-item label="密码" :label-width="formLabelWidth">
           <el-input v-model="form.password" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="邮箱" :label-width="formLabelWidth">
-          <el-input v-model="form.email" autocomplete="off"></el-input>
+        <el-form-item label="电话" :label-width="formLabelWidth">
+          <el-input v-model="form.phone" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="地址" :label-width="formLabelWidth">
+          <el-input v-model="form.address" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="角色" :label-width="formLabelWidth">
-          <el-input v-model="form.role" autocomplete="off"></el-input>
+          <el-select style="margin-right: 10px;width: 80%;opacity: 0.6" v-model="form.role" placeholder="请选择角色">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary" @click="saveUser(form)">确 定</el-button>
+      </div>
+    </el-dialog>
+
+    <!--  弹框：修改  -->
+    <el-dialog title="修改账户" :visible.sync="dialogFormVisible1">
+      <el-form :model="form1">
+        <el-form-item label="账号" :label-width="formLabelWidth">
+          <el-input v-model="form1.accountId" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" :label-width="formLabelWidth">
+          <el-input v-model="form1.password" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="电话" :label-width="formLabelWidth">
+          <el-input v-model="form1.phone" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="地址" :label-width="formLabelWidth">
+          <el-input v-model="form1.address" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="角色" :label-width="formLabelWidth">
+          <el-select style="margin-right: 10px;width: 80%;opacity: 0.6" v-model="form1.role" placeholder="请选择角色">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="updateUser2(form1)">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -71,7 +113,7 @@
 
 <script>
 import urlApi from '@/api/url'
-import { mapGetters } from 'vuex'
+import {mapGetters} from 'vuex'
 
 export default {
   name: 'Dashboard',
@@ -81,17 +123,40 @@ export default {
       imageUrl: '',
       tableData: [],
       dialogFormVisible: false,
+      dialogFormVisible1: false,
       form: {
+        id: '',
         accountId: '',
         password: '',
-        role: '',
-        phone: ''
+        role: '2',
+        phone: '',
+        address: ''
+      },
+
+      form1: {
+        id: '',
+        accountId: '',
+        password: '',
+        role: '2',
+        phone: '',
+        address: ''
       },
       formLabelWidth: '120px',
       loginUser: {
         accountId: '',
         role: ''
-      }
+      },
+      options: [
+        {
+          value: '2',
+          label: '销售员'
+        }, {
+          value: '3',
+          label: '库存管理员'
+        }, {
+          value: '4',
+          label: '采购员'
+        }]
     }
   },
 
@@ -105,14 +170,9 @@ export default {
       urlApi.getUserList().then(res => this.tableData = res.data)
     },
 
-    updateUser(accountId) {
-      const params = {
-        accountId: accountId
-      }
-      urlApi.updateUserRole(params).then(res => {
-        this.getList()
-        this.$message.success('修改成功')
-      })
+    updateUser(user) {
+      this.form1 = user
+      this.dialogFormVisible1 = true
     },
 
     deleteUser(id) {
@@ -143,6 +203,17 @@ export default {
         if (res.code == 200) {
           this.dialogFormVisible = false
           this.getList()
+          this.$message.success('保存成功')
+        }
+      })
+    },
+
+    updateUser2(form) {
+      urlApi.updateUser(form).then(res => {
+        if (res.code == 200) {
+          this.dialogFormVisible1 = false
+          this.getList()
+          this.$message.success('修改成功')
         }
       })
     }

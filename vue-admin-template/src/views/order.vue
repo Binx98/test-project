@@ -85,7 +85,6 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button size="mini" type="warning" @click="clickComment(scope.row.goodId, scope.row.orderId)"
-                       v-if="loginUser.role === 1"
             >
               评价
             </el-button>

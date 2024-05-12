@@ -5,7 +5,7 @@
     <breadcrumb class="breadcrumb-container"/>
 
     <div class="right-menu">
-      <el-badge :value=carTotal class="item" style="margin-right: 40px;margin-top: 12px" v-if="loginUser.role == 1">
+      <el-badge :value=carTotal class="item" style="margin-right: 40px;margin-top: 12px">
         <i class="el-icon-shopping-cart-2" style="font-size: 30px;cursor:pointer;color: darkgrey;"
            @click="dialogTableVisible = true"
         ></i>
