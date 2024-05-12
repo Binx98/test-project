@@ -114,20 +114,25 @@ public class GoodsController {
 
             // 判断升级
             int money = vip.getMoney() + (good.getMoney() * count * vip.getDiscount().intValue());
-            if (money > 10000) {
+            if (money >= 10000) {
                 vip.setLevel(1);
+                vip.setDiscount(0.9D);
             }
-            if (money > 20000) {
+            if (money >= 20000) {
                 vip.setLevel(2);
+                vip.setDiscount(0.8D);
             }
-            if (money > 30000) {
+            if (money >= 30000) {
                 vip.setLevel(3);
+                vip.setDiscount(0.7D);
             }
-            if (money > 40000) {
+            if (money >= 40000) {
                 vip.setLevel(4);
+                vip.setDiscount(0.6D);
             }
-            if (money > 50000) {
+            if (money >= 50000) {
                 vip.setLevel(5);
+                vip.setDiscount(0.5D);
             }
             vipService.updateById(vip);
         }

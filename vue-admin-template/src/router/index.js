@@ -11,18 +11,6 @@ export var constantRoutes = [
     hidden: true
   },
 
-  // {
-  //   path: '/register',
-  //   component: () => import('@/views/login/register'),
-  //   hidden: true
-  // },
-
-  // {
-  //   path: '/findback',
-  //   component: () => import('@/views/login/findback'),
-  //   hidden: true
-  // },
-
   {
     path: '/404',
     component: () => import('@/views/404'),
@@ -57,7 +45,7 @@ export var constantRoutes = [
     children: [{
       path: 'order',
       component: () => import('@/views/order'),
-      meta: { title: '订单管理', icon: 'el-icon-s-order' }
+      meta: { title: '销售单管理', icon: 'el-icon-s-order' }
     }]
   },
 
@@ -108,12 +96,12 @@ export var constantRoutes = [
   },
 
   {
-    path: '/total',
+    path: '/supplier',
     component: Layout,
     children: [{
-      path: 'total',
-      component: () => import('@/views/stock'),
-      meta: { title: '销售统计', icon: 'el-icon-s-shop' }
+      path: 'supplier',
+      component: () => import('@/views/supplier'),
+      meta: { title: '供货商', icon: 'el-icon-s-shop' }
     }]
     // 员工 + 管理员
     // hidden: localStorage.getItem('role') === '1'
