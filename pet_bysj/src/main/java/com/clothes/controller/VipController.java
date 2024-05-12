@@ -33,13 +33,13 @@ public class VipController {
      * 查询列表
      */
     @PostMapping("/list")
-    public R getList(Integer level, String name) {
+    public R getList(Integer level, String userName) {
         QueryWrapper<Vip> wrapper = new QueryWrapper<>();
         if (ObjectUtils.isNotEmpty(level)) {
             wrapper.eq("level", level);
         }
-        if (ObjectUtils.isNotEmpty(name)) {
-            wrapper.like("name", name);
+        if (ObjectUtils.isNotEmpty(userName)) {
+            wrapper.like("user_name", userName);
         }
         wrapper.orderByDesc("create_time");
         List<Vip> list = vipService.list(wrapper);
@@ -51,6 +51,40 @@ public class VipController {
      */
     @PostMapping("/saveOrUpdate")
     public R saveOrUpdate(@RequestBody Vip vip) {
+        // 注册操作，判断手机号是否重复
+        if (ObjectUtils.isEmpty(vip.getId())) {
+            QueryWrapper<Vip> wrapper = new QueryWrapper<>();
+            wrapper.eq("phone", vip.getPhone());
+            Vip vipInfo = vipService.getOne(wrapper);
+            if (ObjectUtils.isNotEmpty(vipInfo)) {
+                return R.out(ResponseEnum.FAIL, "手机号已经注册为VIP会员，请更换手机号");
+            }
+        }
+
+        if (vip.getMoney() < 10000) {
+            return R.out(ResponseEnum.FAIL, "设置vip起始消费金额必须 > 10000元");
+        }
+        Integer money = vip.getMoney();
+        if (money >= 10000) {
+            vip.setLevel(1);
+            vip.setDiscount(0.9D);
+        }
+        if (money >= 20000) {
+            vip.setLevel(2);
+            vip.setDiscount(0.8D);
+        }
+        if (money >= 30000) {
+            vip.setLevel(3);
+            vip.setDiscount(0.7D);
+        }
+        if (money >= 40000) {
+            vip.setLevel(4);
+            vip.setDiscount(0.6D);
+        }
+        if (money >= 50000) {
+            vip.setLevel(5);
+            vip.setDiscount(0.5D);
+        }
         vipService.saveOrUpdate(vip);
         return R.out(ResponseEnum.SUCCESS);
     }

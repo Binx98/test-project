@@ -1,28 +1,41 @@
 <template>
   <div class="dashboard-container">
-    <el-button type="primary" @click="dialogFormVisible = true" size="medium">创建用户</el-button>
+    <el-input placeholder="请输入账号" style="width: 200px;margin-right: 10px" v-model="accountId"/>
+    <el-select style="margin-right: 10px" v-model="value" placeholder="请选择角色">
+      <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+      >
+      </el-option>
+    </el-select>
+    <el-button size="medium" type="success" @click="getList">
+      查询
+    </el-button>
+    <el-button type="primary" @click="dialogFormVisible = true" size="medium">创建账号</el-button>
     <el-table
-      :data="tableData"
-      style="width: 100%"
+        :data="tableData"
+        style="width: 100%"
     >
       <el-table-column
-        prop="accountId"
-        label="账号"
+          prop="accountId"
+          label="账号"
       >
       </el-table-column>
       <el-table-column
-        prop="phone"
-        label="电话"
+          prop="phone"
+          label="电话"
       >
       </el-table-column>
       <el-table-column
-        prop="address"
-        label="地址"
+          prop="address"
+          label="地址"
       >
       </el-table-column>
       <el-table-column
-        prop="role"
-        label="角色"
+          prop="role"
+          label="角色"
       >
         <template slot-scope="scope">
           <el-tag type="primary" v-if="scope.row.role == 2">销售员</el-tag>
@@ -31,15 +44,15 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="createTime"
-        label="创建时间"
+          prop="createTime"
+          label="创建时间"
       >
       </el-table-column>
       <el-table-column
-        label="操作"
+          label="操作"
       >
         <template slot-scope="scope">
-          <el-button size="small" type="success" @click="updateUser(scope.row)">修改</el-button>
+          <el-button size="small" @click="updateUser(scope.row)">修改</el-button>
           <el-button size="small" type="danger" @click="deleteUser(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
@@ -63,10 +76,10 @@
         <el-form-item label="角色" :label-width="formLabelWidth">
           <el-select style="margin-right: 10px;width: 80%;opacity: 0.6" v-model="form.role" placeholder="请选择角色">
             <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+                v-for="item in options1"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
             >
             </el-option>
           </el-select>
@@ -95,10 +108,10 @@
         <el-form-item label="角色" :label-width="formLabelWidth">
           <el-select style="margin-right: 10px;width: 80%;opacity: 0.6" v-model="form1.role" placeholder="请选择角色">
             <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+                v-for="item in options1"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
             >
             </el-option>
           </el-select>
@@ -146,8 +159,13 @@ export default {
         accountId: '',
         role: ''
       },
+      accountId: '',
+      value: '',
       options: [
         {
+          value: '',
+          label: '所有角色'
+        }, {
           value: '2',
           label: '销售员'
         }, {
@@ -156,7 +174,17 @@ export default {
         }, {
           value: '4',
           label: '采购员'
-        }]
+        }],
+      options1: [{
+        value: '2',
+        label: '销售员'
+      }, {
+        value: '3',
+        label: '库存管理员'
+      }, {
+        value: '4',
+        label: '采购员'
+      }]
     }
   },
 
@@ -167,7 +195,7 @@ export default {
 
   methods: {
     getList() {
-      urlApi.getUserList().then(res => this.tableData = res.data)
+      urlApi.getUserList(this.accountId, this.value).then(res => this.tableData = res.data)
     },
 
     updateUser(user) {

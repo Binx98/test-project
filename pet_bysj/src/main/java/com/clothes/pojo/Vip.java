@@ -43,7 +43,7 @@ public class Vip implements Serializable {
      * 手机号
      */
     @TableField("phone")
-    private Integer phone;
+    private String phone;
 
     /**
      * 地址

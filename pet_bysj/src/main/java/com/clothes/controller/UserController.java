@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -32,11 +33,17 @@ public class UserController {
      * 查询用户列表
      */
     @PostMapping("/list")
-    public R getList() {
+    public R getList(String accountId, Integer role) {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.ne("role", 1);
+        if (ObjectUtils.isNotEmpty(accountId)) {
+            wrapper.like("account_id", accountId);
+        }
+        if (ObjectUtils.isNotEmpty(role)) {
+            wrapper.eq("role", role);
+        }
         wrapper.orderByDesc("create_time");
         List<User> userList = userService.list(wrapper);
+        userList = userList.stream().filter(item -> !item.getRole().equals(1)).collect(Collectors.toList());
         return R.out(ResponseEnum.SUCCESS, userList);
     }
 

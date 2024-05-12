@@ -299,17 +299,25 @@ export default {
         })
     },
 
-    getUserList() {
+    getUserList(accountId, role) {
         return request({
             url: '/user/list',
-            method: 'post'
+            method: 'post',
+            params: {
+                accountId: accountId,
+                role: role
+            }
         })
     },
 
-    getVipList() {
+    getVipList(userName, level) {
         return request({
             url: '/vip/list',
-            method: 'post'
+            method: 'post',
+            params: {
+                userName: userName,
+                level: level
+            }
         })
     },
 

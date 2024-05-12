@@ -1,5 +1,18 @@
 <template>
   <div class="dashboard-container">
+    <el-input placeholder="请输入姓名" style="width: 200px;margin-right: 10px" v-model="userName"/>
+    <el-select style="margin-right: 10px" v-model="value" placeholder="请选择等级">
+      <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+      >
+      </el-option>
+    </el-select>
+    <el-button size="medium" type="success" @click="getList">
+      查询
+    </el-button>
     <el-button type="primary" @click="dialogFormVisible = true" size="medium">注册会员</el-button>
     <el-table
         :data="tableData"
@@ -58,7 +71,7 @@
           label="操作"
       >
         <template slot-scope="scope">
-          <el-button size="small" type="success" @click="updateVip(scope.row)">修改</el-button>
+          <el-button size="small"  @click="updateVip(scope.row)">修改</el-button>
           <el-button size="small" type="danger" @click="deleteUser(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
@@ -127,6 +140,7 @@ export default {
         address: '',
         money: '',
       },
+      userName: '',
 
       form1: {
         id: '',
@@ -143,15 +157,22 @@ export default {
       },
       options: [
         {
+          value: '',
+          label: '所有等级'
+        }, {
+          value: '1',
+          label: '等级1'
+        }, {
           value: '2',
-          label: '销售员'
+          label: '等级2'
         }, {
           value: '3',
-          label: '库存管理员'
+          label: '等级3'
         }, {
           value: '4',
-          label: '采购员'
-        }]
+          label: '等级4'
+        }],
+      value: '',
     }
   },
 
@@ -162,7 +183,7 @@ export default {
 
   methods: {
     getList() {
-      urlApi.getVipList().then(res => this.tableData = res.data)
+      urlApi.getVipList(this.userName, this.value).then(res => this.tableData = res.data)
     },
 
     updateVip(data) {
@@ -187,7 +208,7 @@ export default {
         urlApi.deleteVip(id).then(res => {
           if (res.code === 200) {
             this.getList()
-            this.$message.success('删除账号成功')
+            this.$message.success('删除成功')
           }
         })
       })

@@ -6,20 +6,14 @@
       style="width: 100%"
     >
       <el-table-column
-        prop="accountId"
-        label="账号"
-        width="120"
-      >
-      </el-table-column>
-      <el-table-column
         prop="supplierName"
-        label="供应商名"
+        label="供应商"
         width="180"
       >
       </el-table-column>
       <el-table-column
         prop="goodName"
-        label="商品名"
+        label="商品名称"
         width="120"
       >
       </el-table-column>
@@ -74,14 +68,11 @@
       </el-table-column>
     </el-table>
 
-    <!--  弹框：创建  -->
-    <el-dialog title="添加账户" :visible.sync="dialogFormVisible">
+    <!--  弹框：注册会员  -->
+    <el-dialog title="注册会员" :visible.sync="dialogFormVisible">
       <el-form :model="form">
-        <el-form-item label="账号" :label-width="formLabelWidth">
-          <el-input v-model="form.accountId" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="密码" :label-width="formLabelWidth">
-          <el-input v-model="form.password" autocomplete="off"></el-input>
+        <el-form-item label="姓名" :label-width="formLabelWidth">
+          <el-input v-model="form.userName" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="电话" :label-width="formLabelWidth">
           <el-input v-model="form.phone" autocomplete="off"></el-input>
@@ -89,31 +80,20 @@
         <el-form-item label="地址" :label-width="formLabelWidth">
           <el-input v-model="form.address" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="角色" :label-width="formLabelWidth">
-          <el-select style="margin-right: 10px;width: 80%;opacity: 0.6" v-model="form.role" placeholder="请选择角色">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
+        <el-form-item label="消费金额" :label-width="formLabelWidth">
+          <el-input v-model="form.money" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="saveUser(form)">确 定</el-button>
+        <el-button type="primary" @click="registerVip(form)">确 定</el-button>
       </div>
     </el-dialog>
 
-    <!--  弹框：修改  -->
-    <el-dialog title="修改账户" :visible.sync="dialogFormVisible1">
+    <!--  弹框：修改会员  -->
+    <el-dialog title="修改会员" :visible.sync="dialogFormVisible1">
       <el-form :model="form1">
-        <el-form-item label="账号" :label-width="formLabelWidth">
-          <el-input v-model="form1.accountId" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="密码" :label-width="formLabelWidth">
-          <el-input v-model="form1.password" autocomplete="off"></el-input>
+        <el-form-item label="姓名" :label-width="formLabelWidth">
+          <el-input v-model="form1.userName" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="电话" :label-width="formLabelWidth">
           <el-input v-model="form1.phone" autocomplete="off"></el-input>
@@ -121,16 +101,8 @@
         <el-form-item label="地址" :label-width="formLabelWidth">
           <el-input v-model="form1.address" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="角色" :label-width="formLabelWidth">
-          <el-select style="margin-right: 10px;width: 80%;opacity: 0.6" v-model="form1.role" placeholder="请选择角色">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
+        <el-form-item label="消费金额" :label-width="formLabelWidth">
+          <el-input v-model="form1.money" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
