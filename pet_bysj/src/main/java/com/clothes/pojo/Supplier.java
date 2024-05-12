@@ -41,7 +41,7 @@ public class Supplier implements Serializable {
      * 手机号
      */
     @TableField("phone")
-    private Integer phone;
+    private String phone;
 
     /**
      * 创建时间

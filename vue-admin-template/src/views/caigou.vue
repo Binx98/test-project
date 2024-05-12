@@ -1,31 +1,59 @@
 <template>
   <div class="dashboard-container">
-    <el-carousel height="250px" style="width: 50%">
-      <el-carousel-item v-for="item in bannerList" :key="item">
-        <img :src="item" style="height:100%;width:100%;">
-      </el-carousel-item>
-    </el-carousel>
-
-    <div class="dashboard-text">
-      <el-button size="medium" type="primary" @click="dialogFormVisible = true">
-        创建公告
-      </el-button>
-    </div>
+    <el-button type="primary" @click="dialogFormVisible = true" size="medium">创建申请</el-button>
     <el-table
       :data="tableData"
       style="width: 100%"
     >
       <el-table-column
-        prop="content"
-        label="公告内容"
+        prop="accountId"
+        label="账号"
       >
       </el-table-column>
       <el-table-column
-        prop="url"
-        label="公告图片"
+        prop="supplierName"
+        label="供应商名"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="goodId"
+        label="商品编号"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="goodName"
+        label="商品名"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="type"
+        label="类型"
       >
         <template slot-scope="scope">
-          <img :src="scope.row.url" min-width="70" height="70"/>
+          <el-tag type="primary" v-if="scope.row.type == 1">衣服</el-tag>
+          <el-tag type="success" v-if="scope.row.type == 2">裤子</el-tag>
+          <el-tag type="warning" v-if="scope.row.type == 3">鞋子</el-tag>
+          <el-tag type="info" v-if="scope.row.type == 4">其他</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="count"
+        label="总数量"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="money"
+        label="进货总价"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="status"
+        label="审核状态"
+      >
+        <template slot-scope="scope">
+          <el-tag type="primary" v-if="scope.row.status == 1">进行中</el-tag>
+          <el-tag type="success" v-if="scope.row.status == 2">已通过</el-tag>
+          <el-tag type="warning" v-if="scope.row.status == 3">已拒绝</el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -34,36 +62,76 @@
       >
       </el-table-column>
       <el-table-column
-        label="其他操作"
+        label="操作"
       >
         <template slot-scope="scope">
-          <el-button size="small" type="danger" @click="deleteBanner(scope.row.id)">删除</el-button>
+          <el-button size="small" type="success" @click="updateUser(scope.row)">修改</el-button>
+          <el-button size="small" type="danger" @click="deleteUser(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <!--  弹框  -->
-    <el-dialog title="添加公告" :visible.sync="dialogFormVisible">
+    <!--  弹框：创建  -->
+    <el-dialog title="添加账户" :visible.sync="dialogFormVisible">
       <el-form :model="form">
-        <el-form-item label="公告内容" :label-width="formLabelWidth">
-          <el-input v-model="form.content" autocomplete="off"></el-input>
+        <el-form-item label="账号" :label-width="formLabelWidth">
+          <el-input v-model="form.accountId" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="公告图片" :label-width="formLabelWidth">
-          <el-upload
-            class="avatar-uploader"
-            action="http://localhost:8080/file/upload"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload"
-          >
-            <img v-if="form.url" :src="form.url" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
+        <el-form-item label="密码" :label-width="formLabelWidth">
+          <el-input v-model="form.password" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="电话" :label-width="formLabelWidth">
+          <el-input v-model="form.phone" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="地址" :label-width="formLabelWidth">
+          <el-input v-model="form.address" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="角色" :label-width="formLabelWidth">
+          <el-select style="margin-right: 10px;width: 80%;opacity: 0.6" v-model="form.role" placeholder="请选择角色">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="saveBanner(form.content, form.url)">确 定</el-button>
+        <el-button type="primary" @click="saveUser(form)">确 定</el-button>
+      </div>
+    </el-dialog>
+
+    <!--  弹框：修改  -->
+    <el-dialog title="修改账户" :visible.sync="dialogFormVisible1">
+      <el-form :model="form1">
+        <el-form-item label="账号" :label-width="formLabelWidth">
+          <el-input v-model="form1.accountId" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" :label-width="formLabelWidth">
+          <el-input v-model="form1.password" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="电话" :label-width="formLabelWidth">
+          <el-input v-model="form1.phone" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="地址" :label-width="formLabelWidth">
+          <el-input v-model="form1.address" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="角色" :label-width="formLabelWidth">
+          <el-select style="margin-right: 10px;width: 80%;opacity: 0.6" v-model="form1.role" placeholder="请选择角色">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="updateUser2(form1)">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -71,54 +139,81 @@
 
 <script>
 import urlApi from '@/api/url'
-import { mapGetters } from 'vuex'
+import {mapGetters} from 'vuex'
 
 export default {
   name: 'Dashboard',
 
   data() {
     return {
-      bannerList: [],
+      imageUrl: '',
       tableData: [],
       dialogFormVisible: false,
+      dialogFormVisible1: false,
       form: {
-        content: '',
-        url: ''
+        id: '',
+        accountId: '',
+        password: '',
+        role: '2',
+        phone: '',
+        address: ''
       },
+
+      form1: {
+        id: '',
+        accountId: '',
+        password: '',
+        role: '2',
+        phone: '',
+        address: ''
+      },
+      formLabelWidth: '120px',
       loginUser: {
         accountId: '',
         role: ''
       },
-      formLabelWidth: '120px'
+      options: [
+        {
+          value: '2',
+          label: '销售员'
+        }, {
+          value: '3',
+          label: '库存管理员'
+        }, {
+          value: '4',
+          label: '采购员'
+        }]
     }
   },
 
   created() {
-    this.getBannerList1()
+    this.getLoginUser()
   },
 
   methods: {
-    getBannerList() {
-      urlApi.getBannerList().then(res => this.tableData = res.data)
-    },
-
-    getBannerList1() {
-      urlApi.getBannerList().then(res => {
-        for (let i = 0; i < res.data.length; i++) {
-          this.bannerList[i] = res.data[i].url
-        }
-        this.getBannerList()
-        this.getLoginUser()
+    getList() {
+      urlApi.getCaiGouList().then(res => {
+        this.tableData = res.data
       })
     },
 
-    saveBanner(content, url) {
-      urlApi.saveBanner(content, url).then(res => {
-        if (res.code === 200) {
-          this.dialogFormVisible = false
-          this.getBannerList()
-          this.$message.success('创建公告成功')
-        }
+    updateUser(user) {
+      this.form1 = user
+      this.dialogFormVisible1 = true
+    },
+
+    deleteUser(id) {
+      this.$confirm('此操作将删除该数据, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        urlApi.deleteUser(id).then(res => {
+          if (res.code === 200) {
+            this.getList()
+            this.$message.success('删除账号成功')
+          }
+        })
       })
     },
 
@@ -127,35 +222,27 @@ export default {
         this.loginUser.accountId = res.data.accountId
         this.loginUser.role = res.data.role
       })
+      this.getList()
     },
 
-    deleteBanner(id) {
-      this.$confirm('此操作将删除该数据, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        urlApi.deleteBanner(id).then(res => {
-          if (res.code === 200) {
-            urlApi.getBannerList().then(res => {
-              this.tableData = res.data
-              this.$message.success('删除公告成功')
-            })
-          }
-        })
+    saveUser(form) {
+      urlApi.register(form).then(res => {
+        if (res.code == 200) {
+          this.dialogFormVisible = false
+          this.getList()
+          this.$message.success('保存成功')
+        }
       })
     },
 
-    handleAvatarSuccess(res, file) {
-      this.form.url = res.data
-    },
-
-    beforeAvatarUpload(file) {
-      const isLt2M = file.size / 1024 / 1024 < 2
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!')
-      }
-      return isLt2M
+    updateUser2(form) {
+      urlApi.updateUser(form).then(res => {
+        if (res.code == 200) {
+          this.dialogFormVisible1 = false
+          this.getList()
+          this.$message.success('修改成功')
+        }
+      })
     }
   },
 

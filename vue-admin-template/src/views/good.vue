@@ -1,12 +1,6 @@
 <template>
   <div class="dashboard-container">
     <div class="block">
-      <el-carousel height="250px" style="width: 50%">
-        <el-carousel-item v-for="item in bannerList" :key="item">
-          <img :src="item" style="height:100%;width:100%;">
-        </el-carousel-item>
-      </el-carousel>
-
       <div class="dashboard-text">
         <el-input placeholder="请输入商品名称" style="width: 200px;margin-right: 10px" v-model="goodName"/>
         <el-select style="margin-right: 10px" v-model="value" placeholder="请选择类型">

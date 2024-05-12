@@ -169,13 +169,10 @@ export default {
 
   /* -------------------------------------------------------------------------------------------------------------- */
 
-  getCommentList(goodId) {
+  getCaiGouList() {
     return request({
-      url: '/comment/list',
-      method: 'post',
-      params: {
-        goodId: goodId
-      }
+      url: '/caigou/list',
+      method: 'post'
     })
   },
 
