@@ -5,11 +5,11 @@
     <breadcrumb class="breadcrumb-container"/>
 
     <div class="right-menu">
-      <el-badge :value=carTotal class="item" style="margin-right: 40px;margin-top: 12px">
-        <i class="el-icon-shopping-cart-2" style="font-size: 30px;cursor:pointer;color: darkgrey;"
-           @click="dialogTableVisible = true"
-        ></i>
-      </el-badge>
+<!--      <el-badge :value=carTotal class="item" style="margin-right: 40px;margin-top: 12px">-->
+<!--        <i class="el-icon-shopping-cart-2" style="font-size: 30px;cursor:pointer;color: darkgrey;"-->
+<!--           @click="dialogTableVisible = true"-->
+<!--        ></i>-->
+<!--      </el-badge>-->
 
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">

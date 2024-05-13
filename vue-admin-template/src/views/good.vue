@@ -229,7 +229,7 @@
 
 <script>
 import urlApi from '@/api/url'
-import {mapGetters} from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Dashboard',
@@ -304,6 +304,8 @@ export default {
       location.href = location.href + '#reloaded'
       window.location.reload()
     }
+
+    setInterval(() => this.getList(), 1000)
   },
 
   methods: {

@@ -30,22 +30,22 @@ export var constantRoutes = [
   },
 
   {
-    path: '/stock',
-    component: Layout,
-    children: [{
-      path: 'stock',
-      component: () => import('@/views/stock'),
-      meta: { title: '库存管理', icon: 'el-icon-s-order' }
-    }]
-  },
-
-  {
     path: '/order',
     component: Layout,
     children: [{
       path: 'order',
       component: () => import('@/views/order'),
       meta: { title: '销售单管理', icon: 'el-icon-s-order' }
+    }]
+  },
+
+  {
+    path: '/stock',
+    component: Layout,
+    children: [{
+      path: 'stock',
+      component: () => import('@/views/stock'),
+      meta: { title: '库存管理', icon: 'el-icon-s-order' }
     }]
   },
 

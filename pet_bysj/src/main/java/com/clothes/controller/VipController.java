@@ -51,6 +51,19 @@ public class VipController {
      */
     @PostMapping("/saveOrUpdate")
     public R saveOrUpdate(@RequestBody Vip vip) {
+        if (ObjectUtils.isEmpty(vip.getUserName())) {
+            return R.out(ResponseEnum.FAIL, "姓名不能为空");
+        }
+        if (ObjectUtils.isEmpty(vip.getPhone())) {
+            return R.out(ResponseEnum.FAIL, "电话不能为空");
+        }
+        if (ObjectUtils.isEmpty(vip.getAddress())) {
+            return R.out(ResponseEnum.FAIL, "地址不能为空");
+        }
+        if (ObjectUtils.isEmpty(vip.getMoney())) {
+            return R.out(ResponseEnum.FAIL, "消费金额不能为空");
+        }
+
         // 注册操作，判断手机号是否重复
         if (ObjectUtils.isEmpty(vip.getId())) {
             QueryWrapper<Vip> wrapper = new QueryWrapper<>();

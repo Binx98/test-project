@@ -53,11 +53,11 @@ public class UserController {
      */
     @PostMapping("/login")
     public R login(String accountId, String password, Integer role) {
-        if (ObjectUtils.isEmpty(accountId) || accountId.length() < 6) {
-            return R.out(ResponseEnum.FAIL, "账号长度不能 < 6 位");
+        if (ObjectUtils.isEmpty(accountId) || accountId.length() < 3) {
+            return R.out(ResponseEnum.FAIL, "账号长度不能 < 3 位");
         }
-        if (ObjectUtils.isEmpty(password) || password.length() < 6) {
-            return R.out(ResponseEnum.FAIL, "密码长度不能 < 6 位");
+        if (ObjectUtils.isEmpty(password) || password.length() < 3) {
+            return R.out(ResponseEnum.FAIL, "密码长度不能 < 3 位");
         }
 
         // 查询账户信息
@@ -109,6 +109,18 @@ public class UserController {
      */
     @PostMapping("/update")
     public R updateUser(@RequestBody User user) {
+        if (ObjectUtils.isEmpty(user.getAccountId()) || user.getAccountId().length() < 3) {
+            return R.out(ResponseEnum.FAIL, "账号长度不能小于3");
+        }
+        if (ObjectUtils.isEmpty(user.getPassword()) || user.getPassword().length() < 3) {
+            return R.out(ResponseEnum.FAIL, "密码长度不能小于3");
+        }
+        if (ObjectUtils.isEmpty(user.getPhone())) {
+            return R.out(ResponseEnum.FAIL, "电话号不能为空");
+        }
+        if (ObjectUtils.isEmpty(user.getAddress())) {
+            return R.out(ResponseEnum.FAIL, "地址不能为空");
+        }
         userService.updateById(user);
         return R.out(ResponseEnum.SUCCESS);
     }
@@ -161,11 +173,11 @@ public class UserController {
      */
     @PostMapping("/save")
     public R saveUser(User user) {
-        if (ObjectUtils.isEmpty(user.getAccountId()) || user.getAccountId().length() < 6) {
-            return R.out(ResponseEnum.FAIL, "账号长度不能 < 6 位");
+        if (ObjectUtils.isEmpty(user.getAccountId()) || user.getAccountId().length() < 3) {
+            return R.out(ResponseEnum.FAIL, "账号长度不能 < 3 位");
         }
-        if (ObjectUtils.isEmpty(user.getPassword()) || user.getPassword().length() < 6) {
-            return R.out(ResponseEnum.FAIL, "密码长度不能 < 6 位");
+        if (ObjectUtils.isEmpty(user.getPassword()) || user.getPassword().length() < 3) {
+            return R.out(ResponseEnum.FAIL, "密码长度不能 < 3 位");
         }
         if (ObjectUtils.isEmpty(user.getPhone())) {
             return R.out(ResponseEnum.FAIL, "联系方式不能为空");

@@ -110,7 +110,7 @@ export default {
   },
   methods: {
     login() {
-      urlApi.login(this.loginForm).then(res => {
+      urlApi.login(this.loginForm, this.value).then(res => {
         if (res.code === 200) {
           this.$router.push('/')
           this.$message.success('登陆成功')

@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <el-input placeholder="请输入账号" style="width: 200px;margin-right: 10px" v-model="name"/>
+    <el-input placeholder="请输入供货商名" style="width: 200px;margin-right: 10px" v-model="name"/>
     <el-button size="medium" type="success" @click="getList">
       查询
     </el-button>
@@ -11,7 +11,7 @@
     >
       <el-table-column
         prop="name"
-        label="供应商名"
+        label="供货商名"
         width="180"
       >
       </el-table-column>
@@ -37,6 +37,7 @@
         label="操作"
       >
         <template slot-scope="scope">
+          <el-button size="small" type="primary" @click="getGoodList(scope.row.id)">商品采购</el-button>
           <el-button size="small" type="success" @click="updateUser(scope.row)">修改</el-button>
           <el-button size="small" type="danger" @click="deleteSupplier(scope.row.id)">删除</el-button>
         </template>
@@ -78,6 +79,73 @@
         <el-button type="primary" @click="updateSupplier(form1)">确 定</el-button>
       </div>
     </el-dialog>
+
+    <!--  弹框：采购商品  -->
+    <el-dialog title="修改账户" :visible.sync="dialogFormVisible2">
+      <el-table
+        :data="goodData"
+        style="width: 100%"
+      >
+        <el-table-column
+          prop="goodName"
+          label="商品名称"
+          width="180"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="type"
+          label="商品类型"
+          width="120"
+        >
+          <template slot-scope="scope">
+            <el-tag type="primary" v-if="scope.row.type == 1">衣服</el-tag>
+            <el-tag type="success" v-if="scope.row.type == 2">裤子</el-tag>
+            <el-tag type="warning" v-if="scope.row.type == 3">鞋子</el-tag>
+            <el-tag type="info" v-if="scope.row.type == 4">其他</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="money"
+          label="商品进货价"
+          width="120"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="url"
+          label="图片"
+          width="160"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="material"
+          label="材质"
+          width="170"
+        >
+        </el-table-column>
+        <el-table-column
+          label="操作"
+        >
+          <template slot-scope="scope">
+            <el-button size="small" type="primary" @click="caigou(scope.row)">采购</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="updateSupplier(form1)">确 定</el-button>
+      </div>
+    </el-dialog>
+
+    <!--  弹框：填写采购数量  -->
+    <el-dialog title="采购数量" :visible.sync="dialogFormVisible3" width="30vw">
+      <el-form>
+        <el-form-item>
+          <el-input v-model="caigouObj.count" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="caigouGood(form1)">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -93,8 +161,12 @@ export default {
       name: '',
       imageUrl: '',
       tableData: [],
+      goodData: [],
+      count: '',
       dialogFormVisible: false,
       dialogFormVisible1: false,
+      dialogFormVisible2: false,
+      dialogFormVisible3: false,
       form: {
         name: '',
         phone: '',
@@ -107,6 +179,7 @@ export default {
         address: ''
       },
       formLabelWidth: '100px',
+      caigouObj: '',
       loginUser: {
         accountId: '',
         role: ''
@@ -140,6 +213,13 @@ export default {
       })
     },
 
+    getGoodList(supplierId) {
+      this.dialogFormVisible2 = true
+      urlApi.getSupplierGoodList(supplierId).then(res => {
+        this.goodData = res.data
+      })
+    },
+
     updateUser(user) {
       this.form1 = user
       this.dialogFormVisible1 = true
@@ -154,10 +234,19 @@ export default {
         urlApi.deleteSupplier(id).then(res => {
           if (res.code === 200) {
             this.getList()
-            this.$message.success('删除账号成功')
+            this.$message.success('删除成功')
           }
         })
       })
+    },
+
+    caigou(row) {
+      this.dialogFormVisible3 = true
+      this.caigou = row
+    },
+
+    caigouGood() {
+
     },
 
     getLoginUser() {

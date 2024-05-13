@@ -183,6 +183,16 @@ export default {
     })
   },
 
+  getSupplierGoodList(id) {
+    return request({
+      url: '/supplierGood/list',
+      method: 'post',
+      params: {
+        supplierId: id
+      }
+    })
+  },
+
   getCommentListByAccountId(accountId) {
     return request({
       url: '/comment/getList',
@@ -215,13 +225,14 @@ export default {
 
   /* -------------------------------------------------------------------------------------------------------------- */
 
-  login(data) {
+  login(data, role) {
     return request({
       url: '/user/login',
       method: 'post',
       params: {
         accountId: data.accountId,
-        password: data.password
+        password: data.password,
+        role: role
       }
     })
   },
