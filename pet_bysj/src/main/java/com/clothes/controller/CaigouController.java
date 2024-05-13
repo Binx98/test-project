@@ -67,6 +67,7 @@ public class CaigouController {
     public R save(@RequestBody Caigou caigou) {
         caigou.setId(null);
         caigou.setStatus(1);
+        caigou.setCreateTime(LocalDateTime.now());
         caigouService.save(caigou);
         return R.out(ResponseEnum.SUCCESS);
     }
@@ -88,21 +89,16 @@ public class CaigouController {
     @Transactional
     public R status(Long id, Integer status) {
         Caigou caigou = caigouService.getById(id);
-        if (caigou.getStatus() == 2 || caigou.getStatus() == 3) {
-            return R.out(ResponseEnum.FAIL, "采购申请状态已被处理，不可继续进行操作");
+        if (caigou.getStatus() == 4) {
+            return R.out(ResponseEnum.FAIL, "商品已入库，不可进行继续进行操作");
         }
 
         // 修改采购单状态
         caigou.setStatus(status);
         caigouService.updateById(caigou);
 
-        // 拒绝
-        if (status == 3) {
-            return R.out(ResponseEnum.SUCCESS);
-        }
-
-        // 同意
-        else {
+        // 入库操作
+        if (status == 4) {
             // 判断采购商品是否存在goods表：存在改变总库存即可，不存在保存商品
             Goods good = goodsService.getById(caigou.getGoodId());
 
@@ -138,8 +134,8 @@ public class CaigouController {
             ruchu.setCount(caigou.getCount());
             ruchu.setNote("供货商出库——>总仓库入库");
             ruchuService.save(ruchu);
-            return R.out(ResponseEnum.SUCCESS);
         }
+        return R.out(ResponseEnum.SUCCESS);
     }
 }
 

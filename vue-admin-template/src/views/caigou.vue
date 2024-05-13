@@ -69,6 +69,7 @@
           <el-tag type="primary" v-if="scope.row.status == 1">进行中</el-tag>
           <el-tag type="success" v-if="scope.row.status == 2">已通过</el-tag>
           <el-tag type="danger" v-if="scope.row.status == 3">已拒绝</el-tag>
+          <el-tag type="info" v-if="scope.row.status == 4">已入库</el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -81,6 +82,7 @@
         label="操作"
       >
         <template slot-scope="scope">
+          <el-button size="small" type="primary" @click="ruku(scope.row.id)">入库</el-button>
           <el-button size="small" type="success" @click="agree(scope.row.id)">通过</el-button>
           <el-button size="small" type="danger" @click="reject(scope.row.id)">拒绝</el-button>
 <!--          <el-button size="small" type="danger" @click="deleteUser(scope.row.id)">删除</el-button>-->
@@ -199,6 +201,13 @@ export default {
 
     goSupplier() {
       this.$router.push('/supplier/supplier')
+    },
+
+    ruku(id) {
+      urlApi.changeStatus(id, 4).then(res => {
+        this.$message.success('入库成功')
+        this.getList()
+      })
     },
 
     agree(id) {

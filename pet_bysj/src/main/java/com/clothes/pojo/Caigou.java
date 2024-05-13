@@ -95,7 +95,7 @@ public class Caigou implements Serializable {
 
 
     /**
-     * 审核状态（1：进行中，2：已完成，3：已拒绝）
+     * 审核状态（1：进行中，2：已完成，3：已拒绝，4：已入库）
      */
     @TableField("status")
     private Integer status;
