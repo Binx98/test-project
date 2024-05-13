@@ -1,62 +1,31 @@
 <template>
   <div class="dashboard-container">
-    <el-button type="primary" @click="dialogFormVisible = true" size="medium">创建申请</el-button>
+    <el-input placeholder="请输入账号" style="width: 200px;margin-right: 10px" v-model="name"/>
+    <el-button size="medium" type="success" @click="getList">
+      查询
+    </el-button>
+    <el-button type="primary" @click="dialogFormVisible = true" size="medium">添加供货商</el-button>
     <el-table
       :data="tableData"
       style="width: 100%"
     >
       <el-table-column
-        prop="accountId"
-        label="账号"
-        width="120"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="supplierName"
+        prop="name"
         label="供应商名"
         width="180"
       >
       </el-table-column>
       <el-table-column
-        prop="goodName"
-        label="商品名"
+        prop="phone"
+        label="电话号"
         width="120"
       >
       </el-table-column>
       <el-table-column
-        prop="type"
-        label="类型"
-        width="120"
+        prop="address"
+        label="供货商地址"
+        width="280"
       >
-        <template slot-scope="scope">
-          <el-tag type="primary" v-if="scope.row.type == 1">衣服</el-tag>
-          <el-tag type="success" v-if="scope.row.type == 2">裤子</el-tag>
-          <el-tag type="warning" v-if="scope.row.type == 3">鞋子</el-tag>
-          <el-tag type="info" v-if="scope.row.type == 4">其他</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="count"
-        label="总数量"
-        width="120"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="money"
-        label="进货总价"
-        width="120"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="status"
-        label="审核状态"
-        width="120"
-      >
-        <template slot-scope="scope">
-          <el-tag type="primary" v-if="scope.row.status == 1">进行中</el-tag>
-          <el-tag type="success" v-if="scope.row.status == 2">已通过</el-tag>
-          <el-tag type="danger" v-if="scope.row.status == 3">已拒绝</el-tag>
-        </template>
       </el-table-column>
       <el-table-column
         prop="createTime"
@@ -69,19 +38,16 @@
       >
         <template slot-scope="scope">
           <el-button size="small" type="success" @click="updateUser(scope.row)">修改</el-button>
-          <el-button size="small" type="danger" @click="deleteUser(scope.row.id)">删除</el-button>
+          <el-button size="small" type="danger" @click="deleteSupplier(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <!--  弹框：创建  -->
-    <el-dialog title="添加账户" :visible.sync="dialogFormVisible">
+    <el-dialog title="添加供货商" :visible.sync="dialogFormVisible" width="30vw">
       <el-form :model="form">
-        <el-form-item label="账号" :label-width="formLabelWidth">
-          <el-input v-model="form.accountId" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="密码" :label-width="formLabelWidth">
-          <el-input v-model="form.password" autocomplete="off"></el-input>
+        <el-form-item label="名称" :label-width="formLabelWidth">
+          <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="电话" :label-width="formLabelWidth">
           <el-input v-model="form.phone" autocomplete="off"></el-input>
@@ -89,52 +55,27 @@
         <el-form-item label="地址" :label-width="formLabelWidth">
           <el-input v-model="form.address" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="角色" :label-width="formLabelWidth">
-          <el-select style="margin-right: 10px;width: 80%;opacity: 0.6" v-model="form.role" placeholder="请选择角色">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="saveUser(form)">确 定</el-button>
+        <el-button type="primary" @click="save(form)">确 定</el-button>
       </div>
     </el-dialog>
 
     <!--  弹框：修改  -->
-    <el-dialog title="修改账户" :visible.sync="dialogFormVisible1">
+    <el-dialog title="修改账户" :visible.sync="dialogFormVisible1" width="30vw">
       <el-form :model="form1">
-        <el-form-item label="账号" :label-width="formLabelWidth">
-          <el-input v-model="form1.accountId" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="密码" :label-width="formLabelWidth">
-          <el-input v-model="form1.password" autocomplete="off"></el-input>
+        <el-form-item label="供货商名" :label-width="formLabelWidth">
+          <el-input v-model="form1.name" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="电话" :label-width="formLabelWidth">
           <el-input v-model="form1.phone" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="地址" :label-width="formLabelWidth">
+        <el-form-item label="供货商地址" :label-width="formLabelWidth">
           <el-input v-model="form1.address" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="角色" :label-width="formLabelWidth">
-          <el-select style="margin-right: 10px;width: 80%;opacity: 0.6" v-model="form1.role" placeholder="请选择角色">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="updateUser2(form1)">确 定</el-button>
+        <el-button type="primary" @click="updateSupplier(form1)">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -142,35 +83,30 @@
 
 <script>
 import urlApi from '@/api/url'
-import {mapGetters} from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Dashboard',
 
   data() {
     return {
+      name: '',
       imageUrl: '',
       tableData: [],
       dialogFormVisible: false,
       dialogFormVisible1: false,
       form: {
-        id: '',
-        accountId: '',
-        password: '',
-        role: '2',
+        name: '',
         phone: '',
         address: ''
       },
-
       form1: {
         id: '',
-        accountId: '',
-        password: '',
-        role: '2',
+        name: '',
         phone: '',
         address: ''
       },
-      formLabelWidth: '120px',
+      formLabelWidth: '100px',
       loginUser: {
         accountId: '',
         role: ''
@@ -193,9 +129,13 @@ export default {
     this.getLoginUser()
   },
 
+  mounted() {
+    setInterval(() => this.getList(), 1000)
+  },
+
   methods: {
     getList() {
-      urlApi.getCaiGouList().then(res => {
+      urlApi.getSupplierList(this.name).then(res => {
         this.tableData = res.data
       })
     },
@@ -205,13 +145,13 @@ export default {
       this.dialogFormVisible1 = true
     },
 
-    deleteUser(id) {
+    deleteSupplier(id) {
       this.$confirm('此操作将删除该数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        urlApi.deleteUser(id).then(res => {
+        urlApi.deleteSupplier(id).then(res => {
           if (res.code === 200) {
             this.getList()
             this.$message.success('删除账号成功')
@@ -228,8 +168,8 @@ export default {
       this.getList()
     },
 
-    saveUser(form) {
-      urlApi.register(form).then(res => {
+    save(form) {
+      urlApi.saveSupplier(form).then(res => {
         if (res.code == 200) {
           this.dialogFormVisible = false
           this.getList()
@@ -238,8 +178,8 @@ export default {
       })
     },
 
-    updateUser2(form) {
-      urlApi.updateUser(form).then(res => {
+    updateSupplier(form) {
+      urlApi.updateSupplier(form).then(res => {
         if (res.code == 200) {
           this.dialogFormVisible1 = false
           this.getList()

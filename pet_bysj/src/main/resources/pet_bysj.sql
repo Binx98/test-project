@@ -128,10 +128,10 @@ CREATE TABLE `ruchu`  (
   `good_id` bigint NULL DEFAULT NULL COMMENT '商品id',
   `count` int NULL DEFAULT NULL COMMENT '数量',
   `type` int NULL DEFAULT NULL COMMENT '类型（0：出，1：入）',
-  `note` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '说明',
+  `note` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '说明',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ruchu
@@ -164,15 +164,15 @@ DROP TABLE IF EXISTS `supplier_good`;
 CREATE TABLE `supplier_good`  (
   `id` bigint NOT NULL COMMENT '主键id',
   `supplier_id` bigint NULL DEFAULT NULL COMMENT '供应商id',
-  `supplier_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '供应商名',
-  `good_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '商品名称',
+  `supplier_name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '供应商名',
+  `good_name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '商品名称',
   `type` int NULL DEFAULT NULL COMMENT '商品类型',
   `money` int NULL DEFAULT NULL COMMENT '进货价',
-  `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '商品图片',
-  `material` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '材质',
+  `url` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '商品图片',
+  `material` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '材质',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of supplier_good
@@ -188,15 +188,15 @@ INSERT INTO `supplier_good` VALUES (4, 4, '哈尔滨服装供应商', '鸭舌帽
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`  (
   `id` bigint NOT NULL COMMENT '主键id',
-  `account_id` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '账号id',
-  `phone` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '邮件',
-  `password` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '密码',
-  `address` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '地址',
+  `account_id` varchar(255) CHARACTER SET utf8mb3 DEFAULT NULL COMMENT '账号id',
+  `phone` varchar(255) CHARACTER SET utf8mb3  DEFAULT NULL COMMENT '邮件',
+  `password` varchar(255) CHARACTER SET utf8mb3 DEFAULT NULL COMMENT '密码',
+  `address` varchar(255) CHARACTER SET utf8mb3 DEFAULT NULL COMMENT '地址',
   `role` tinyint(1) NULL DEFAULT NULL COMMENT '角色（1：用户，2：员工，3：管理员）',
   `status` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '登陆状态',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user
@@ -215,15 +215,15 @@ INSERT INTO `user` VALUES (1789650375694184450, '12312321', '3123213', '123213',
 DROP TABLE IF EXISTS `vip`;
 CREATE TABLE `vip`  (
   `id` bigint NOT NULL COMMENT '主键id',
-  `phone` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '手机号',
-  `user_name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '姓名',
+  `phone` varchar(255) CHARACTER SET utf8mb3 DEFAULT NULL COMMENT '手机号',
+  `user_name` varchar(255) CHARACTER SET utf8mb3 DEFAULT NULL COMMENT '姓名',
   `money` int NULL DEFAULT NULL COMMENT '消费金额',
   `level` tinyint(1) NULL DEFAULT NULL COMMENT '会员等级（5个等级，1w元升1级，1级折扣0.1）',
   `discount` double(10, 2) NULL DEFAULT NULL COMMENT '折扣（例如：0.1）',
-  `address` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '地址',
+  `address` varchar(255) CHARACTER SET utf8mb3 DEFAULT NULL COMMENT '地址',
   `create_time` datetime NULL DEFAULT NULL COMMENT '充值时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of vip

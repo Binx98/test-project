@@ -181,6 +181,11 @@ export default {
     this.getLoginUser()
   },
 
+
+  mounted() {
+    setInterval(() => this.getList(), 1000)
+  },
+
   methods: {
     getList() {
       urlApi.getVipList(this.userName, this.value).then(res => this.tableData = res.data)

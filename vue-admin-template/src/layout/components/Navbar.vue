@@ -25,9 +25,9 @@
           <el-dropdown-item divided @click.native="getUserInfo(true)">
             <span style="display:block;">个人信息</span>
           </el-dropdown-item>
-          <el-dropdown-item divided>
-            <span style="display:block;" @click="dialogVisible = true">联系客服</span>
-          </el-dropdown-item>
+<!--          <el-dropdown-item divided>-->
+<!--            <span style="display:block;" @click="dialogVisible = true">联系客服</span>-->
+<!--          </el-dropdown-item>-->
           <el-dropdown-item divided @click.native="logout">
             <span style="display:block;">退出登录</span>
           </el-dropdown-item>
