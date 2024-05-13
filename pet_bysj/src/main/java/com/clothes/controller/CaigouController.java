@@ -89,6 +89,12 @@ public class CaigouController {
     @Transactional
     public R status(Long id, Integer status) {
         Caigou caigou = caigouService.getById(id);
+        if (status == 4 && caigou.getStatus() == 4) {
+            return R.out(ResponseEnum.FAIL, "入库操作已完成");
+        }
+        if (status == 4 && caigou.getStatus() != 2) {
+            return R.out(ResponseEnum.FAIL, "采购申请状态未完成，不可以进行入库操作");
+        }
         if (caigou.getStatus() == 4) {
             return R.out(ResponseEnum.FAIL, "商品已入库，不可进行继续进行操作");
         }

@@ -5,10 +5,10 @@
         <el-input placeholder="请输入商品名称" style="width: 200px;margin-right: 10px" v-model="goodName"/>
         <el-select style="margin-right: 10px" v-model="value" placeholder="请选择类型">
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
           >
           </el-option>
         </el-select>
@@ -21,46 +21,46 @@
       </div>
     </div>
     <el-table
-      :data="tableData"
-      style="width: 100%"
+        :data="tableData"
+        style="width: 100%"
     >
       <el-table-column
-        prop="id"
-        label="商品编号"
-        width="100"
+          prop="id"
+          label="商品编号"
+          width="100"
       >
       </el-table-column>
       <el-table-column
-        prop="name"
-        label="商品名称"
-        width="120"
+          prop="name"
+          label="商品名称"
+          width="120"
       >
       </el-table-column>
       <el-table-column
-        prop="url"
-        label="商品图片"
-        width="150"
+          prop="url"
+          label="商品图片"
+          width="150"
       >
         <template slot-scope="scope">
           <img :src="scope.row.url" min-width="70" height="70"/>
         </template>
       </el-table-column>
       <el-table-column
-        prop="money"
-        label="售价"
-        width="80"
+          prop="money"
+          label="售价"
+          width="80"
       >
       </el-table-column>
       <el-table-column
-        prop="money"
-        label="进货价"
-        width="80"
+          prop="originMoney"
+          label="进货价"
+          width="80"
       >
       </el-table-column>
       <el-table-column
-        prop="type"
-        label="类型"
-        width="80"
+          prop="type"
+          label="类型"
+          width="80"
       >
         <template slot-scope="scope">
           <el-tag type="primary" v-if="scope.row.type == 1">衣服</el-tag>
@@ -70,29 +70,23 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="stock"
-        label="门店库存（个）"
-        width="100"
+          prop="stock"
+          label="门店库存（个）"
+          width="100"
       >
       </el-table-column>
       <el-table-column
-        prop="totalStock"
-        label="仓库库存（个）"
-        width="100"
+          prop="material"
+          label="材质"
+          width="100"
       >
       </el-table-column>
       <el-table-column
-        prop="material"
-        label="材质"
-        width="100"
-      >
-      </el-table-column>
-      <el-table-column
-        label="操作"
+          label="操作"
       >
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="">购买</el-button>
-          <el-button size="mini" type="success" @click="getDetail(scope.row.id)">修改
+          <el-button size="mini" type="success" @click="getDetail(scope.row)">修改
           </el-button>
           <el-button size="mini" type="danger" @click="deleteGood(scope.row.id)"
           >删除
@@ -104,37 +98,31 @@
       </el-table-column>
     </el-table>
 
-    <!--  商品详情  -->
-    <el-dialog title="商品详情" :visible.sync="dialogFormVisible1">
+    <!--  修改商品  -->
+    <el-dialog title="修改商品" :visible.sync="dialogFormVisible1">
       <el-form :model="detail">
         <el-input v-model="detail.id" autocomplete="off" style="display: none"></el-input>
-        <el-form-item label="名称" :label-width="formLabelWidth">
+        <el-form-item label="商品名称" :label-width="formLabelWidth">
           <el-input v-model="detail.name" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="价格" :label-width="formLabelWidth">
-          <el-input v-model="detail.price" autocomplete="off"></el-input>
+        <el-form-item label="售价" :label-width="formLabelWidth">
+          <el-input v-model="detail.money" autocomplete="off"></el-input>
         </el-form-item>
-        <!--        <el-form-item label="数量" :label-width="formLabelWidth">-->
-        <!--          <el-input v-model="detail.count" autocomplete="off"></el-input>-->
-        <!--        </el-form-item>-->
-        <el-form-item label="描述" :label-width="formLabelWidth">
-          <el-input v-model="detail.description" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="配料表" :label-width="formLabelWidth">
+        <el-form-item label="材质" :label-width="formLabelWidth">
           <el-input v-model="detail.material" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="图片" :label-width="formLabelWidth">
-          <el-upload
-            class="avatar-uploader"
-            action="http://localhost:8080/file/upload"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess1"
-            :before-upload="beforeAvatarUpload"
-          >
-            <img v-if="detail.url" :src="detail.url" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-        </el-form-item>
+<!--        <el-form-item label="图片" :label-width="formLabelWidth">-->
+<!--          <el-upload-->
+<!--              class="avatar-uploader"-->
+<!--              action="http://localhost:8080/file/upload"-->
+<!--              :show-file-list="false"-->
+<!--              :on-success="handleAvatarSuccess1"-->
+<!--              :before-upload="beforeAvatarUpload"-->
+<!--          >-->
+<!--            <img v-if="detail.url" :src="detail.url" class="avatar">-->
+<!--            <i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
+<!--          </el-upload>-->
+<!--        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible1 = false">取 消</el-button>
@@ -143,60 +131,60 @@
     </el-dialog>
 
     <!--  添加商品  -->
-    <el-dialog title="添加商品" :visible.sync="dialogFormVisible">
-      <el-form :model="form">
-        <el-form-item label="名称" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="价格" :label-width="formLabelWidth">
-          <el-input v-model="form.price" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="类型" :label-width="formLabelWidth">
-          <el-radio v-model="form.type" label="1">衣服</el-radio>
-          <el-radio v-model="form.type" label="2">裤子</el-radio>
-          <el-radio v-model="form.type" label="3">鞋子</el-radio>
-          <el-radio v-model="form.type" label="4">其他</el-radio>
-        </el-form-item>
-        <el-form-item label="数量" :label-width="formLabelWidth">
-          <el-input v-model="form.count" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="描述" :label-width="formLabelWidth">
-          <el-input v-model="form.description" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="配料表" :label-width="formLabelWidth">
-          <el-input v-model="form.material" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="图片" :label-width="formLabelWidth">
-          <el-upload
-            class="avatar-uploader"
-            action="http://localhost:8080/file/upload"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload"
-          >
-            <img v-if="form.url" :src="form.url" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="saveGood()">确 定</el-button>
-      </div>
-    </el-dialog>
+<!--    <el-dialog title="添加商品" :visible.sync="dialogFormVisible">-->
+<!--      <el-form :model="form">-->
+<!--        <el-form-item label="名称" :label-width="formLabelWidth">-->
+<!--          <el-input v-model="form.name" autocomplete="off"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="价格" :label-width="formLabelWidth">-->
+<!--          <el-input v-model="form.price" autocomplete="off"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="类型" :label-width="formLabelWidth">-->
+<!--          <el-radio v-model="form.type" label="1">衣服</el-radio>-->
+<!--          <el-radio v-model="form.type" label="2">裤子</el-radio>-->
+<!--          <el-radio v-model="form.type" label="3">鞋子</el-radio>-->
+<!--          <el-radio v-model="form.type" label="4">其他</el-radio>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="数量" :label-width="formLabelWidth">-->
+<!--          <el-input v-model="form.count" autocomplete="off"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="描述" :label-width="formLabelWidth">-->
+<!--          <el-input v-model="form.description" autocomplete="off"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="配料表" :label-width="formLabelWidth">-->
+<!--          <el-input v-model="form.material" autocomplete="off"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="图片" :label-width="formLabelWidth">-->
+<!--          <el-upload-->
+<!--              class="avatar-uploader"-->
+<!--              action="http://localhost:8080/file/upload"-->
+<!--              :show-file-list="false"-->
+<!--              :on-success="handleAvatarSuccess"-->
+<!--              :before-upload="beforeAvatarUpload"-->
+<!--          >-->
+<!--            <img v-if="form.url" :src="form.url" class="avatar">-->
+<!--            <i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
+<!--          </el-upload>-->
+<!--        </el-form-item>-->
+<!--      </el-form>-->
+<!--      <div slot="footer" class="dialog-footer">-->
+<!--        <el-button @click="dialogFormVisible = false">取 消</el-button>-->
+<!--        <el-button type="primary" @click="saveGood()">确 定</el-button>-->
+<!--      </div>-->
+<!--    </el-dialog>-->
 
-    <el-dialog title="评论列表" :visible.sync="dialogTableVisible">
-      <el-table :data="commentList">
-        <el-table-column property="accountId" label="账号" width="200"></el-table-column>
-        <el-table-column property="content" label="评价内容" width="200"></el-table-column>
-        <el-table-column property="createTime" label="时间" width="200"></el-table-column>
-      </el-table>
-    </el-dialog>
+<!--    <el-dialog title="评论列表" :visible.sync="dialogTableVisible">-->
+<!--      <el-table :data="commentList">-->
+<!--        <el-table-column property="accountId" label="账号" width="200"></el-table-column>-->
+<!--        <el-table-column property="content" label="评价内容" width="200"></el-table-column>-->
+<!--        <el-table-column property="createTime" label="时间" width="200"></el-table-column>-->
+<!--      </el-table>-->
+<!--    </el-dialog>-->
 
     <el-dialog
-      title="修改库存"
-      :visible.sync="dialogVisible1"
-      width="30%"
+        title="修改库存"
+        :visible.sync="dialogVisible1"
+        width="30%"
     >
       <div>
         <div style="margin-bottom: 20px">当前总库存：{{ changeCount.currentCount }}</div>
@@ -213,9 +201,9 @@
     </el-dialog>
 
     <el-dialog
-      title="提示"
-      :visible.sync="dialogVisible"
-      width="30%"
+        title="提示"
+        :visible.sync="dialogVisible"
+        width="30%"
     >
       <span>请输入加购数量</span>
       <el-input v-model="carDetail.count"/>
@@ -229,7 +217,7 @@
 
 <script>
 import urlApi from '@/api/url'
-import { mapGetters } from 'vuex'
+import {mapGetters} from 'vuex'
 
 export default {
   name: 'Dashboard',
@@ -317,7 +305,7 @@ export default {
     },
 
     goKuCun1() {
-      this.$confirm('【添加商品】只能基于库存中已有商品进行添加, 是否跳转?', '添加商品', {
+      this.$confirm('【添加商品】只能基于库存中已有商品进行添加，当【门店库存】数量 > 0 时会显示在商品管理， 是否跳转?', '添加商品', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -352,13 +340,9 @@ export default {
       })
     },
 
-    getDetail(id) {
+    getDetail(row) {
       this.dialogFormVisible1 = true
-      urlApi.getDetail(id).then(res => {
-        if (res.code === 200) {
-          this.detail = res.data
-        }
-      })
+      this.detail = row
     },
 
     changeKuCun(data) {

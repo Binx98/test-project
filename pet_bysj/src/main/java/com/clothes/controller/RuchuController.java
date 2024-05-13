@@ -7,6 +7,7 @@ import com.clothes.service.GoodsService;
 import com.clothes.service.RuchuService;
 import com.clothes.utils.R;
 import com.clothes.utils.ResponseEnum;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,11 +34,20 @@ public class RuchuController {
      * 1：总仓库 to 门店仓库
      * 2：门店仓库 to 总仓库
      */
-    @PostMapping("/ru")
+    @PostMapping("/change")
     @Transactional
     public R ru(Long goodId, Integer count, Integer type) {
+        if (ObjectUtils.isEmpty(count) || ObjectUtils.isEmpty(type)) {
+            return R.out(ResponseEnum.FAIL,"请填写完整后，再点击确定");
+        }
+
+        if (count <= 0) {
+            return R.out(ResponseEnum.FAIL,"输入数量必须 > 0");
+        }
+
         Goods good = goodsService.getById(goodId);
         Ruchu ruchu = new Ruchu();
+
         if (type == 1) {
             if (good.getTotalStock() < count) {
                 return R.out(ResponseEnum.FAIL, "总库存数量不足");

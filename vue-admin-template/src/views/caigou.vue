@@ -3,10 +3,10 @@
     <el-input placeholder="请输入供应商" style="width: 200px;margin-right: 10px" v-model="supplierName"/>
     <el-select style="margin-right: 10px" v-model="value" placeholder="审核状态">
       <el-option
-        v-for="item in options"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value"
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
       >
       </el-option>
     </el-select>
@@ -15,31 +15,31 @@
     </el-button>
     <el-button type="text" @click="goSupplier" size="medium">去采购></el-button>
     <el-table
-      :data="tableData"
-      style="width: 100%"
+        :data="tableData"
+        style="width: 100%"
     >
       <el-table-column
-        prop="goodId"
-        label="商品编号"
-        width="120"
+          prop="goodId"
+          label="商品编号"
+          width="120"
       >
       </el-table-column>
       <el-table-column
-        prop="supplierName"
-        label="供应商"
-        width="180"
+          prop="supplierName"
+          label="供应商"
+          width="180"
       >
       </el-table-column>
       <el-table-column
-        prop="goodName"
-        label="商品名称"
-        width="120"
+          prop="goodName"
+          label="商品名称"
+          width="120"
       >
       </el-table-column>
       <el-table-column
-        prop="type"
-        label="类型"
-        width="120"
+          prop="type"
+          label="类型"
+          width="120"
       >
         <template slot-scope="scope">
           <el-tag type="primary" v-if="scope.row.type == 1">衣服</el-tag>
@@ -49,21 +49,21 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="count"
-        label="总数量"
-        width="120"
+          prop="count"
+          label="总数量"
+          width="120"
       >
       </el-table-column>
       <el-table-column
-        prop="money"
-        label="进货总价"
-        width="120"
+          prop="money"
+          label="进货总价"
+          width="120"
       >
       </el-table-column>
       <el-table-column
-        prop="status"
-        label="审核状态"
-        width="120"
+          prop="status"
+          label="审核状态"
+          width="120"
       >
         <template slot-scope="scope">
           <el-tag type="primary" v-if="scope.row.status == 1">进行中</el-tag>
@@ -73,43 +73,22 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="createTime"
-        label="创建时间"
-        width="160"
+          prop="createTime"
+          label="创建时间"
+          width="160"
       >
       </el-table-column>
       <el-table-column
-        label="操作"
+          label="操作"
       >
         <template slot-scope="scope">
           <el-button size="small" type="primary" @click="ruku(scope.row.id)">入库</el-button>
           <el-button size="small" type="success" @click="agree(scope.row.id)">通过</el-button>
           <el-button size="small" type="danger" @click="reject(scope.row.id)">拒绝</el-button>
-<!--          <el-button size="small" type="danger" @click="deleteUser(scope.row.id)">删除</el-button>-->
+          <!--          <el-button size="small" type="danger" @click="deleteUser(scope.row.id)">删除</el-button>-->
         </template>
       </el-table-column>
     </el-table>
-
-    <!--  弹框：注册会员  -->
-    <el-dialog title="注册会员" :visible.sync="dialogFormVisible">
-      <el-form :model="form">
-        <el-form-item label="姓名" :label-width="formLabelWidth">
-          <el-input v-model="form.userName" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="电话" :label-width="formLabelWidth">
-          <el-input v-model="form.phone" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="地址" :label-width="formLabelWidth">
-          <el-input v-model="form.address" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="消费金额" :label-width="formLabelWidth">
-          <el-input v-model="form.money" autocomplete="off"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="registerVip(form)">确 定</el-button>
-      </div>
-    </el-dialog>
 
     <!--  弹框：修改会员  -->
     <el-dialog title="修改会员" :visible.sync="dialogFormVisible1">
@@ -136,7 +115,7 @@
 
 <script>
 import urlApi from '@/api/url'
-import { mapGetters } from 'vuex'
+import {mapGetters} from 'vuex'
 
 export default {
   name: 'Dashboard',
@@ -184,6 +163,9 @@ export default {
         }, {
           value: '3',
           label: '已拒绝'
+        }, {
+          value: '4',
+          label: '已入库'
         }]
     }
   },

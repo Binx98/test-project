@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * ✔
@@ -42,7 +41,7 @@ public class GoodsController {
      * 查询商品列表（根据商品名关键字查询）
      */
     @PostMapping("/list")
-    public R getList(String goodName, Integer type, Integer queCount) {
+    public R getList(String goodName, Integer type) {
         QueryWrapper wrapper = new QueryWrapper();
         if (StringUtils.isNotBlank(goodName)) {
             wrapper.like("name", goodName);
@@ -53,11 +52,6 @@ public class GoodsController {
         wrapper.ne("stock", 0);
         wrapper.orderByDesc("create_time");
         List<Goods> goods = goodsService.list(wrapper);
-        if (ObjectUtils.isNotEmpty(queCount)) {
-            goods = goods.stream()
-                    .filter(item -> item.getStock() + item.getTotalStock() > queCount)
-                    .collect(Collectors.toList());
-        }
         return R.out(ResponseEnum.SUCCESS, goods);
     }
 
@@ -65,13 +59,19 @@ public class GoodsController {
      * 查询商品列表（根据商品名关键字查询）
      */
     @PostMapping("/kucunList")
-    public R kucunList(String goodName, Integer type) {
+    public R kucunList(String goodName, Integer type, Long min, Long max) {
         QueryWrapper wrapper = new QueryWrapper();
         if (StringUtils.isNotBlank(goodName)) {
             wrapper.like("name", goodName);
         }
         if (ObjectUtils.isNotEmpty(type)) {
             wrapper.like("type", type);
+        }
+        if (ObjectUtils.isNotEmpty(min)) {
+            wrapper.gt("total_stock", min);
+        }
+        if (ObjectUtils.isNotEmpty(max)) {
+            wrapper.lt("total_stock", max);
         }
         wrapper.orderByDesc("create_time");
         List<Goods> goods = goodsService.list(wrapper);
@@ -88,17 +88,28 @@ public class GoodsController {
     }
 
     /**
-     * 删除商品
+     * 删除商品：数量清空
      */
     @PostMapping("/delete/{goodId}")
     public R deleteMenu(@PathVariable Long goodId) {
         // 库存推到总仓库
         Goods goods = goodsService.getById(goodId);
-        goods.setStock(0);
         goods.setTotalStock(goods.getTotalStock() + goods.getStock());
+        goods.setStock(0);
         goodsService.updateById(goods);
+        return R.out(ResponseEnum.SUCCESS);
+    }
 
-        // 删除商品
+    /**
+     * 删除库存：移除记录
+     */
+    @PostMapping("/deleteKuCun/{goodId}")
+    public R deleteKuCun(@PathVariable Long goodId) {
+        // 库存推到总仓库
+        Goods goods = goodsService.getById(goodId);
+        if (goods.getStock() != 0 || goods.getTotalStock() != 0) {
+            return R.out(ResponseEnum.FAIL, "门店库存或仓库库存不为 0，不可进行删除处理");
+        }
         goodsService.removeById(goodId);
         return R.out(ResponseEnum.SUCCESS);
     }
