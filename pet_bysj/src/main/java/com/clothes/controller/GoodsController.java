@@ -119,7 +119,7 @@ public class GoodsController {
      */
     @PostMapping("/buy")
     @Transactional
-    public R save(Integer phone, Long goodId, Integer count, String address) {
+    public R save(Long goodId, Integer count, Integer phone, String address) {
         // 查询门店库存是否充足
         Goods good = goodsService.getById(goodId);
         if (good.getStock() < count) {
@@ -132,7 +132,9 @@ public class GoodsController {
 
         // 判断消费者是否是会员
         QueryWrapper<Vip> wrapper = new QueryWrapper<>();
-        wrapper.eq("phone", phone);
+        if (ObjectUtils.isNotEmpty(phone)) {
+            wrapper.eq("phone", phone);
+        }
         Vip vip = vipService.getOne(wrapper);
 
         // 如果是会员

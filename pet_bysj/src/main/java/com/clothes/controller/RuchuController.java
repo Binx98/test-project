@@ -1,6 +1,7 @@
 package com.clothes.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.clothes.pojo.Goods;
 import com.clothes.pojo.Ruchu;
 import com.clothes.service.GoodsService;
@@ -13,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * <p>
@@ -31,6 +34,18 @@ public class RuchuController {
     private RuchuService ruchuService;
 
     /**
+     * 根据 good_id 查询出入库列表
+     */
+    @PostMapping("/getById")
+    public R getById(Long goodId) {
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.eq("good_id", goodId);
+        wrapper.orderByDesc("create_time");
+        List<Ruchu> goods = ruchuService.list(wrapper);
+        return R.out(ResponseEnum.SUCCESS, goods);
+    }
+
+    /**
      * 1：总仓库 to 门店仓库
      * 2：门店仓库 to 总仓库
      */
@@ -38,11 +53,11 @@ public class RuchuController {
     @Transactional
     public R ru(Long goodId, Integer count, Integer type) {
         if (ObjectUtils.isEmpty(count) || ObjectUtils.isEmpty(type)) {
-            return R.out(ResponseEnum.FAIL,"请填写完整后，再点击确定");
+            return R.out(ResponseEnum.FAIL, "请填写完整后，再点击确定");
         }
 
         if (count <= 0) {
-            return R.out(ResponseEnum.FAIL,"输入数量必须 > 0");
+            return R.out(ResponseEnum.FAIL, "输入数量必须 > 0");
         }
 
         Goods good = goodsService.getById(goodId);
