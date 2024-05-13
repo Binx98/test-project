@@ -1,461 +1,471 @@
 import request from '@/utils/request'
 
 export default {
-    /* -------------------------------------------------------------------------------------------------------------- */
-    getBannerList() {
-        return request({
-            url: '/banner/list',
-            method: 'post'
-        })
-    },
+  /* -------------------------------------------------------------------------------------------------------------- */
+  getBannerList() {
+    return request({
+      url: '/banner/list',
+      method: 'post'
+    })
+  },
 
-    saveSupplier(form) {
-        return request({
-            url: `/supplier/saveOrUpdate`,
-            method: 'post',
-            data: form
-        })
-    },
+  saveSupplier(form) {
+    return request({
+      url: `/supplier/saveOrUpdate`,
+      method: 'post',
+      data: form
+    })
+  },
 
-    changeStatus(id, status) {
-        return request({
-            url: `/caigou/changeStatus`,
-            method: 'post',
-            params: {
-                id: id,
-                status: status
-            }
-        })
-    },
+  changeStatus(id, status) {
+    return request({
+      url: `/caigou/changeStatus`,
+      method: 'post',
+      params: {
+        id: id,
+        status: status
+      }
+    })
+  },
 
-    deleteBanner(id) {
-        return request({
-            url: `/banner/delete/${id}`,
-            method: 'post'
-        })
-    },
+  deleteBanner(id) {
+    return request({
+      url: `/banner/delete/${id}`,
+      method: 'post'
+    })
+  },
 
-    /* -------------------------------------------------------------------------------------------------------------- */
-    getRechargeList(accountId) {
-        return request({
-            url: '/recharge/list',
-            method: 'post',
-            params: {
-                accountId: accountId
-            }
-        })
-    },
+  /* -------------------------------------------------------------------------------------------------------------- */
+  getRechargeList(accountId) {
+    return request({
+      url: '/recharge/list',
+      method: 'post',
+      params: {
+        accountId: accountId
+      }
+    })
+  },
 
-    chargeMoney(data) {
-        return request({
-            url: '/recharge/add',
-            method: 'post',
-            params: {
-                accountId: data.accountId,
-                type: data.type,
-                money: data.money
-            }
-        })
-    },
+  chargeMoney(data) {
+    return request({
+      url: '/recharge/add',
+      method: 'post',
+      params: {
+        accountId: data.accountId,
+        type: data.type,
+        money: data.money
+      }
+    })
+  },
 
-    /* -------------------------------------------------------------------------------------------------------------- */
-    saveGood(data) {
-        return request({
-            url: '/good/save',
-            method: 'post',
-            data: data
-        })
-    },
+  /* -------------------------------------------------------------------------------------------------------------- */
+  saveGood(data) {
+    return request({
+      url: '/good/save',
+      method: 'post',
+      data: data
+    })
+  },
 
-    getGoodList(goodName, type) {
-        return request({
-            url: '/good/list',
-            method: 'post',
-            params: {
-                goodName: goodName,
-                type: type
-            }
-        })
-    },
+  getGoodList(goodName, type) {
+    return request({
+      url: '/good/list',
+      method: 'post',
+      params: {
+        goodName: goodName,
+        type: type
+      }
+    })
+  },
 
-    getKuCunList(goodName, type, min, max) {
-        return request({
-            url: '/good/kucunList',
-            method: 'post',
-            params: {
-                goodName: goodName,
-                type: type,
-                min: min,
-                max: max
-            }
-        })
-    },
+  getKuCunList(goodName, type, min, max) {
+    return request({
+      url: '/good/kucunList',
+      method: 'post',
+      params: {
+        goodName: goodName,
+        type: type,
+        min: min,
+        max: max
+      }
+    })
+  },
 
-    buyGood(id, accountId) {
-        return request({
-            url: `/good/buy/${id}/${accountId}`,
-            method: 'post',
-            params: {
-                accountId: accountId,
-                goodId: id
-            }
-        })
-    },
+  buyGood(id, accountId) {
+    return request({
+      url: `/good/buy/${id}/${accountId}`,
+      method: 'post',
+      params: {
+        accountId: accountId,
+        goodId: id
+      }
+    })
+  },
 
-    deleteGood(id) {
-        return request({
-            url: `/good/delete/${id}`,
-            method: 'post'
-        })
-    },
+  deleteGood(id) {
+    return request({
+      url: `/good/delete/${id}`,
+      method: 'post'
+    })
+  },
 
-    deleteStock(id) {
-        return request({
-            url: `/good/deleteKuCun/${id}`,
-            method: 'post'
-        })
-    },
+  deleteStock(id) {
+    return request({
+      url: `/good/deleteKuCun/${id}`,
+      method: 'post'
+    })
+  },
 
-    changeKuCun(goodId, type, changeCount) {
-        return request({
-            url: `/ruchu/change`,
-            method: 'post',
-            params: {
-                goodId: goodId,
-                type: type,
-                count: changeCount
-            }
-        })
-    },
+  changeKuCun(goodId, type, changeCount) {
+    return request({
+      url: `/ruchu/change`,
+      method: 'post',
+      params: {
+        goodId: goodId,
+        type: type,
+        count: changeCount
+      }
+    })
+  },
 
-    getDetail(id) {
-        return request({
-            url: `/good/detail/${id}`,
-            method: 'post'
-        })
-    },
+  getKuCunById(goodId) {
+    return request({
+      url: `/ruchu/getById`,
+      method: 'post',
+      params: {
+        goodId: goodId
+      }
+    })
+  },
 
-    updateGood(form) {
-        return request({
-            url: `/good/update`,
-            method: 'post',
-            data: form
-        })
-    },
+  getDetail(id) {
+    return request({
+      url: `/good/detail/${id}`,
+      method: 'post'
+    })
+  },
 
-    /* -------------------------------------------------------------------------------------------------------------- */
-    changeCount(goodId, accountId, type) {
-        return request({
-            url: '/car/changeCount',
-            method: 'post',
-            params: {
-                accountId: accountId,
-                goodId: goodId,
-                type: type
-            }
-        })
-    },
+  updateGood(form) {
+    return request({
+      url: `/good/update`,
+      method: 'post',
+      data: form
+    })
+  },
 
-    addCar(data) {
-        return request({
-            url: '/car/add',
-            method: 'post',
-            params: {
-                accountId: data.accountId,
-                goodId: data.goodId,
-                count: data.count
-            }
-        })
-    },
+  /* -------------------------------------------------------------------------------------------------------------- */
+  changeCount(goodId, accountId, type) {
+    return request({
+      url: '/car/changeCount',
+      method: 'post',
+      params: {
+        accountId: accountId,
+        goodId: goodId,
+        type: type
+      }
+    })
+  },
 
-    deleteCar(accountId, goodId) {
-        return request({
-            url: '/car/delete',
-            method: 'post',
-            params: {
-                accountId: accountId,
-                goodId: goodId
-            }
-        })
-    },
+  addCar(data) {
+    return request({
+      url: '/car/add',
+      method: 'post',
+      params: {
+        accountId: data.accountId,
+        goodId: data.goodId,
+        count: data.count
+      }
+    })
+  },
 
-    getCarList(accountId) {
-        return request({
-            url: '/car/list',
-            method: 'post',
-            params: {
-                accountId: accountId
-            }
-        })
-    },
+  deleteCar(accountId, goodId) {
+    return request({
+      url: '/car/delete',
+      method: 'post',
+      params: {
+        accountId: accountId,
+        goodId: goodId
+      }
+    })
+  },
 
-    calc(accountId) {
-        return request({
-            url: '/car/calc',
-            method: 'post',
-            params: {
-                accountId: accountId
-            }
-        })
-    },
+  getCarList(accountId) {
+    return request({
+      url: '/car/list',
+      method: 'post',
+      params: {
+        accountId: accountId
+      }
+    })
+  },
 
-    /* -------------------------------------------------------------------------------------------------------------- */
+  calc(accountId) {
+    return request({
+      url: '/car/calc',
+      method: 'post',
+      params: {
+        accountId: accountId
+      }
+    })
+  },
 
-    getCaiGouList(name, status) {
-        return request({
-            url: '/caigou/list',
-            method: 'post',
-            params: {
-                supplierName: name,
-                status: status
-            }
-        })
-    },
+  /* -------------------------------------------------------------------------------------------------------------- */
 
-    caigouGood(obj) {
-        return request({
-            url: '/caigou/save',
-            method: 'post',
-            data: obj
-        })
-    },
+  getCaiGouList(name, status) {
+    return request({
+      url: '/caigou/list',
+      method: 'post',
+      params: {
+        supplierName: name,
+        status: status
+      }
+    })
+  },
 
-    getSupplierList(name) {
-        return request({
-            url: '/supplier/list',
-            method: 'post',
-            params: {
-                name: name
-            }
-        })
-    },
+  caigouGood(obj) {
+    return request({
+      url: '/caigou/save',
+      method: 'post',
+      data: obj
+    })
+  },
 
-    getSupplierGoodList(id) {
-        return request({
-            url: '/supplierGood/list',
-            method: 'post',
-            params: {
-                supplierId: id
-            }
-        })
-    },
+  getSupplierList(name) {
+    return request({
+      url: '/supplier/list',
+      method: 'post',
+      params: {
+        name: name
+      }
+    })
+  },
 
-    getCommentListByAccountId(accountId) {
-        return request({
-            url: '/comment/getList',
-            method: 'post',
-            params: {
-                accountId: accountId
-            }
-        })
-    },
+  getSupplierGoodList(id) {
+    return request({
+      url: '/supplierGood/list',
+      method: 'post',
+      params: {
+        supplierId: id
+      }
+    })
+  },
 
-    saveComment(accountId, orderId, goodId, content) {
-        return request({
-            url: '/comment/save',
-            method: 'post',
-            params: {
-                accountId: accountId,
-                orderId: orderId,
-                goodId: goodId,
-                content: content
-            }
-        })
-    },
+  getCommentListByAccountId(accountId) {
+    return request({
+      url: '/comment/getList',
+      method: 'post',
+      params: {
+        accountId: accountId
+      }
+    })
+  },
 
-    deleteComment(id) {
-        return request({
-            url: `/comment/delete/${id}`,
-            method: 'post'
-        })
-    },
+  saveComment(accountId, orderId, goodId, content) {
+    return request({
+      url: '/comment/save',
+      method: 'post',
+      params: {
+        accountId: accountId,
+        orderId: orderId,
+        goodId: goodId,
+        content: content
+      }
+    })
+  },
 
-    /* -------------------------------------------------------------------------------------------------------------- */
+  deleteComment(id) {
+    return request({
+      url: `/comment/delete/${id}`,
+      method: 'post'
+    })
+  },
 
-    login(data, role) {
-        return request({
-            url: '/user/login',
-            method: 'post',
-            params: {
-                accountId: data.accountId,
-                password: data.password,
-                role: role
-            }
-        })
-    },
+  /* -------------------------------------------------------------------------------------------------------------- */
 
-    logout() {
-        return request({
-            url: '/user/logout',
-            method: 'post'
-        })
-    },
+  login(data, role) {
+    return request({
+      url: '/user/login',
+      method: 'post',
+      params: {
+        accountId: data.accountId,
+        password: data.password,
+        role: role
+      }
+    })
+  },
 
-    register(data) {
-        return request({
-            url: '/user/save',
-            method: 'post',
-            params: {
-                accountId: data.accountId,
-                password: data.password,
-                phone: data.phone,
-                address: data.address,
-                role: data.role
-            }
-        })
-    },
+  logout() {
+    return request({
+      url: '/user/logout',
+      method: 'post'
+    })
+  },
 
-    findBack(accountId, password, code) {
-        return request({
-            url: '/user/findBack',
-            method: 'post',
-            params: {
-                accountId: accountId,
-                password: password,
-                code: code
-            }
-        })
-    },
+  register(data) {
+    return request({
+      url: '/user/save',
+      method: 'post',
+      params: {
+        accountId: data.accountId,
+        password: data.password,
+        phone: data.phone,
+        address: data.address,
+        role: data.role
+      }
+    })
+  },
 
-    getLoginUser() {
-        return request({
-            url: '/user/getLoginUser',
-            method: 'post'
-        })
-    },
+  findBack(accountId, password, code) {
+    return request({
+      url: '/user/findBack',
+      method: 'post',
+      params: {
+        accountId: accountId,
+        password: password,
+        code: code
+      }
+    })
+  },
 
-    updateSupplier(form) {
-        return request({
-            url: '/supplier/saveOrUpdate',
-            method: 'post',
-            data: form
-        })
-    },
+  getLoginUser() {
+    return request({
+      url: '/user/getLoginUser',
+      method: 'post'
+    })
+  },
 
-    getUserById(id) {
-        return request({
-            url: `/user/detail/${id}`,
-            method: 'post'
-        })
-    },
+  updateSupplier(form) {
+    return request({
+      url: '/supplier/saveOrUpdate',
+      method: 'post',
+      data: form
+    })
+  },
 
-    deleteUser(id) {
-        return request({
-            url: `/user/delete/${id}`,
-            method: 'post'
-        })
-    },
+  getUserById(id) {
+    return request({
+      url: `/user/detail/${id}`,
+      method: 'post'
+    })
+  },
 
-    deleteSupplier(id) {
-        return request({
-            url: `/supplier/delete/${id}`,
-            method: 'post'
-        })
-    },
+  deleteUser(id) {
+    return request({
+      url: `/user/delete/${id}`,
+      method: 'post'
+    })
+  },
 
-    deleteVip(id) {
-        return request({
-            url: `/vip/delete`,
-            method: 'post',
-            params: {
-                id: id
-            }
-        })
-    },
+  deleteSupplier(id) {
+    return request({
+      url: `/supplier/delete/${id}`,
+      method: 'post'
+    })
+  },
 
-    getUserList(accountId, role) {
-        return request({
-            url: '/user/list',
-            method: 'post',
-            params: {
-                accountId: accountId,
-                role: role
-            }
-        })
-    },
+  deleteVip(id) {
+    return request({
+      url: `/vip/delete`,
+      method: 'post',
+      params: {
+        id: id
+      }
+    })
+  },
 
-    getVipList(userName, level) {
-        return request({
-            url: '/vip/list',
-            method: 'post',
-            params: {
-                userName: userName,
-                level: level
-            }
-        })
-    },
+  getUserList(accountId, role) {
+    return request({
+      url: '/user/list',
+      method: 'post',
+      params: {
+        accountId: accountId,
+        role: role
+      }
+    })
+  },
 
-    saveOrUpdateVip(form) {
-        return request({
-            url: '/vip/saveOrUpdate',
-            method: 'post',
-            data: form
-        })
-    },
+  getVipList(userName, level) {
+    return request({
+      url: '/vip/list',
+      method: 'post',
+      params: {
+        userName: userName,
+        level: level
+      }
+    })
+  },
 
-    updateUser(form) {
-        return request({
-            url: '/user/update',
-            method: 'post',
-            data: form
-        })
-    },
+  saveOrUpdateVip(form) {
+    return request({
+      url: '/vip/saveOrUpdate',
+      method: 'post',
+      data: form
+    })
+  },
 
-    sendCode(accountId) {
-        return request({
-            url: '/user/sendEmail',
-            method: 'post',
-            params: {
-                accountId: accountId
-            }
-        })
-    },
+  updateUser(form) {
+    return request({
+      url: '/user/update',
+      method: 'post',
+      data: form
+    })
+  },
 
-    /* -------------------------------------------------------------------------------------------------------------- */
+  sendCode(accountId) {
+    return request({
+      url: '/user/sendEmail',
+      method: 'post',
+      params: {
+        accountId: accountId
+      }
+    })
+  },
 
-    getOrderList(accountId) {
-        return request({
-            url: '/order/list',
-            method: 'post',
-            params: {
-                accountId: accountId
-            }
-        })
-    },
+  /* -------------------------------------------------------------------------------------------------------------- */
 
-    getOrderDetail(orderId) {
-        return request({
-            url: '/order/detail',
-            method: 'post',
-            params: {
-                orderId: orderId
-            }
-        })
-    },
+  getOrderList(accountId) {
+    return request({
+      url: '/order/list',
+      method: 'post',
+      params: {
+        accountId: accountId
+      }
+    })
+  },
 
-    finish(id) {
-        return request({
-            url: `/order/finish/${id}`,
-            method: 'post',
-            params: {}
-        })
-    },
+  getOrderDetail(orderId) {
+    return request({
+      url: '/order/detail',
+      method: 'post',
+      params: {
+        orderId: orderId
+      }
+    })
+  },
 
-    cancel(orderId, accountId) {
-        return request({
-            url: `/order/cancel`,
-            method: 'post',
-            params: {
-                orderId: orderId,
-                accountId: accountId
-            }
-        })
-    },
+  finish(id) {
+    return request({
+      url: `/order/finish/${id}`,
+      method: 'post',
+      params: {}
+    })
+  },
 
-    total() {
-        return request({
-            url: `/order/total`,
-            method: 'post'
-        })
-    }
+  cancel(orderId, accountId) {
+    return request({
+      url: `/order/cancel`,
+      method: 'post',
+      params: {
+        orderId: orderId,
+        accountId: accountId
+      }
+    })
+  },
+
+  total() {
+    return request({
+      url: `/order/total`,
+      method: 'post'
+    })
+  }
 }

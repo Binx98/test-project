@@ -8,10 +8,10 @@
         <el-input placeholder="最大仓库库存" style="width: 120px;margin-right: 10px" v-model="max"/>
         <el-select style="margin-right: 10px" v-model="value" placeholder="请选择类型">
           <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
           >
           </el-option>
         </el-select>
@@ -21,34 +21,34 @@
       </div>
     </div>
     <el-table
-        :data="tableData"
-        style="width: 100%"
+      :data="tableData"
+      style="width: 100%"
     >
       <el-table-column
-          prop="id"
-          label="商品编号"
-          width="100"
+        prop="id"
+        label="商品编号"
+        width="100"
       >
       </el-table-column>
       <el-table-column
-          prop="name"
-          label="商品名称"
-          width="120"
+        prop="name"
+        label="商品名称"
+        width="120"
       >
       </el-table-column>
       <el-table-column
-          prop="url"
-          label="商品图片"
-          width="150"
+        prop="url"
+        label="商品图片"
+        width="150"
       >
         <template slot-scope="scope">
           <img :src="scope.row.url" min-width="70" height="70"/>
         </template>
       </el-table-column>
       <el-table-column
-          prop="type"
-          label="类型"
-          width="80"
+        prop="type"
+        label="类型"
+        width="80"
       >
         <template slot-scope="scope">
           <el-tag type="primary" v-if="scope.row.type == 1">衣服</el-tag>
@@ -58,23 +58,23 @@
         </template>
       </el-table-column>
       <el-table-column
-          prop="stock"
-          label="门店库存（个）"
-          width="100"
+        prop="stock"
+        label="门店库存（个）"
+        width="100"
       >
       </el-table-column>
       <el-table-column
-          prop="totalStock"
-          label="仓库库存（个）"
-          width="100"
+        prop="totalStock"
+        label="仓库库存（个）"
+        width="100"
       >
       </el-table-column>
       <el-table-column
-          label="操作"
+        label="操作"
       >
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="clickKuCun(scope.row)">库存调整</el-button>
-          <el-button size="mini" type="warning" @click="clickKuCun(scope.row)">变更日志</el-button>
+          <el-button size="mini" type="warning" @click="getRuChuList(scope.row.id)">变更日志</el-button>
           <el-button size="mini" type="success" @click="getDetail(scope.row.id)">修改
           </el-button>
           <el-button size="mini" type="danger" @click="deleteStock(scope.row.id)"
@@ -102,11 +102,11 @@
         </el-form-item>
         <el-form-item label="图片" :label-width="formLabelWidth">
           <el-upload
-              class="avatar-uploader"
-              action="http://localhost:8080/file/upload"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccess1"
-              :before-upload="beforeAvatarUpload"
+            class="avatar-uploader"
+            action="http://localhost:8080/file/upload"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess1"
+            :before-upload="beforeAvatarUpload"
           >
             <img v-if="detail.url" :src="detail.url" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -120,9 +120,9 @@
     </el-dialog>
 
     <el-dialog
-        title="修改库存"
-        :visible.sync="dialogVisible1"
-        width="30%"
+      title="修改库存"
+      :visible.sync="dialogVisible1"
+      width="30%"
     >
       <div style="margin-bottom: 20px">门店库存：{{ kucunObj.stock }}</div>
       <div style="margin-bottom: 20px">仓库库存：{{ kucunObj.totalStock }}</div>
@@ -138,9 +138,37 @@
     </el-dialog>
 
     <el-dialog
-        title="提示"
-        :visible.sync="dialogVisible"
-        width="30%"
+      title="出入库存记录"
+      :visible.sync="dialogVisible2"
+      width="40%"
+    >
+      <el-table
+        :data="ruChuList"
+        style="width: 100%"
+      >
+        <el-table-column
+          prop="note"
+          label="变更描述"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="count"
+          label="数量"
+          width="100px"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="createTime"
+          label="创建时间"
+        >
+        </el-table-column>
+      </el-table>
+    </el-dialog>
+
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="30%"
     >
       <span>请输入加购数量</span>
       <el-input v-model="carDetail.count"/>
@@ -166,11 +194,13 @@ export default {
       max: '',
       goodId: '',
       tableData: [],
+      ruChuList: [],
       changeCount: '',
       type: '',
       kucunObj: '',
       dialogVisible: false,
       dialogVisible1: false,
+      dialogVisible2: false,
       dialogFormVisible: false,
       dialogFormVisible1: false,
       dialogTableVisible: false,
@@ -240,6 +270,13 @@ export default {
       this.goodId = row.id
       this.dialogVisible1 = true
       this.kucunObj = row
+    },
+
+    getRuChuList(goodId) {
+      this.dialogVisible2 = true
+      urlApi.getKuCunById(goodId).then(res => {
+        this.ruChuList = res.data
+      })
     },
 
     goKuCun1() {
