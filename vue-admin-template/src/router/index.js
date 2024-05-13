@@ -35,7 +35,7 @@ export var constantRoutes = [
     children: [{
       path: 'order',
       component: () => import('@/views/order'),
-      meta: { title: '销售单管理', icon: 'el-icon-s-order' }
+      meta: { title: '销售单', icon: 'el-icon-s-order' }
     }]
   },
 

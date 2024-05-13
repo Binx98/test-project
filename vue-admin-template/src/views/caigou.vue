@@ -1,10 +1,29 @@
 <template>
   <div class="dashboard-container">
-    <el-button type="primary" @click="dialogFormVisible = true" size="medium">创建申请</el-button>
+    <el-input placeholder="请输入供应商" style="width: 200px;margin-right: 10px" v-model="supplierName"/>
+    <el-select style="margin-right: 10px" v-model="value" placeholder="审核状态">
+      <el-option
+        v-for="item in options"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value"
+      >
+      </el-option>
+    </el-select>
+    <el-button size="medium" type="success" @click="getList">
+      查询
+    </el-button>
+    <el-button type="text" @click="goSupplier" size="medium">去采购></el-button>
     <el-table
       :data="tableData"
       style="width: 100%"
     >
+      <el-table-column
+        prop="goodId"
+        label="商品编号"
+        width="120"
+      >
+      </el-table-column>
       <el-table-column
         prop="supplierName"
         label="供应商"
@@ -62,8 +81,9 @@
         label="操作"
       >
         <template slot-scope="scope">
-          <el-button size="small" type="success" @click="updateUser(scope.row)">修改</el-button>
-          <el-button size="small" type="danger" @click="deleteUser(scope.row.id)">删除</el-button>
+          <el-button size="small" type="success" @click="agree(scope.row.id)">通过</el-button>
+          <el-button size="small" type="danger" @click="reject(scope.row.id)">拒绝</el-button>
+<!--          <el-button size="small" type="danger" @click="deleteUser(scope.row.id)">删除</el-button>-->
         </template>
       </el-table-column>
     </el-table>
@@ -114,7 +134,7 @@
 
 <script>
 import urlApi from '@/api/url'
-import {mapGetters} from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Dashboard',
@@ -125,6 +145,8 @@ export default {
       tableData: [],
       dialogFormVisible: false,
       dialogFormVisible1: false,
+      supplierName: '',
+      value: '',
       form: {
         id: '',
         accountId: '',
@@ -149,14 +171,17 @@ export default {
       },
       options: [
         {
+          value: '',
+          label: '所有状态'
+        }, {
+          value: '1',
+          label: '进行中'
+        }, {
           value: '2',
-          label: '销售员'
+          label: '已通过'
         }, {
           value: '3',
-          label: '库存管理员'
-        }, {
-          value: '4',
-          label: '采购员'
+          label: '已拒绝'
         }]
     }
   },
@@ -167,8 +192,26 @@ export default {
 
   methods: {
     getList() {
-      urlApi.getCaiGouList().then(res => {
+      urlApi.getCaiGouList(this.supplierName, this.value).then(res => {
         this.tableData = res.data
+      })
+    },
+
+    goSupplier() {
+      this.$router.push('/supplier/supplier')
+    },
+
+    agree(id) {
+      urlApi.changeStatus(id, 2).then(res => {
+        this.$message.success('审批完毕')
+        this.getList()
+      })
+    },
+
+    reject(id) {
+      urlApi.changeStatus(id, 3).then(res => {
+        this.$message.success('审批完毕')
+        this.getList()
       })
     },
 

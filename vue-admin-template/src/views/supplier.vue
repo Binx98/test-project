@@ -81,7 +81,7 @@
     </el-dialog>
 
     <!--  弹框：采购商品  -->
-    <el-dialog title="修改账户" :visible.sync="dialogFormVisible2">
+    <el-dialog title="供应商品列表" :visible.sync="dialogFormVisible2">
       <el-table
         :data="goodData"
         style="width: 100%"
@@ -143,7 +143,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="caigouGood(form1)">确 定</el-button>
+        <el-button type="primary" @click="caigouGood()">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -179,7 +179,9 @@ export default {
         address: ''
       },
       formLabelWidth: '100px',
-      caigouObj: '',
+      caigouObj: {
+        count: ''
+      },
       loginUser: {
         accountId: '',
         role: ''
@@ -242,11 +244,15 @@ export default {
 
     caigou(row) {
       this.dialogFormVisible3 = true
-      this.caigou = row
+      this.caigouObj = row
+      this.caigouObj.accountId = this.loginUser.accountId
     },
 
     caigouGood() {
-
+      urlApi.caigouGood(this.caigouObj).then(res => {
+        this.dialogFormVisible3 = false
+        this.$message.success('采购单生成成功，可在采购单管理中查看详情')
+      })
     },
 
     getLoginUser() {

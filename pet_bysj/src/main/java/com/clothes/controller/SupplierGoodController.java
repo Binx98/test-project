@@ -32,13 +32,10 @@ public class SupplierGoodController {
      * 查询列表
      */
     @PostMapping("/list")
-    public R getList(Long supplierId, Integer type) {
+    public R getList(Long supplierId) {
         QueryWrapper<SupplierGood> wrapper = new QueryWrapper<>();
         if (ObjectUtils.isNotEmpty(supplierId)) {
             wrapper.eq("supplier_id", supplierId);
-        }
-        if (ObjectUtils.isNotEmpty(type)) {
-            wrapper.like("type", type);
         }
         wrapper.orderByDesc("create_time");
         List<SupplierGood> list = supplierGoodService.list(wrapper);

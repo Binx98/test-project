@@ -50,6 +50,7 @@ public class GoodsController {
         if (ObjectUtils.isNotEmpty(type)) {
             wrapper.like("type", type);
         }
+        wrapper.ne("stock", 0);
         wrapper.orderByDesc("create_time");
         List<Goods> goods = goodsService.list(wrapper);
         if (ObjectUtils.isNotEmpty(queCount)) {
@@ -57,6 +58,23 @@ public class GoodsController {
                     .filter(item -> item.getStock() + item.getTotalStock() > queCount)
                     .collect(Collectors.toList());
         }
+        return R.out(ResponseEnum.SUCCESS, goods);
+    }
+
+    /**
+     * 查询商品列表（根据商品名关键字查询）
+     */
+    @PostMapping("/kucunList")
+    public R kucunList(String goodName, Integer type) {
+        QueryWrapper wrapper = new QueryWrapper();
+        if (StringUtils.isNotBlank(goodName)) {
+            wrapper.like("name", goodName);
+        }
+        if (ObjectUtils.isNotEmpty(type)) {
+            wrapper.like("type", type);
+        }
+        wrapper.orderByDesc("create_time");
+        List<Goods> goods = goodsService.list(wrapper);
         return R.out(ResponseEnum.SUCCESS, goods);
     }
 
@@ -74,6 +92,13 @@ public class GoodsController {
      */
     @PostMapping("/delete/{goodId}")
     public R deleteMenu(@PathVariable Long goodId) {
+        // 库存推到总仓库
+        Goods goods = goodsService.getById(goodId);
+        goods.setStock(0);
+        goods.setTotalStock(goods.getTotalStock() + goods.getStock());
+        goodsService.updateById(goods);
+
+        // 删除商品
         goodsService.removeById(goodId);
         return R.out(ResponseEnum.SUCCESS);
     }

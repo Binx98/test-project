@@ -46,6 +46,12 @@ public class SupplierGood implements Serializable {
     private String supplierName;
 
     /**
+     * 商品id
+     */
+    @TableField("good_id")
+    private Long goodId;
+
+    /**
      * 商品名称
      */
     @TableField("good_name")

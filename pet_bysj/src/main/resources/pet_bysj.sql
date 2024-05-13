@@ -3,15 +3,15 @@
 
  Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80036 (8.0.36)
+ Source Server Version : 101102 (10.11.2-MariaDB)
  Source Host           : localhost:3306
  Source Schema         : pet_bysj
 
  Target Server Type    : MySQL
- Target Server Version : 80036 (8.0.36)
+ Target Server Version : 101102 (10.11.2-MariaDB)
  File Encoding         : 65001
 
- Date: 12/05/2024 21:41:21
+ Date: 13/05/2024 17:47:35
 */
 
 SET NAMES utf8mb4;
@@ -24,12 +24,15 @@ DROP TABLE IF EXISTS `caigou`;
 CREATE TABLE `caigou`  (
   `id` bigint NOT NULL COMMENT '主键id',
   `account_id` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '账号',
+  `supplier_id` bigint NULL DEFAULT NULL COMMENT '供应商id',
   `good_id` bigint NULL DEFAULT NULL COMMENT '供应商商品id',
   `supplier_name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '供应商名',
   `good_name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '商品名',
   `count` int NULL DEFAULT NULL COMMENT '采购数量',
   `money` int NULL DEFAULT NULL COMMENT '进货总价',
   `type` int NULL DEFAULT NULL COMMENT '商品类型',
+  `url` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '图片',
+  `material` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '材质',
   `status` int NULL DEFAULT NULL COMMENT '审核状态（1：进行中，2：已完成，3：已拒绝）',
   `create_time` datetime NULL DEFAULT NULL COMMENT '时间',
   PRIMARY KEY (`id`) USING BTREE
@@ -38,11 +41,8 @@ CREATE TABLE `caigou`  (
 -- ----------------------------
 -- Records of caigou
 -- ----------------------------
-INSERT INTO `caigou` VALUES (1784575030169591810, 'qq', 1, '大连服装供应商', '纯棉短袖', 1, 39, 1, 1, '2024-04-28 21:26:58');
-INSERT INTO `caigou` VALUES (1785115073149923329, 'qq', 2, '沈阳服装供应商', '时尚拖鞋', 1, 10, 3, 2, '2024-04-30 09:12:54');
-INSERT INTO `caigou` VALUES (1785151100379979778, 'qq', 3, '长春服装供应商', '运动短裤', 1, 100, 2, 2, '2024-04-30 11:36:03');
-INSERT INTO `caigou` VALUES (1785629707539808257, 'qq', 4, '哈尔滨服装供应商', '鸭舌帽', 1, 99, 4, 3, '2024-05-01 19:17:52');
-INSERT INTO `caigou` VALUES (1786376259724095490, 'xueyan', 1, '大连服装供应商', '纯棉短袖', 1, 39, 1, 3, '2024-05-03 20:44:24');
+INSERT INTO `caigou` VALUES (1789939418418470913, '销售员007', 1, 4, '大连服装供应商', '鸭舌帽', 33, 99, 4, NULL, '锦纶、涤纶、晴纶', 2, '2024-05-09 21:42:20');
+INSERT INTO `caigou` VALUES (1789944301490118657, '销售员007', 1, 4, '大连服装供应商', '鸭舌帽', 30, 99, 4, NULL, '锦纶、涤纶、晴纶', 3, '2024-05-09 21:42:20');
 
 -- ----------------------------
 -- Table structure for goods
@@ -65,16 +65,7 @@ CREATE TABLE `goods`  (
 -- ----------------------------
 -- Records of goods
 -- ----------------------------
-INSERT INTO `goods` VALUES (1786366905230798849, '狗狗玩具', 40, 2, 2, 'http://localhost:9000/bysj/微信图片_20240426141013_1714737996947.jpg', '狗狗铃铛玩具', 3, 10, '2024-05-03 20:07:14');
-INSERT INTO `goods` VALUES (1786367045819674626, '猫猫玩具', 40, 2, 2, 'http://localhost:9000/bysj/微信图片_20240426141018_1714738065955.jpg', '猫猫多色玩具', 3, 10, '2024-05-03 20:07:47');
-INSERT INTO `goods` VALUES (1786367518152830978, '猫窝', 120, 2, 2, 'http://localhost:9000/bysj/微信图片_20240426141007_1714738104523.jpg', '猫猫温暖猫窝、不起静电', 3, 10, '2024-05-03 20:09:40');
-INSERT INTO `goods` VALUES (1786367752652173313, '恩倍多猫咪体外驱虫药', 65, 2, 3, 'http://localhost:9000/bysj/微信图片_20240426135648_1714738234102.jpg', '3支恩倍多猫咪体外驱虫药除跳蚤杀去虫幼成猫宠物药虱子驱虫滴剂', 3, 10, '2024-05-03 20:10:36');
-INSERT INTO `goods` VALUES (1786368203112034305, '复方酮康唑软膏', 65, 2, 3, 'http://localhost:9000/bysj/微信图片_20240426135644_1714738341779.jpg', '宠物猫癣外用药皮肤病药膏狗狗猫咪真菌猫藓专用药', 3, 10, '2024-05-03 20:12:23');
-INSERT INTO `goods` VALUES (1786368558575104001, '软骨素', 138, 2, 3, 'http://localhost:9000/bysj/微信图片_20240426135132_1714738452267.jpg', 'vetwish唯特适折耳猫专用鲨鱼软骨素猫咪专用宠物保护关节生40片', 3, 10, '2024-05-03 20:13:48');
-INSERT INTO `goods` VALUES (1786369059479859201, '宠物生日蛋糕', 260, 2, 1, 'http://localhost:9000/bysj/微信图片_20240426140913_1714738562092.jpg', '宠物生日蛋糕样式自选', 3, 10, '2024-05-03 20:15:48');
-INSERT INTO `goods` VALUES (1786369297246564353, '骨头小蛋糕', 60, 2, 1, 'http://localhost:9000/bysj/微信图片_20240426140919_1714738601665.jpg', '可爱骨头小蛋糕', 3, 10, '2024-05-03 20:16:44');
-INSERT INTO `goods` VALUES (1786369827201069057, '烘焙粮', 300, 2, 1, 'http://localhost:9000/bysj/微信图片_20240426141025_1714738729919.jpg', '新鲜烘焙粮，注意保质期', 3, 10, '2024-05-03 20:18:51');
-INSERT INTO `goods` VALUES (1786370168206372866, '饼干', 20, 2, 1, 'http://localhost:9000/bysj/微信图片_20240426141031_1714738800834.jpg', '新鲜烘焙甜甜圈饼干', 3, 10, '2024-05-03 20:20:12');
+INSERT INTO `goods` VALUES (4, '鸭舌帽', 198, 99, 4, NULL, '锦纶、涤纶、晴纶', 0, 33, '2024-05-13 17:06:46');
 
 -- ----------------------------
 -- Table structure for orders
@@ -128,14 +119,15 @@ CREATE TABLE `ruchu`  (
   `good_id` bigint NULL DEFAULT NULL COMMENT '商品id',
   `count` int NULL DEFAULT NULL COMMENT '数量',
   `type` int NULL DEFAULT NULL COMMENT '类型（0：出，1：入）',
-  `note` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '说明',
+  `note` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '说明',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ruchu
 -- ----------------------------
+INSERT INTO `ruchu` VALUES (1789945372425854977, 4, 33, 1, '供货商出库——>总仓库入库', '2024-05-13 17:06:47');
 
 -- ----------------------------
 -- Table structure for supplier
@@ -153,9 +145,10 @@ CREATE TABLE `supplier`  (
 -- ----------------------------
 -- Records of supplier
 -- ----------------------------
-INSERT INTO `supplier` VALUES (1, '大连服装供应商', NULL, '大连甘井子', '2024-04-28 21:27:01');
-INSERT INTO `supplier` VALUES (2, '沈阳服装供应商', NULL, '沈阳中街', '2024-04-30 09:12:49');
-INSERT INTO `supplier` VALUES (3, '长春服装供应商', NULL, '长春小巷口', '2024-04-30 11:36:05');
+INSERT INTO `supplier` VALUES (1, '大连服装供货商', '14521513521', '三丰大厦B', '2024-05-13 14:44:43');
+INSERT INTO `supplier` VALUES (2, '沈阳服装供应商', '13214214', '沈阳中街', '2024-04-30 09:12:49');
+INSERT INTO `supplier` VALUES (3, '长春服装供应商', '2142153154123', '长春小巷口123', '2024-04-30 11:36:05');
+INSERT INTO `supplier` VALUES (4, '哈尔冰服装供货商', '188477423', '黑龙江哈尔滨中央大道', '2024-05-13 15:42:29');
 
 -- ----------------------------
 -- Table structure for supplier_good
@@ -164,23 +157,24 @@ DROP TABLE IF EXISTS `supplier_good`;
 CREATE TABLE `supplier_good`  (
   `id` bigint NOT NULL COMMENT '主键id',
   `supplier_id` bigint NULL DEFAULT NULL COMMENT '供应商id',
-  `supplier_name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '供应商名',
-  `good_name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '商品名称',
+  `supplier_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '供应商名',
+  `good_id` bigint NULL DEFAULT NULL COMMENT '商品id',
+  `good_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品名称',
   `type` int NULL DEFAULT NULL COMMENT '商品类型',
   `money` int NULL DEFAULT NULL COMMENT '进货价',
-  `url` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '商品图片',
-  `material` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '材质',
+  `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品图片',
+  `material` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '材质',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of supplier_good
 -- ----------------------------
-INSERT INTO `supplier_good` VALUES (1, 1, '大连服装供应商', '纯棉短袖', 1, 39, NULL, '100%棉', '2024-05-09 21:39:30');
-INSERT INTO `supplier_good` VALUES (2, 2, '沈阳服装供应商', '时尚拖鞋', 3, 10, NULL, '塑料', '2024-05-09 21:40:38');
-INSERT INTO `supplier_good` VALUES (3, 3, '长春服装供应商', '运动短裤', 2, 100, NULL, '棉、涤纶', '2024-05-09 21:41:37');
-INSERT INTO `supplier_good` VALUES (4, 4, '哈尔滨服装供应商', '鸭舌帽', 4, 99, NULL, '锦纶、涤纶、晴纶', '2024-05-09 21:42:20');
+INSERT INTO `supplier_good` VALUES (1, 1, '大连服装供应商', 1, '纯棉短袖', 1, 39, NULL, '100%棉', '2024-05-09 21:39:30');
+INSERT INTO `supplier_good` VALUES (2, 1, '大连服装供应商', 2, '时尚拖鞋', 3, 10, NULL, '塑料', '2024-05-09 21:40:38');
+INSERT INTO `supplier_good` VALUES (3, 1, '大连服装供应商', 3, '运动短裤', 2, 100, NULL, '棉、涤纶', '2024-05-09 21:41:37');
+INSERT INTO `supplier_good` VALUES (4, 1, '大连服装供应商', 4, '鸭舌帽', 4, 99, NULL, '锦纶、涤纶、晴纶', '2024-05-09 21:42:20');
 
 -- ----------------------------
 -- Table structure for user
@@ -188,26 +182,25 @@ INSERT INTO `supplier_good` VALUES (4, 4, '哈尔滨服装供应商', '鸭舌帽
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`  (
   `id` bigint NOT NULL COMMENT '主键id',
-  `account_id` varchar(255) CHARACTER SET utf8mb3 DEFAULT NULL COMMENT '账号id',
-  `phone` varchar(255) CHARACTER SET utf8mb3  DEFAULT NULL COMMENT '邮件',
-  `password` varchar(255) CHARACTER SET utf8mb3 DEFAULT NULL COMMENT '密码',
-  `address` varchar(255) CHARACTER SET utf8mb3 DEFAULT NULL COMMENT '地址',
+  `account_id` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '账号id',
+  `phone` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '邮件',
+  `password` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '密码',
+  `address` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '地址',
   `role` tinyint(1) NULL DEFAULT NULL COMMENT '角色（1：用户，2：员工，3：管理员）',
   `status` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '登陆状态',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb3 ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1782001831691141121, 'yuangong', '1321421421', '123123', '辽宁省大连', 2, 'N', '2024-04-21 19:01:59');
-INSERT INTO `user` VALUES (1782002022385172481, 'guanliyuan', '1321421421', '123123', '辽宁鞍山', 1, 'N', '2024-04-21 19:02:45');
-INSERT INTO `user` VALUES (1783750162981281794, '用户', '1321421421', '123123', '辽宁鞍山', 4, 'N', '2024-04-26 14:49:14');
+INSERT INTO `user` VALUES (1782001831691141121, 'yuangong', '123123', '123123', '辽宁省大连', 2, 'N', '2024-04-21 19:01:59');
+INSERT INTO `user` VALUES (1782002022385172481, 'jingli', '123123', 'jingli', '辽宁鞍山', 1, 'N', '2024-04-21 19:02:45');
+INSERT INTO `user` VALUES (1783750162981281794, '用户1', '1321421421', '123123', '辽宁鞍山', 4, 'N', '2024-04-26 14:49:14');
 INSERT INTO `user` VALUES (1786376185870790658, 'xueyan', '1321421421', '123123', '辽宁鞍山', 4, 'N', '2024-05-03 20:44:07');
-INSERT INTO `user` VALUES (1789612715072118785, 'xuzhibin123', '328173717', 'xuzhibin123', '大有文员', 4, 'N', '2024-05-12 19:04:55');
-INSERT INTO `user` VALUES (1789614950485082114, '球球', '6666666', '6666666', '大有', 2, 'N', '2024-05-12 19:13:48');
-INSERT INTO `user` VALUES (1789650375694184450, '12312321', '3123213', '123213', '1231', 2, 'N', '2024-05-12 21:34:34');
+INSERT INTO `user` VALUES (1789612715072118785, 'xuzhi', '328173717', 'xuzhibin123', '大有文员', 4, 'N', '2024-05-12 19:04:55');
+INSERT INTO `user` VALUES (1789614950485082114, '销售员007', '124214214', 'xiaoshouyuan', '大有文员214214', 2, 'Y', '2024-05-12 19:13:48');
 
 -- ----------------------------
 -- Table structure for vip
@@ -215,31 +208,25 @@ INSERT INTO `user` VALUES (1789650375694184450, '12312321', '3123213', '123213',
 DROP TABLE IF EXISTS `vip`;
 CREATE TABLE `vip`  (
   `id` bigint NOT NULL COMMENT '主键id',
-  `phone` varchar(255) CHARACTER SET utf8mb3 DEFAULT NULL COMMENT '手机号',
-  `user_name` varchar(255) CHARACTER SET utf8mb3 DEFAULT NULL COMMENT '姓名',
+  `phone` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '手机号',
+  `user_name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '姓名',
   `money` int NULL DEFAULT NULL COMMENT '消费金额',
   `level` tinyint(1) NULL DEFAULT NULL COMMENT '会员等级（5个等级，1w元升1级，1级折扣0.1）',
   `discount` double(10, 2) NULL DEFAULT NULL COMMENT '折扣（例如：0.1）',
-  `address` varchar(255) CHARACTER SET utf8mb3 DEFAULT NULL COMMENT '地址',
+  `address` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '地址',
   `create_time` datetime NULL DEFAULT NULL COMMENT '充值时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb3 ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of vip
 -- ----------------------------
-INSERT INTO `vip` VALUES (1783751571294347265, '132142121412', '张三', 1000, 2, 0.10, '大有文员', '2024-04-26 14:54:50');
-INSERT INTO `vip` VALUES (1783752435975282689, '132142121412', '张三', 10000, 1, 0.10, '大有文员', '2024-04-26 14:58:16');
-INSERT INTO `vip` VALUES (1784028736715882498, '132142121412', '张三', 400, 3, 0.10, '大有文员', '2024-04-27 09:16:11');
-INSERT INTO `vip` VALUES (1784099978215043073, '132142121412', '张三', 100, 3, 0.10, '大有文员', '2024-04-27 13:59:16');
-INSERT INTO `vip` VALUES (1784099985622183937, '132142121412', '张三', 100, 2, 0.10, '大有文员', '2024-04-27 13:59:18');
-INSERT INTO `vip` VALUES (1784575030236700674, '132142121412', '张三', 1, 5, 0.10, '大有文员', '2024-04-28 21:26:58');
-INSERT INTO `vip` VALUES (1784575043603947522, '132142121412', '张三', 2, 2, 0.10, '大有文员', '2024-04-28 21:27:01');
+INSERT INTO `vip` VALUES (1784099985622183937, '132142121412', '张三', 1000044, 5, 0.50, '大有文员', '2024-04-27 13:59:18');
+INSERT INTO `vip` VALUES (1784575043603947522, '132142121412', '张三', 2124214, 5, 0.50, '大有文员', '2024-04-28 21:27:01');
 INSERT INTO `vip` VALUES (1785115054216835075, '132142121412', '张三', 123, 2, 0.10, '大有文员', '2024-04-30 09:12:49');
-INSERT INTO `vip` VALUES (1785151108298825731, '132142121412', '张三', 123123, 2, 0.10, '大有文员', '2024-04-30 11:36:05');
+INSERT INTO `vip` VALUES (1785151108298825731, '132142121412', '张三214214', 123123, 5, 0.50, '大有文员', '2024-04-30 11:36:05');
 INSERT INTO `vip` VALUES (1789643768096739330, '1832813812', '徐志斌', 10000, 1, 0.90, '第七人民医院', '2024-05-12 21:08:19');
 INSERT INTO `vip` VALUES (1789644066655686658, '19238217381', '马中慧', 20000, 2, 0.80, '第七人民医院', '2024-05-12 21:09:30');
-INSERT INTO `vip` VALUES (1789650783783186433, '214121421', '徐志斌33', 1232131321, 5, 0.50, '215124214', '2024-05-12 21:36:12');
-INSERT INTO `vip` VALUES (1789651649072226305, '12421213123', '12421421421', 112412, 5, 0.50, '141221321', '2024-05-12 21:39:38');
+INSERT INTO `vip` VALUES (1789650783783186433, '2141214', '徐志斌', 1232131, 5, 0.50, '2151242', '2024-05-12 21:36:12');
 
 SET FOREIGN_KEY_CHECKS = 1;

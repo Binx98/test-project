@@ -17,6 +17,17 @@ export default {
     })
   },
 
+  changeStatus(id, status) {
+    return request({
+      url: `/caigou/changeStatus`,
+      method: 'post',
+      params: {
+        id: id,
+        status: status
+      }
+    })
+  },
+
   deleteBanner(id) {
     return request({
       url: `/banner/delete/${id}`,
@@ -166,10 +177,22 @@ export default {
 
   /* -------------------------------------------------------------------------------------------------------------- */
 
-  getCaiGouList() {
+  getCaiGouList(name, status) {
     return request({
       url: '/caigou/list',
-      method: 'post'
+      method: 'post',
+      params: {
+        supplierName: name,
+        status: status
+      }
+    })
+  },
+
+  caigouGood(obj) {
+    return request({
+      url: '/caigou/save',
+      method: 'post',
+      data: obj
     })
   },
 

@@ -47,8 +47,14 @@ public class CaigouController {
      * 查询列表
      */
     @PostMapping("/list")
-    public R list() {
+    public R list(String supplierName, Integer status) {
         QueryWrapper<Caigou> wrapper = new QueryWrapper<>();
+        if (ObjectUtils.isNotEmpty(supplierName)) {
+            wrapper.like("supplier_name", supplierName);
+        }
+        if (ObjectUtils.isNotEmpty(status)) {
+            wrapper.eq("status", status);
+        }
         wrapper.orderByDesc("create_time");
         List<Caigou> list = caigouService.list(wrapper);
         return R.out(ResponseEnum.SUCCESS, list);
@@ -59,6 +65,8 @@ public class CaigouController {
      */
     @PostMapping("/save")
     public R save(@RequestBody Caigou caigou) {
+        caigou.setId(null);
+        caigou.setStatus(1);
         caigouService.save(caigou);
         return R.out(ResponseEnum.SUCCESS);
     }
@@ -78,16 +86,15 @@ public class CaigouController {
      */
     @PostMapping("changeStatus")
     @Transactional
-    public R status(Long caigouId, Integer status) {
-        Caigou caigou = caigouService.getById(caigouId);
+    public R status(Long id, Integer status) {
+        Caigou caigou = caigouService.getById(id);
         if (caigou.getStatus() == 2 || caigou.getStatus() == 3) {
-            return R.out(ResponseEnum.FAIL, "采购信息已被处理，不可进行操作");
+            return R.out(ResponseEnum.FAIL, "采购申请状态已被处理，不可继续进行操作");
         }
 
         // 修改采购单状态
         caigou.setStatus(status);
         caigouService.updateById(caigou);
-
 
         // 拒绝
         if (status == 3) {
@@ -102,7 +109,7 @@ public class CaigouController {
             // 不存在：保存商品
             if (ObjectUtils.isEmpty(good)) {
                 SupplierGood supplierGood = supplierGoodService.getById(caigou.getGoodId());
-                Caigou caigouPO = caigouService.getById(caigouId);
+                Caigou caigouPO = caigouService.getById(id);
                 Goods goods = new Goods();
                 goods.setId(supplierGood.getId());
                 goods.setName(supplierGood.getGoodName());
@@ -119,7 +126,7 @@ public class CaigouController {
 
             // 存在：改变总库存
             else {
-                Caigou caigouPO = caigouService.getById(caigouId);
+                Caigou caigouPO = caigouService.getById(id);
                 good.setTotalStock(good.getTotalStock() + caigouPO.getCount());
                 goodsService.updateById(good);
             }

@@ -15,8 +15,8 @@
         <el-button size="medium" type="success" @click="getList">
           查询
         </el-button>
-        <el-button size="medium" type="primary" @click="dialogFormVisible = true">
-          添加商品
+        <el-button size="medium" type="text" @click="goKuCun1">
+          添加商品>
         </el-button>
       </div>
     </div>
@@ -63,9 +63,10 @@
         width="80"
       >
         <template slot-scope="scope">
-          <el-tag type="success" v-if="scope.row.type == 1">食品</el-tag>
-          <el-tag type="info" v-if="scope.row.type == 2">用品</el-tag>
-          <el-tag type="warning" v-if="scope.row.type == 3">药品</el-tag>
+          <el-tag type="primary" v-if="scope.row.type == 1">衣服</el-tag>
+          <el-tag type="success" v-if="scope.row.type == 2">裤子</el-tag>
+          <el-tag type="warning" v-if="scope.row.type == 3">鞋子</el-tag>
+          <el-tag type="info" v-if="scope.row.type == 4">其他</el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -91,14 +92,13 @@
       >
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="">购买</el-button>
-          <el-button size="mini" type="warning" @click="">加入购物车</el-button>
-          <el-button size="mini" type="primary" @click="">改库存</el-button>
-
-          <el-button size="mini" @click="getCommentList(scope.row.id)">评价</el-button>
           <el-button size="mini" type="success" @click="getDetail(scope.row.id)">修改
           </el-button>
           <el-button size="mini" type="danger" @click="deleteGood(scope.row.id)"
           >删除
+          </el-button>
+          <el-button size="text" @click="goKuCun2">
+            库存调整>
           </el-button>
         </template>
       </el-table-column>
@@ -283,13 +283,16 @@ export default {
           label: '所有'
         }, {
           value: '1',
-          label: '食品'
+          label: '衣服'
         }, {
           value: '2',
-          label: '用品'
+          label: '裤子'
         }, {
           value: '3',
-          label: '药品'
+          label: '鞋子'
+        }, {
+          value: '4',
+          label: '其他'
         }],
       value: ''
     }
@@ -311,6 +314,26 @@ export default {
   methods: {
     getList() {
       urlApi.getGoodList(this.goodName, this.value).then(res => this.tableData = res.data)
+    },
+
+    goKuCun1() {
+      this.$confirm('【添加商品】只能基于库存中已有商品进行添加, 是否跳转?', '添加商品', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$router.push('/stock/stock')
+      })
+    },
+
+    goKuCun2() {
+      this.$confirm('【调整库存】操作需要在库存管理中完成, 是否跳转?', '调整库存', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$router.push('/stock/stock')
+      })
     },
 
     clickChangeCount(id, count) {
