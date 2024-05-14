@@ -1,66 +1,69 @@
 <template>
   <div class="dashboard-container">
-    当前账户余额：
-    <el-tag style="padding-right: 10px">
-      {{ loginUser.money }}￥
-    </el-tag>
-    <div style="margin-top: 16px">
-      <el-image :src="wechatImg"
-                style="width: 12vw; height: 12vh;border-radius:16px;cursor:pointer;border: 1px solid darkgrey;margin-right: 2%;"
-                @click="clickWechat"
-      ></el-image>
-      <el-image :src="aliImg"
-                style="width: 12vw; height: 12vh;border-radius:16px;cursor:pointer;border: 1px solid darkgrey"
-                @click="clickAli"
-      ></el-image>
-    </div>
+    <div class="box-pie" style="height: 400px" ref="chart"></div>
 
-    <el-dialog
-      title="账户充值"
-      :visible.sync="centerDialogVisible"
-      width="30%"
-      center
-    >
-      输入金额：
-      <el-input v-model="charge.money" style="width: 70%"/>
-      <span slot="footer" class="dialog-footer">
-    <el-button type="primary" @click="chargeMoney">充 值</el-button>
-  </span>
-    </el-dialog>
-
+    <h3>退货订单：</h3>
     <el-table
       :data="tableData"
-      style="width: 100%"
-      :row-class-name="tableRowClassName"
+      style="width: 82%"
     >
       <el-table-column
-        prop="accountId"
-        label="账号"
-        width="220"
+        prop="id"
+        label="订单id"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="userName"
+        label="客户名"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="goodName"
+        label="商品名称"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="url"
+        label="商品图片"
+      >
+        <template slot-scope="scope">
+          <img :src="scope.row.url" min-width="70" height="70"/>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="buyMoney"
+        label="售价"
       >
       </el-table-column>
       <el-table-column
         prop="money"
-        label="充值金额"
-        width="220"
+        label="原价"
       >
       </el-table-column>
       <el-table-column
-        prop="type"
-        label="充值方式"
-        width="220"
+        prop="status"
+        label="状态"
       >
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.type === 2">支付宝</el-tag>
-          <el-tag v-if="scope.row.type === 1" type="success">微信</el-tag>
+          <el-tag type="primary" v-if="scope.row.status == 1">进行中</el-tag>
+          <el-tag type="success" v-if="scope.row.status == 2">已完成</el-tag>
+          <el-tag type="danger" v-if="scope.row.status == 3">已退货</el-tag>
         </template>
       </el-table-column>
       <el-table-column
-        prop="createTime"
-        label="时间"
-        width="220"
+        prop="count"
+        label="数量"
       >
       </el-table-column>
+<!--      <el-table-column-->
+<!--        label="操作"-->
+<!--      >-->
+<!--        <template slot-scope="scope">-->
+<!--          <el-button size="mini" type="primary" @click="finish(scope.row.id)">完成</el-button>-->
+<!--          <el-button size="mini" type="success" @click="back(scope.row.id)">退货</el-button>-->
+<!--          <el-button size="mini" type="danger" @click="deleteOrder(scope.row.id)">删除</el-button>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
     </el-table>
   </div>
 </template>
@@ -88,6 +91,41 @@ export default {
         accountId: '',
         role: '',
         money: ''
+      },
+      option: {
+        title: {
+          text: '销售数量统计',
+          subtext: '商品维度',
+          left: 'center'
+        },
+        tooltip: {
+          trigger: 'item'
+        },
+        legend: {
+          orient: 'vertical',
+          left: 'left'
+        },
+        series: [
+          {
+            name: '销售数量',
+            type: 'pie',
+            radius: '50%',
+            data: [
+              { value: 1048, name: 'Search Engine' },
+              { value: 735, name: 'Direct' },
+              { value: 580, name: 'Email' },
+              { value: 484, name: 'Union Ads' },
+              { value: 300, name: 'Video Ads' }
+            ],
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
       }
     }
   },
@@ -96,23 +134,28 @@ export default {
     this.getLoginUser()
   },
 
+  mounted() {
+    this.getBing()
+    this.getOrderList()
+  },
+
   methods: {
-    getList() {
-      urlApi.getRechargeList(this.loginUser.accountId).then(res => {
+    getOrderList() {
+      urlApi.getBackOrderList().then(res => {
         this.tableData = res.data
       })
     },
 
-    clickWechat() {
-      this.centerDialogVisible = true
-      this.charge.accountId = this.loginUser.accountId
-      this.charge.type = 1
+    getBing() {
+      urlApi.getBing().then(res => {
+        this.option.series[0].data = res.data
+        this.getPage()
+      })
     },
 
-    clickAli() {
-      this.centerDialogVisible = true
-      this.charge.accountId = this.loginUser.accountId
-      this.charge.type = 2
+    getPage() {
+      this.chart = this.$echarts.init(this.$refs.chart)
+      this.chart.setOption(this.option)
     },
 
     chargeMoney() {
