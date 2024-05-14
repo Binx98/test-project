@@ -5,11 +5,11 @@
     <breadcrumb class="breadcrumb-container"/>
 
     <div class="right-menu">
-<!--      <el-badge :value=carTotal class="item" style="margin-right: 40px;margin-top: 12px">-->
-<!--        <i class="el-icon-shopping-cart-2" style="font-size: 30px;cursor:pointer;color: darkgrey;"-->
-<!--           @click="dialogTableVisible = true"-->
-<!--        ></i>-->
-<!--      </el-badge>-->
+      <!--      <el-badge :value=carTotal class="item" style="margin-right: 40px;margin-top: 12px">-->
+      <!--        <i class="el-icon-shopping-cart-2" style="font-size: 30px;cursor:pointer;color: darkgrey;"-->
+      <!--           @click="dialogTableVisible = true"-->
+      <!--        ></i>-->
+      <!--      </el-badge>-->
 
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
@@ -22,12 +22,12 @@
           <i class="el-icon-caret-bottom"/>
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
-<!--          <el-dropdown-item divided @click.native="getUserInfo(true)">-->
-<!--            <span style="display:block;">个人信息</span>-->
-<!--          </el-dropdown-item>-->
-<!--          <el-dropdown-item divided>-->
-<!--            <span style="display:block;" @click="dialogVisible = true">联系客服</span>-->
-<!--          </el-dropdown-item>-->
+          <!--          <el-dropdown-item divided @click.native="getUserInfo(true)">-->
+          <!--            <span style="display:block;">个人信息</span>-->
+          <!--          </el-dropdown-item>-->
+          <!--          <el-dropdown-item divided>-->
+          <!--            <span style="display:block;" @click="dialogVisible = true">联系客服</span>-->
+          <!--          </el-dropdown-item>-->
           <el-dropdown-item divided @click.native="logout">
             <span style="display:block;">退出登录</span>
           </el-dropdown-item>
@@ -39,7 +39,7 @@
       :visible.sync="dialogVisible"
       width="30%"
     >
-<!--      <el-image :src=kefuImg></el-image>-->
+      <!--      <el-image :src=kefuImg></el-image>-->
     </el-dialog>
 
     <el-dialog
@@ -85,7 +85,7 @@
         </el-table-column>
       </el-table>
       <el-button style="margin-top: 10px;margin-left: 40%" size="small" type="primary" @click="calc()">
-        结算（总价格：{{ carMoneyTotal}}）
+        结算（总价格：{{ carMoneyTotal }}）
       </el-button>
     </el-dialog>
   </div>
@@ -173,6 +173,8 @@ export default {
           localStorage.setItem('role', '2')
         } else if (this.loginUser.role === 3) {
           localStorage.setItem('role', '3')
+        } else if (this.loginUser.role === 4) {
+          localStorage.setItem('role', '4')
         }
 
         this.getCarList()

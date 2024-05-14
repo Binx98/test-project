@@ -13,7 +13,7 @@
     <el-button size="medium" type="success" @click="getList">
       查询
     </el-button>
-    <el-button type="text" @click="goSupplier" size="medium">去采购></el-button>
+    <el-button type="text" @click="goSupplier" size="medium" v-if="loginUser.role === 4">去采购></el-button>
     <el-table
         :data="tableData"
         style="width: 100%"
@@ -82,9 +82,9 @@
           label="操作"
       >
         <template slot-scope="scope">
-          <el-button size="small" type="primary" @click="ruku(scope.row.id)">入库</el-button>
-          <el-button size="small" type="success" @click="agree(scope.row.id)">通过</el-button>
-          <el-button size="small" type="danger" @click="reject(scope.row.id)">拒绝</el-button>
+          <el-button size="small" type="primary" @click="ruku(scope.row.id)" v-if="loginUser.role === 3">入库</el-button>
+          <el-button size="small" type="success" @click="agree(scope.row.id)" v-if="loginUser.role === 1">通过</el-button>
+          <el-button size="small" type="danger" @click="reject(scope.row.id)" v-if="loginUser.role === 1">拒绝</el-button>
           <!--          <el-button size="small" type="danger" @click="deleteUser(scope.row.id)">删除</el-button>-->
         </template>
       </el-table-column>

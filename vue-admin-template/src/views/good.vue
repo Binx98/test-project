@@ -15,7 +15,7 @@
         <el-button size="medium" type="success" @click="getList">
           查询
         </el-button>
-        <el-button size="medium" type="text" @click="goKuCun1">
+        <el-button size="medium" type="text" @click="goKuCun1" v-if="loginUser.role === 2 || loginUser.role === 3">
           添加商品>
         </el-button>
       </div>
@@ -85,13 +85,13 @@
         label="操作"
       >
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="clickBuy(scope.row.id)">购买</el-button>
-          <el-button size="mini" type="success" @click="getDetail(scope.row)">修改
+          <el-button size="mini" type="primary" @click="clickBuy(scope.row.id)" v-if="loginUser.role === 2">购买
           </el-button>
-          <el-button size="mini" type="danger" @click="deleteGood(scope.row.id)"
-          >删除
+          <el-button size="mini" type="success" @click="getDetail(scope.row)" v-if="loginUser.role === 1 || loginUser.role === 2">修改
           </el-button>
-          <el-button size="text" @click="goKuCun2">
+          <el-button size="mini" type="danger" @click="deleteGood(scope.row.id)"v-if="loginUser.role === 2">删除
+          </el-button>
+          <el-button size="text" @click="goKuCun2" v-if="loginUser.role === 2 || loginUser.role === 3">
             库存调整>
           </el-button>
         </template>
@@ -272,17 +272,15 @@ export default {
   },
 
   mounted() {
-    if (location.href.indexOf('#reloaded') == -1) {
-      location.href = location.href + '#reloaded'
-      window.location.reload()
-    }
-
     setInterval(() => this.getList(), 1000)
   },
 
   methods: {
     getList() {
-      urlApi.getGoodList(this.goodName, this.value).then(res => this.tableData = res.data)
+      urlApi.getGoodList(this.goodName, this.value).then(res => {
+        this.tableData = res.data
+        this.getLoginUser()
+      })
     },
 
     clickBuy(id) {
@@ -395,6 +393,11 @@ export default {
         }
         this.loginUser.accountId = res.data.accountId
         this.loginUser.role = res.data.role
+
+        if (location.href.indexOf('#reloaded') == -1) {
+          location.href = location.href + '#reloaded'
+          window.location.reload()
+        }
       })
     },
 

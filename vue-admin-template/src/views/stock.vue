@@ -75,10 +75,7 @@
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="clickKuCun(scope.row)">库存调整</el-button>
           <el-button size="mini" type="warning" @click="getRuChuList(scope.row.id)">变更日志</el-button>
-          <el-button size="mini" type="success" @click="getDetail(scope.row.id)">修改
-          </el-button>
-          <el-button size="mini" type="danger" @click="deleteStock(scope.row.id)"
-          >删除
+          <el-button size="mini" type="danger" @click="deleteStock(scope.row.id)" v-if="loginUser.role === 3">删除
           </el-button>
         </template>
       </el-table-column>
@@ -127,8 +124,9 @@
       <div style="margin-bottom: 20px">门店库存：{{ kucunObj.stock }}</div>
       <div style="margin-bottom: 20px">仓库库存：{{ kucunObj.totalStock }}</div>
       <div style="margin-bottom: 20px">
-        <el-radio v-model="type" label="1" border>仓库——>门店</el-radio>
-        <el-radio v-model="type" label="2" border>门店——>仓库</el-radio>
+        <el-radio v-model="type" label="1" border v-if="loginUser.role === 3">仓库——>门店</el-radio>
+        <el-radio v-model="type" label="2" border v-if="loginUser.role === 2">门店——>仓库</el-radio>
+        <el-radio v-model="type" label="3" border v-if="loginUser.role === 3">仓库——>供货商</el-radio>
       </div>
       <el-input style="width: 50%" v-model="changeCount" placeholder="请输入数量"/>
       <span slot="footer" class="dialog-footer">
@@ -254,6 +252,7 @@ export default {
   },
 
   created() {
+    this.getLoginUser()
     this.getList()
   },
 
