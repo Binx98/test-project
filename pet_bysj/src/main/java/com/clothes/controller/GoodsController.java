@@ -12,11 +12,13 @@ import com.clothes.service.OrderService;
 import com.clothes.service.VipService;
 import com.clothes.utils.R;
 import com.clothes.utils.ResponseEnum;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -145,6 +147,8 @@ public class GoodsController {
             orders.setStatus(1);
             orders.setGoodId(goodId);
             orders.setVipId(vip.getId());
+            orders.setGoodName(good.getName());
+            orders.setUrl(good.getUrl());
             orders.setMoney(good.getMoney() * count);
             orders.setBuyMoney(new BigDecimal(good.getMoney() * count).multiply(new BigDecimal(vip.getDiscount())).intValue());
             orders.setCount(count);
@@ -183,6 +187,8 @@ public class GoodsController {
             orders.setUserName(userName);
             orders.setStatus(1);
             orders.setGoodId(goodId);
+            orders.setGoodName(good.getName());
+            orders.setUrl(good.getUrl());
             orders.setMoney(good.getMoney() * count);
             orders.setBuyMoney(good.getMoney() * count);
             orders.setCount(count);
@@ -195,5 +201,38 @@ public class GoodsController {
         goodsService.updateById(good);
         return R.out(ResponseEnum.SUCCESS, "下单成功");
     }
+
+    /**
+     * 查询商品销量
+     */
+    @PostMapping("/bing")
+    public R sellCount() {
+        // 查询所有库存商品
+        List<Goods> goods = goodsService.list();
+        List<Bing> bingList = new ArrayList<>();
+
+        // 查询库存商品对应订单
+        for (Goods good : goods) {
+            QueryWrapper<Orders> wrapper = new QueryWrapper<>();
+            wrapper.eq("good_id", good.getId());
+            wrapper.eq("status", 2);
+            wrapper.orderByDesc("create_time");
+            List<Orders> orderList = orderService.list(wrapper);
+            int goodCount = 0;
+            for (Orders orders : orderList) {
+                goodCount += orders.getCount();
+            }
+            Bing bing = new Bing();
+            bing.setName(good.getName());
+            bing.setValue(goodCount);
+            bingList.add(bing);
+        }
+        return R.out(ResponseEnum.SUCCESS, bingList);
+    }
 }
 
+@Data
+class Bing {
+    private String name;
+    private Integer value;
+}

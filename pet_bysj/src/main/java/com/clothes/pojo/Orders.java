@@ -54,7 +54,7 @@ public class Orders implements Serializable {
     /**
      * 商品名称
      */
-    @TableField("goodName")
+    @TableField("good_name")
     private String goodName;
 
     /**

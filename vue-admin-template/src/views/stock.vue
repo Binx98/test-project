@@ -60,13 +60,13 @@
       <el-table-column
         prop="stock"
         label="门店库存（个）"
-        width="100"
+        width="120"
       >
       </el-table-column>
       <el-table-column
         prop="totalStock"
         label="仓库库存（个）"
-        width="100"
+        width="120"
       >
       </el-table-column>
       <el-table-column
@@ -182,7 +182,7 @@
 
 <script>
 import urlApi from '@/api/url'
-import {mapGetters} from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Dashboard',

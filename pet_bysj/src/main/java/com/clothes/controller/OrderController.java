@@ -43,6 +43,18 @@ public class OrderController {
     private SupplierGoodService supplierGoodService;
 
     /**
+     * 查询退货订单
+     */
+    @PostMapping("/backList")
+    public R backList() {
+        QueryWrapper<Orders> wrapper = new QueryWrapper<>();
+        wrapper.eq("status", 3);
+        wrapper.orderByDesc("create_time");
+        List<Orders> goodOrderList = orderService.list(wrapper);
+        return R.out(ResponseEnum.SUCCESS, goodOrderList);
+    }
+
+    /**
      * 查询销售单列表
      */
     @PostMapping("/list")
@@ -120,6 +132,18 @@ public class OrderController {
             goods.setTotalStock(goods.getTotalStock() + order.getCount());
             goodsService.updateById(goods);
         }
+        return R.out(ResponseEnum.SUCCESS);
+    }
+
+
+    /**
+     * 删除订单
+     */
+    @PostMapping("/delete")
+    @Transactional
+    public R delete(Long id) {
+        // 已完成、已取消订单状态不可调整
+        orderService.removeById(id);
         return R.out(ResponseEnum.SUCCESS);
     }
 }

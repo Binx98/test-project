@@ -78,6 +78,13 @@ export default {
     })
   },
 
+  getBackOrderList() {
+    return request({
+      url: '/order/backList',
+      method: 'post'
+    })
+  },
+
   getKuCunList(goodName, type, min, max) {
     return request({
       url: '/good/kucunList',
@@ -88,6 +95,13 @@ export default {
         min: min,
         max: max
       }
+    })
+  },
+
+  getBing() {
+    return request({
+      url: '/good/bing',
+      method: 'post'
     })
   },
 
@@ -461,6 +475,16 @@ export default {
   back(id) {
     return request({
       url: `/order/back`,
+      method: 'post',
+      params: {
+        id: id
+      }
+    })
+  },
+
+  deleteOrder(id) {
+    return request({
+      url: `/order/delete`,
       method: 'post',
       params: {
         id: id
