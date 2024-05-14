@@ -22,9 +22,9 @@
           <i class="el-icon-caret-bottom"/>
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <el-dropdown-item divided @click.native="getUserInfo(true)">
-            <span style="display:block;">个人信息</span>
-          </el-dropdown-item>
+<!--          <el-dropdown-item divided @click.native="getUserInfo(true)">-->
+<!--            <span style="display:block;">个人信息</span>-->
+<!--          </el-dropdown-item>-->
 <!--          <el-dropdown-item divided>-->
 <!--            <span style="display:block;" @click="dialogVisible = true">联系客服</span>-->
 <!--          </el-dropdown-item>-->

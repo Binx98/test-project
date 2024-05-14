@@ -91,13 +91,17 @@ export default {
     })
   },
 
-  buyGood(id, accountId) {
+  buyGood(detail, radio) {
     return request({
-      url: `/good/buy/${id}/${accountId}`,
+      url: `/good/buy`,
       method: 'post',
       params: {
-        accountId: accountId,
-        goodId: id
+        vipFlag: radio,
+        goodId: detail.id,
+        userName: detail.userName,
+        count: detail.count,
+        phone: detail.phone,
+        address: detail.address
       }
     })
   },
@@ -423,12 +427,13 @@ export default {
 
   /* -------------------------------------------------------------------------------------------------------------- */
 
-  getOrderList(accountId) {
+  getOrderList(userName, orderId) {
     return request({
       url: '/order/list',
       method: 'post',
       params: {
-        accountId: accountId
+        orderId: orderId,
+        userName: userName
       }
     })
   },
@@ -445,19 +450,20 @@ export default {
 
   finish(id) {
     return request({
-      url: `/order/finish/${id}`,
+      url: `/order/finish`,
       method: 'post',
-      params: {}
+      params: {
+        id: id
+      }
     })
   },
 
-  cancel(orderId, accountId) {
+  back(id) {
     return request({
-      url: `/order/cancel`,
+      url: `/order/back`,
       method: 'post',
       params: {
-        orderId: orderId,
-        accountId: accountId
+        id: id
       }
     })
   },

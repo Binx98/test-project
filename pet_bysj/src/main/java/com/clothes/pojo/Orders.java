@@ -46,10 +46,22 @@ public class Orders implements Serializable {
     private String userName;
 
     /**
-     * vip编号
+     * 商品id
      */
     @TableField("good_id")
     private Long goodId;
+
+    /**
+     * 商品名称
+     */
+    @TableField("goodName")
+    private String goodName;
+
+    /**
+     * 商品图片
+     */
+    @TableField("url")
+    private String url;
 
     /**
      * 数量

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -119,39 +120,39 @@ public class GoodsController {
      */
     @PostMapping("/buy")
     @Transactional
-    public R save(Long goodId, Integer count, Integer phone, String address) {
+    public R save(Integer vipFlag, Long goodId, Integer count, String phone, String userName, String address) {
         // 查询门店库存是否充足
         Goods good = goodsService.getById(goodId);
         if (good.getStock() < count) {
             return R.out(ResponseEnum.FAIL, "门店库存不足，购买失败");
         }
 
-        // 扣减商品库存
-        good.setStock(good.getStock() - count);
-        goodsService.updateById(good);
-
-        // 判断消费者是否是会员
-        QueryWrapper<Vip> wrapper = new QueryWrapper<>();
-        if (ObjectUtils.isNotEmpty(phone)) {
-            wrapper.eq("phone", phone);
-        }
-        Vip vip = vipService.getOne(wrapper);
-
         // 如果是会员
-        if (ObjectUtils.isNotEmpty(vip)) {
+        if (vipFlag == 1) {
+            // 判断手机号是否正确
+            QueryWrapper<Vip> wrapper = new QueryWrapper<>();
+            if (ObjectUtils.isNotEmpty(phone)) {
+                wrapper.eq("phone", phone);
+            }
+            Vip vip = vipService.getOne(wrapper);
+            if (ObjectUtils.isEmpty(vip)) {
+                return R.out(ResponseEnum.FAIL, "该电话号并未注册会员，请检查重试");
+            }
+
             // 保存订单信息
             Orders orders = new Orders();
             orders.setUserName(vip.getUserName());
             orders.setStatus(1);
+            orders.setGoodId(goodId);
             orders.setVipId(vip.getId());
             orders.setMoney(good.getMoney() * count);
-            orders.setBuyMoney(good.getMoney() * count * vip.getDiscount().intValue());
+            orders.setBuyMoney(new BigDecimal(good.getMoney() * count).multiply(new BigDecimal(vip.getDiscount())).intValue());
             orders.setCount(count);
-            orders.setAddress(address);
+            orders.setAddress(vip.getAddress());
             orderService.save(orders);
 
             // 判断升级
-            int money = vip.getMoney() + (good.getMoney() * count * vip.getDiscount().intValue());
+            int money = (int) (vip.getMoney() + (good.getMoney() * count * vip.getDiscount()));
             if (money >= 10000) {
                 vip.setLevel(1);
                 vip.setDiscount(0.9D);
@@ -179,8 +180,9 @@ public class GoodsController {
         else {
             // 保存订单信息
             Orders orders = new Orders();
-            orders.setUserName(vip.getUserName());
+            orders.setUserName(userName);
             orders.setStatus(1);
+            orders.setGoodId(goodId);
             orders.setMoney(good.getMoney() * count);
             orders.setBuyMoney(good.getMoney() * count);
             orders.setCount(count);
@@ -188,6 +190,9 @@ public class GoodsController {
             orderService.save(orders);
         }
 
+        // 扣减商品库存
+        good.setStock(good.getStock() - count);
+        goodsService.updateById(good);
         return R.out(ResponseEnum.SUCCESS, "下单成功");
     }
 }

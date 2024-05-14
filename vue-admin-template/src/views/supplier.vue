@@ -115,6 +115,9 @@
           label="图片"
           width="160"
         >
+          <template slot-scope="scope">
+            <img :src="scope.row.url" min-width="70" height="70"/>
+          </template>
         </el-table-column>
         <el-table-column
           prop="material"

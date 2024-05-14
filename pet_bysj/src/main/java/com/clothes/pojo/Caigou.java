@@ -76,7 +76,7 @@ public class Caigou implements Serializable {
     private Integer count;
 
     /**
-     * 进货总价
+     * 进货单价
      */
     @TableField("money")
     private Integer money;

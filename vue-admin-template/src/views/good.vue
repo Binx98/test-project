@@ -130,23 +130,45 @@
       </div>
     </el-dialog>
 
-    <el-dialog
-      title="修改库存"
-      :visible.sync="dialogVisible1"
-      width="30%"
-    >
-      <div>
-        <div style="margin-bottom: 20px">当前总库存：{{ changeCount.currentCount }}</div>
-        <div style="margin-bottom: 20px">
-          <el-radio v-model="changeCount.type" label="1" border>加库存</el-radio>
-          <el-radio v-model="changeCount.type" label="2" border>减库存</el-radio>
-        </div>
-        <el-input style="width: 50%" v-model="changeCount.changeCount" placeholder="请输入数量"/>
+    <!--  购买商品  -->
+    <el-dialog title="购买商品" :visible.sync="dialogFormVisible2" width="500px">
+      <!--   会员   -->
+      <el-form :model="detail1" v-if="radio === '1'">
+        <el-input v-model="detail1.id" autocomplete="off" style="display: none"></el-input>
+        <el-form-item label="会员身份" :label-width="formLabelWidth">
+          <el-radio v-model="radio" label="1">是</el-radio>
+          <el-radio v-model="radio" label="2">否</el-radio>
+        </el-form-item>
+        <el-form-item label="电话号" :label-width="formLabelWidth">
+          <el-input v-model="detail1.phone" autocomplete="off" placeholder="请输入会员手机号"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="数量" :label-width="formLabelWidth">
+          <el-input v-model="detail1.count" autocomplete="off" placeholder="请输入商品数量"></el-input>
+        </el-form-item>
+      </el-form>
+      <!--   非会员   -->
+      <el-form :model="detail1" v-if="radio === '2'">
+        <el-input v-model="detail1.id" autocomplete="off" style="display: none"></el-input>
+        <el-form-item label="会员身份" :label-width="formLabelWidth">
+          <el-radio v-model="radio" label="1">是</el-radio>
+          <el-radio v-model="radio" label="2">否</el-radio>
+        </el-form-item>
+        <el-form-item label="姓名" :label-width="formLabelWidth">
+          <el-input v-model="detail1.userName" autocomplete="off" placeholder="请填写购买人姓名"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="数量" :label-width="formLabelWidth">
+          <el-input v-model="detail1.count" autocomplete="off" placeholder="请输入商品数量"></el-input>
+        </el-form-item>
+        <el-form-item label="地址" :label-width="formLabelWidth">
+          <el-input v-model="detail1.address" autocomplete="off" placeholder="请输入收货地址"></el-input>
+        </el-form-item>
+      </el-form>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="buyGood()">确 定</el-button>
       </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible1 = false">取 消</el-button>
-        <el-button type="primary" @click="changeKuCun(changeCount)">确 定</el-button>
-      </span>
     </el-dialog>
 
     <el-dialog
@@ -166,13 +188,14 @@
 
 <script>
 import urlApi from '@/api/url'
-import {mapGetters} from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Dashboard',
 
   data() {
     return {
+      radio: '1',
       goodName: '',
       tableData: [],
       changeCount: {
@@ -185,6 +208,7 @@ export default {
       dialogVisible1: false,
       dialogFormVisible: false,
       dialogFormVisible1: false,
+      dialogFormVisible2: false,
       dialogTableVisible: false,
       bannerList: [],
       commentList: [],
@@ -208,6 +232,14 @@ export default {
         price: '',
         count: '',
         material: ''
+      },
+      detail1: {
+        radio: '',
+        id: '',
+        userName: '',
+        phone: '',
+        count: '',
+        address: ''
       },
       loginUser: {
         accountId: '',
@@ -251,6 +283,11 @@ export default {
   methods: {
     getList() {
       urlApi.getGoodList(this.goodName, this.value).then(res => this.tableData = res.data)
+    },
+
+    clickBuy(id) {
+      this.dialogFormVisible2 = true
+      this.detail1.id = id
     },
 
     goKuCun1() {
@@ -303,14 +340,15 @@ export default {
       })
     },
 
-    buyGood(id) {
-      this.$confirm('此操作将生成订单并扣费, 是否继续?', '提示', {
+    buyGood() {
+      this.$confirm('此操作将生成销售单, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
-        urlApi.buyGood(id, this.loginUser.accountId).then(res => {
+        urlApi.buyGood(this.detail1, this.radio).then(res => {
           if (res.code === 200) {
             this.$message.success('下单成功！')
+            this.dialogFormVisible2 = false
             this.getList()
           }
         })
