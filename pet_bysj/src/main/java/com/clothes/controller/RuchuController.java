@@ -70,6 +70,12 @@ public class RuchuController {
             good.setStock(good.getStock() + count);
             good.setTotalStock(good.getTotalStock() - count);
             ruchu.setNote("总仓库出库——>门店仓库入库");
+        } else if (type == 3) {
+            if (good.getTotalStock() < count) {
+                return R.out(ResponseEnum.FAIL, "总库存数量不足");
+            }
+            good.setTotalStock(good.getTotalStock() - count);
+            ruchu.setNote("总仓库出库——>供货商");
         } else {
             if (good.getStock() < count) {
                 return R.out(ResponseEnum.FAIL, "门店库存数量不足");
