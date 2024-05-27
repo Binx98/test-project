@@ -46,6 +46,12 @@
         </template>
       </el-table-column>
       <el-table-column
+        prop="size"
+        label="尺码"
+        width="80"
+      >
+      </el-table-column>
+      <el-table-column
         prop="money"
         label="售价"
         width="80"

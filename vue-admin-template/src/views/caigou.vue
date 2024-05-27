@@ -1,10 +1,11 @@
 <template>
   <div class="dashboard-container">
-    <el-card style="width: 14.6%">
-      <img style="width: 200px;height: 200px" :src="image" class="image">
+    <el-card style="width: 18%;margin-bottom: 12px" v-if="loginUser.role === 4">
+      <img style="height: 200px" :src="image" class="image">
       <div>
         <div class="bottom clearfix">
-          <el-button type="primary">采购商品</el-button>
+          <div>采购商品请通过【供货商】页面<br>点击【商品采购】按钮完成</div>
+          <el-button type="primary" @click="goSupplier" style="margin-top: 10px">去采购></el-button>
         </div>
       </div>
     </el-card>
@@ -21,7 +22,6 @@
     <el-button size="medium" type="success" @click="getList">
       查询
     </el-button>
-    <el-button type="text" @click="goSupplier" size="medium" v-if="loginUser.role === 4">去采购></el-button>
     <el-table
       :data="tableData"
       style="width: 100%"
