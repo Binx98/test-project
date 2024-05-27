@@ -120,6 +120,12 @@
           </template>
         </el-table-column>
         <el-table-column
+          prop="size"
+          label="尺码"
+          width="120"
+        >
+        </el-table-column>
+        <el-table-column
           prop="material"
           label="材质"
           width="170"
