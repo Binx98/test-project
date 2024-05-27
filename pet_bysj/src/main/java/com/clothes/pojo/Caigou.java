@@ -82,6 +82,12 @@ public class Caigou implements Serializable {
     private Integer money;
 
     /**
+     * 尺码
+     */
+    @TableField("size")
+    private String size;
+
+    /**
      * 商品类型
      */
     @TableField("type")

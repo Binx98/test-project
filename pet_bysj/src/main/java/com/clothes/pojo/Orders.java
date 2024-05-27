@@ -69,6 +69,11 @@ public class Orders implements Serializable {
     @TableField("count")
     private Integer count;
 
+    /**
+     * 尺码
+     */
+    @TableField("size")
+    private String size;
 
     /**
      * 总原价

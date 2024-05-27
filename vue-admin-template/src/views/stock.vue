@@ -46,6 +46,12 @@
         </template>
       </el-table-column>
       <el-table-column
+        prop="size"
+        label="尺码"
+        width="80"
+      >
+      </el-table-column>
+      <el-table-column
         prop="type"
         label="类型"
         width="80"
@@ -73,7 +79,7 @@
         label="操作"
       >
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="clickKuCun(scope.row)">库存调整</el-button>
+          <el-button size="mini" type="primary" @click="clickKuCun(scope.row)" v-if="loginUser.role === 3">库存调整</el-button>
           <el-button size="mini" type="warning" @click="getRuChuList(scope.row.id)">变更日志</el-button>
           <el-button size="mini" type="danger" @click="deleteStock(scope.row.id)" v-if="loginUser.role === 3">删除
           </el-button>

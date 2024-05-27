@@ -82,6 +82,12 @@ public class Goods implements Serializable {
     private Integer totalStock;
 
     /**
+     * 尺码
+     */
+    @TableField("size")
+    private String size;
+
+    /**
      * 创建时间
      */
     @TableField(value = "create_time", fill = FieldFill.INSERT)

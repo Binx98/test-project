@@ -69,6 +69,11 @@ public class SupplierGood implements Serializable {
     @TableField("url")
     private String url;
 
+    /**
+     * 尺码
+     */
+    @TableField("size")
+    private String size;
 
     /**
      * 进货价

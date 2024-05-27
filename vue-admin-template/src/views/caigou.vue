@@ -1,12 +1,20 @@
 <template>
   <div class="dashboard-container">
+    <el-card style="width: 14.6%">
+      <img style="width: 200px;height: 200px" :src="image" class="image">
+      <div>
+        <div class="bottom clearfix">
+          <el-button type="primary">采购商品</el-button>
+        </div>
+      </div>
+    </el-card>
     <el-input placeholder="请输入供应商" style="width: 200px;margin-right: 10px" v-model="supplierName"/>
     <el-select style="margin-right: 10px" v-model="value" placeholder="审核状态">
       <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
+        v-for="item in options"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value"
       >
       </el-option>
     </el-select>
@@ -15,31 +23,37 @@
     </el-button>
     <el-button type="text" @click="goSupplier" size="medium" v-if="loginUser.role === 4">去采购></el-button>
     <el-table
-        :data="tableData"
-        style="width: 100%"
+      :data="tableData"
+      style="width: 100%"
     >
       <el-table-column
-          prop="goodId"
-          label="商品编号"
-          width="120"
+        prop="goodId"
+        label="商品编号"
+        width="120"
       >
       </el-table-column>
       <el-table-column
-          prop="supplierName"
-          label="供应商"
-          width="180"
+        prop="supplierName"
+        label="供应商"
+        width="180"
       >
       </el-table-column>
       <el-table-column
-          prop="goodName"
-          label="商品名称"
-          width="120"
+        prop="goodName"
+        label="商品名称"
+        width="120"
       >
       </el-table-column>
       <el-table-column
-          prop="type"
-          label="类型"
-          width="120"
+        prop="size"
+        label="尺码"
+        width="80"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="type"
+        label="类型"
+        width="120"
       >
         <template slot-scope="scope">
           <el-tag type="primary" v-if="scope.row.type == 1">衣服</el-tag>
@@ -49,21 +63,21 @@
         </template>
       </el-table-column>
       <el-table-column
-          prop="count"
-          label="总数量"
-          width="120"
+        prop="count"
+        label="总数量"
+        width="120"
       >
       </el-table-column>
       <el-table-column
-          prop="money"
-          label="进货总价"
-          width="120"
+        prop="money"
+        label="进货总价"
+        width="120"
       >
       </el-table-column>
       <el-table-column
-          prop="status"
-          label="审核状态"
-          width="120"
+        prop="status"
+        label="审核状态"
+        width="120"
       >
         <template slot-scope="scope">
           <el-tag type="primary" v-if="scope.row.status == 1">进行中</el-tag>
@@ -73,18 +87,21 @@
         </template>
       </el-table-column>
       <el-table-column
-          prop="createTime"
-          label="创建时间"
-          width="160"
+        prop="createTime"
+        label="创建时间"
+        width="160"
       >
       </el-table-column>
       <el-table-column
-          label="操作"
+        label="操作"
       >
         <template slot-scope="scope">
-          <el-button size="small" type="primary" @click="ruku(scope.row.id)" v-if="loginUser.role === 3">入库</el-button>
-          <el-button size="small" type="success" @click="agree(scope.row.id)" v-if="loginUser.role === 1">通过</el-button>
-          <el-button size="small" type="danger" @click="reject(scope.row.id)" v-if="loginUser.role === 1">拒绝</el-button>
+          <el-button size="small" type="primary" @click="ruku(scope.row.id)" v-if="loginUser.role === 3">入库
+          </el-button>
+          <el-button size="small" type="success" @click="agree(scope.row.id)" v-if="loginUser.role === 1">通过
+          </el-button>
+          <el-button size="small" type="danger" @click="reject(scope.row.id)" v-if="loginUser.role === 1">拒绝
+          </el-button>
           <!--          <el-button size="small" type="danger" @click="deleteUser(scope.row.id)">删除</el-button>-->
         </template>
       </el-table-column>
@@ -115,13 +132,14 @@
 
 <script>
 import urlApi from '@/api/url'
-import {mapGetters} from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Dashboard',
 
   data() {
     return {
+      image: require('@/assets/caigou.jpg'),
       imageUrl: '',
       tableData: [],
       dialogFormVisible: false,

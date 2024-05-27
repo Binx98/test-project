@@ -122,6 +122,7 @@ public class CaigouController {
                 goods.setMoney(supplierGood.getMoney() * 2);
                 goods.setCreateTime(LocalDateTime.now());
                 goods.setType(supplierGood.getType());
+                goods.setSize(supplierGood.getSize());
                 goods.setMaterial(supplierGood.getMaterial());
                 goodsService.save(goods);
             }
