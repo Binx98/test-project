@@ -11,7 +11,7 @@
  Target Server Version : 101102 (10.11.2-MariaDB)
  File Encoding         : 65001
 
- Date: 14/05/2024 15:46:54
+ Date: 21/10/2024 14:33:07
 */
 
 SET NAMES utf8mb4;
@@ -62,6 +62,7 @@ CREATE TABLE `goods`  (
   `material` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '商品描述',
   `stock` int NULL DEFAULT NULL COMMENT '门店库存',
   `total_stock` int NULL DEFAULT NULL COMMENT '仓库库存',
+  `size` int NULL DEFAULT NULL,
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
@@ -69,9 +70,9 @@ CREATE TABLE `goods`  (
 -- ----------------------------
 -- Records of goods
 -- ----------------------------
-INSERT INTO `goods` VALUES (2, '时尚拖鞋', 20, 10, 3, 'http://localhost:9000/bysj/1701237756321.jpg', '塑料', 6, 16, '2024-05-14 09:20:47');
-INSERT INTO `goods` VALUES (3, '运动短裤', 180, 100, 2, 'http://localhost:9000/bysj/1701237756321.jpg', '棉、涤纶', 3, 2, '2024-05-14 09:20:48');
-INSERT INTO `goods` VALUES (4, '鸭舌帽', 198, 99, 4, 'http://localhost:9000/bysj/1701237756321.jpg', '锦纶、涤纶、晴纶', 27, 76, '2024-05-13 17:06:46');
+INSERT INTO `goods` VALUES (2, '时尚拖鞋', 20, 10, 3, 'http://localhost:9000/bysj/1701237756321.jpg', '塑料', 6, 16, NULL, '2024-05-14 09:20:47');
+INSERT INTO `goods` VALUES (3, '运动短裤', 180, 100, 2, 'http://localhost:9000/bysj/1701237756321.jpg', '棉、涤纶', 3, 2, NULL, '2024-05-14 09:20:48');
+INSERT INTO `goods` VALUES (4, '鸭舌帽', 198, 99, 4, 'http://localhost:9000/bysj/1701237756321.jpg', '锦纶、涤纶、晴纶', 27, 76, NULL, '2024-05-13 17:06:46');
 
 -- ----------------------------
 -- Table structure for orders
