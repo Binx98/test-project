@@ -80,7 +80,7 @@
     </dependencies>
 
     <build>
-        <finalName>test-project</finalName>
+        <finalName>backend-project</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
